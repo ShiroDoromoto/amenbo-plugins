@@ -1,0 +1,2 @@
+# Listed plugin manifests live here, one YAML per plugin: plugins/<name>.yaml
+# Only files matching plugins/*.yaml are aggregated into the catalog.

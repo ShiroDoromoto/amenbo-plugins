@@ -1,0 +1,17 @@
+# A ready-to-edit example manifest. Copy this to plugins/<name>.yaml and replace every value.
+# See CONTRIBUTING.md for the full field reference. This file is an example only — it is not a
+# listed plugin and is ignored by the catalog (only plugins/*.yaml are aggregated).
+
+name: worktree
+desc: Isolate each task in its own git worktree
+author: amenbo
+repo: ShiroDoromoto/amenbo-plugin-worktree
+os:
+  - macos
+  - linux
+category: workflow
+url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1.tar.gz
+checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+# official: true   # set by catalog curation, not by submitters
+# payload_v: 1     # the payload contract version the plugin reads (default: 1)
+# min_amenbo: 1.8.0  # minimum amenbo version the plugin needs (default: none)
