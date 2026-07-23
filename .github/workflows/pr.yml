@@ -1,0 +1,81 @@
+name: PR
+
+# The gate on a listing pull request: is every manifest well-formed?
+#
+# Whether a manifest is well-formed is amenbo's judgment, not this repository's. The rules are the ones
+# its install door enforces, so this runs amenbo's real validator rather than a second implementation of
+# them — restate them here and the two drift, and the drift shows up as a manifest this repo accepted and
+# every client then refuses.
+#
+# What this door does NOT do is touch the network: it judges the manifest's shape, not the asset it
+# points at. Downloading each asset to check it against the declared digest is the catalog build's, one
+# workflow over, on `main`. That leaves a window worth knowing about: a digest that does not match the
+# bytes it names is caught after the merge, not before it.
+#
+# The validator is built from amenbo's `main` rather than a published release, because no release carries
+# `plugin validate` yet. It also means a rule added there reaches this door on the very next pull request,
+# with nothing to update here.
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - '.github/workflows/pr.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A pull request that is pushed to twice does not need the first check finished.
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check out amenbo (for its manifest validator)
+        uses: actions/checkout@v7
+        with:
+          repository: ShiroDoromoto/amenbo
+          path: .amenbo-src
+
+      - name: Show the toolchain
+        working-directory: .amenbo-src
+        run: rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .amenbo-src
+
+      - name: Build the amenbo CLI
+        working-directory: .amenbo-src
+        run: cargo build -p amenbo-cli
+
+      # Every manifest, not only the ones this pull request touched: a rule tightened in amenbo should
+      # surface against the entries already listed too, and the catalog is small next to the build above.
+      #
+      # `plugin validate` reports every problem in a manifest rather than the first, and the loop keeps
+      # going after a failing one, so a single run tells a submitter everything they have to fix.
+      - name: Validate every manifest
+        run: |
+          shopt -s nullglob
+          amenbo=".amenbo-src/target/debug/amenbo"
+          manifests=(plugins/*.yaml)
+          if [ ${#manifests[@]} -eq 0 ]; then
+            echo "No manifests to validate."
+            exit 0
+          fi
+          failed=0
+          for manifest in "${manifests[@]}"; do
+            echo "── $manifest"
+            "$amenbo" plugin validate "$manifest" || failed=1
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::One or more manifests are invalid — see the problems reported above."
+            exit 1
+          fi
+          echo "All ${#manifests[@]} manifest(s) are valid."
