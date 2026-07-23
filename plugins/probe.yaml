@@ -1,0 +1,9 @@
+name: probe
+desc: A throwaway manifest used to exercise the pull-request gate
+author: amenbo
+repo: ShiroDoromoto/amenbo-plugins
+os:
+  - macos
+category: workflow
+url: https://raw.githubusercontent.com/ShiroDoromoto/amenbo-plugins/main/catalog-key.pub
+checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
