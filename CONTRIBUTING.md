@@ -69,5 +69,34 @@ A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest
 - [ ] `repo` is the plugin's own `owner/name`, not this catalog.
 - [ ] You did **not** set `official: true` (unless you are the amenbo team).
 
-Automated manifest validation and the `catalog.json` aggregation run in CI; both are being wired up, so a
-manual review may bridge the gap until they land.
+## What CI checks
+
+**On your pull request**, your manifest is checked with **amenbo's own validator** — the very same one
+amenbo runs at its install door, so the catalog and the client can never disagree about what "valid"
+means. You can run it yourself first, with any amenbo that has the plugin commands:
+
+```sh
+amenbo plugin validate plugins/<name>.yaml
+```
+
+It prints every problem it finds at once, and exits non-zero if there are any.
+
+**On the merge**, the catalog build ([`catalog.yml`](.github/workflows/catalog.yml)) re-runs that
+validation and then does what only it can:
+
+- **checks the file name** matches the manifest's `name`;
+- **refuses `official: true`** from anyone outside the amenbo team;
+- **downloads your `url` and hashes it** — if the bytes do not match your `checksum`, the entry is dropped
+  with the reason in the workflow summary;
+- **signs your asset with the catalog key** and publishes the aggregated `catalog.json` to GitHub Pages,
+  where every amenbo picks it up.
+
+You never handle a key — see [Signatures](README.md#signatures--what-a-merge-into-this-catalog-means) for
+why the catalog signs rather than the author.
+
+Two consequences worth knowing:
+
+- **Changing the asset behind a released `url` breaks the listing.** The digest and the signature are over
+  the exact bytes; publish a new asset at a new URL and open a PR updating `url` and `checksum`.
+- **A URL that stops resolving drops your entry** from the next catalog build. Everything else stays
+  listed.

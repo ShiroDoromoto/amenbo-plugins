@@ -1,0 +1,126 @@
+# Build the catalog, and publish it.
+#
+# amenbo has no server: its plugin browser fetches ONE static file and does everything else locally. This
+# workflow is what makes that file. For every reviewed manifest it validates the manifest with amenbo's
+# own validator, downloads the asset and checks it against the declared digest, signs those exact bytes
+# with the catalog key, and publishes the aggregated `catalog.json` to GitHub Pages.
+#
+# It runs on `main` only — never on a pull request. Two reasons: the private key stays out of any run a
+# submitter can influence, and a signature that says "these bytes went through this catalog's review" is
+# only true once the review has happened. The gate *before* the merge is `pr.yml`, which asks amenbo
+# whether the manifest is well-formed; this is the door after it.
+
+name: catalog
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One catalog build at a time, and never cancel one: main must always end on the newest catalog.
+concurrency:
+  group: catalog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The full history: a catalog entry carries the date its manifest first landed here, which is
+          # the browser's "new" axis and exists nowhere else (a client holds the catalog, not the repo).
+          fetch-depth: 0
+
+      # The manifest rules live in exactly one place — amenbo's validator — so this runs the real binary
+      # rather than a second implementation of the rules, which would drift from the client's install
+      # door. Built from source because no published release carries `plugin validate` yet.
+      - name: Check out amenbo (for its manifest validator)
+        uses: actions/checkout@v7
+        with:
+          repository: ShiroDoromoto/amenbo
+          path: .amenbo-src
+
+      - name: Show the toolchain
+        working-directory: .amenbo-src
+        run: rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: .amenbo-src
+
+      - name: Build the amenbo CLI
+        working-directory: .amenbo-src
+        run: cargo build -p amenbo-cli
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - run: pip install pyyaml
+
+      - name: Install minisign
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends minisign
+
+      - name: Unpack the catalog signing key
+        env:
+          CATALOG_SIGNING_PRIVATE_KEY: ${{ secrets.CATALOG_SIGNING_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CATALOG_SIGNING_PRIVATE_KEY:-}" ]; then
+            echo "::error::CATALOG_SIGNING_PRIVATE_KEY is not set — an unsigned catalog installs nowhere" >&2
+            exit 1
+          fi
+          # The secret holds the key file as it was generated (base64-wrapped); minisign reads the
+          # decoded form. It is written under RUNNER_TEMP, which the runner discards with the job.
+          printf '%s' "$CATALOG_SIGNING_PRIVATE_KEY" | base64 -d > "$RUNNER_TEMP/catalog.key"
+
+      - name: Check the catalog key signs, and verifies against the public half
+        env:
+          CATALOG_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.CATALOG_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          # An empty catalog signs nothing, so the key wiring — the secret, its password, and the public
+          # key committed here — would stay unproven until the first plugin lands, and then break in the
+          # run that matters. Sign one throwaway string every publish instead.
+          printf 'catalog key check' > "$RUNNER_TEMP/probe"
+          printf '%s\n' "$CATALOG_SIGNING_PRIVATE_KEY_PASSWORD" \
+            | minisign -S -s "$RUNNER_TEMP/catalog.key" -m "$RUNNER_TEMP/probe" -x "$RUNNER_TEMP/probe.minisig"
+          minisign -V -p catalog-key.pub -m "$RUNNER_TEMP/probe" -x "$RUNNER_TEMP/probe.minisig"
+
+      - name: Aggregate and sign the catalog
+        env:
+          AMENBO_BIN: ${{ github.workspace }}/.amenbo-src/target/debug/amenbo
+          CATALOG_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.CATALOG_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          mkdir -p _site
+          # Not --strict: a plugin whose asset URL has rotted drops out of the catalog with a reason in
+          # the summary, rather than holding the whole catalog back. The gate that keeps a malformed
+          # manifest from ever reaching main is the pull-request check, one workflow over.
+          python3 scripts/aggregate.py --out _site/catalog.json --sign-key "$RUNNER_TEMP/catalog.key"
+
+      - name: Upload the catalog as the Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  # Serve it: https://shirodoromoto.github.io/amenbo-plugins/catalog.json
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      # enablement turns Pages on the first time this runs, so serving the catalog needs no click.
+      - uses: actions/configure-pages@v6
+        with:
+          enablement: true
+      - id: deploy
+        uses: actions/deploy-pages@v5

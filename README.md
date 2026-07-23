@@ -20,6 +20,31 @@ amenbo has no server. Discovery is served entirely from static files and from Gi
 This keeps browsing fast and offline-friendly no matter how many plugins the catalog holds: what grows is
 the number of manifests, and the client already holds them all after one fetch.
 
+The aggregated catalog is served at:
+
+```
+https://shirodoromoto.github.io/amenbo-plugins/catalog.json
+```
+
+It is rebuilt by [`.github/workflows/catalog.yml`](.github/workflows/catalog.yml) on every push to `main`
+and published to GitHub Pages — no server, just a static file. Nothing is committed back to the repository:
+`plugins/` stays the reviewed truth, and `catalog.json` is derived from it every time.
+
+## Signatures — what a merge into this catalog means
+
+Every asset in the catalog is signed by the catalog's CI, and amenbo verifies that signature (plus the
+declared SHA-256) before it will install anything.
+
+- **Authors hold no keys and sign nothing.** The private key exists only as a secret of this repository's
+  CI; the public half is [`catalog-key.pub`](catalog-key.pub), which ships inside amenbo.
+- **The signature says the bytes went through this catalog** — reviewed, downloaded, digest-checked — not
+  that the author personally vouched for them. That is the same shape as trusting a Homebrew maintainer's
+  review of a formula rather than the upstream author's signature.
+- **Signing happens at merge, never on a pull request.** A submitter's branch never runs with the key.
+
+An asset outside this catalog carries no such signature, which is the **free** tier's trade: you may point
+amenbo anywhere, and amenbo vouches for nothing you point it at.
+
 ## Trust tiers — *official* is not the same as *listed*
 
 | Tier | Who builds it | How | Label |
