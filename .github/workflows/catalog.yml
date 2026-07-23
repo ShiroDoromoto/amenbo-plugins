@@ -118,7 +118,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      # enablement turns Pages on the first time this runs, so serving the catalog needs no click.
+      # Pages is already on, with GitHub Actions as its source — a workflow token may not turn it on
+      # (creating a Pages site is refused as "not accessible by integration"), so that was done once by
+      # hand. enablement stays true so a repository fork, or a site turned off, heals itself if it can.
       - uses: actions/configure-pages@v6
         with:
           enablement: true
