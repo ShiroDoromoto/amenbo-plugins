@@ -10,8 +10,23 @@ os:
   - macos
   - linux
 category: workflow
-url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1.tar.gz
-checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+
+# The distributable, in one of two forms. This plugin is a native binary, so it publishes one asset per
+# OS — the keys here must be exactly the OSes listed above, no more and no fewer.
+assets:
+  macos:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-macos.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  linux:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+
+# A plugin that is one file on every OS it lists — a script — writes this instead of `assets`, and it
+# stays just as valid:
+#
+# url: https://github.com/you/your-plugin/releases/download/v1/your-plugin-v1.tar.gz
+# checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+
 # official: true   # set by catalog curation, not by submitters
 # payload_v: 1     # the payload contract version the plugin reads (default: 1)
 # min_amenbo: 1.8.0  # minimum amenbo version the plugin needs (default: none)

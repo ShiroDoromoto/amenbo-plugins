@@ -9,10 +9,16 @@ For every `plugins/<name>.yaml` it:
    door and the client's install door can never disagree about what "valid" means;
 3. refuses an `official: true` claim from anyone outside the amenbo team — the badge is curation, never
    self-declaration;
-4. downloads the asset at `url` and checks its SHA-256 against the declared `checksum`, so a manifest
-   whose digest does not match what the URL actually serves never reaches a user;
+4. downloads every distributable the manifest publishes and checks its SHA-256 against the declared
+   `checksum`, so a manifest whose digest does not match what the URL actually serves never reaches a user;
 5. signs the downloaded bytes with the amenbo **catalog key** (`--sign-key`) and verifies the signature
    back against the public key before trusting it.
+
+A manifest publishes either one distributable for every OS it lists (`url` / `checksum`) or **one per OS**
+(`assets`); `assets` is what decides which, exactly as it does at amenbo's install door. Steps 4 and 5 run
+over each of them, because a checksum and a signature are claims about the bytes that will actually run —
+so their grain is the bytes', not the entry's. An entry is all-or-nothing: one OS's asset failing rejects
+the whole entry, since a listing that claims an OS it cannot serve is what the client refuses.
 
 The signature is what an amenbo client verifies at install time against the catalog public key it ships
 with. It does not say "the author signed this"; it says "these exact bytes went through this catalog's
@@ -52,9 +58,12 @@ CATALOG_V = 1
 #: author is the team; being listed here at all is a separate, weaker thing (review, not endorsement).
 OFFICIAL_OWNERS = frozenset({"ShiroDoromoto"})
 
-#: The manifest fields that are copied into a catalog entry. Deliberately a whitelist rather than a
-#: pass-through: an entry stays small and predictable, and a manifest cannot inflate the one file every
-#: client downloads. A field amenbo adds later is added here too.
+#: The manifest fields that are copied into a catalog entry verbatim. Deliberately a whitelist rather
+#: than a pass-through: an entry stays small and predictable, and a manifest cannot inflate the one file
+#: every client downloads. A field amenbo adds later is added here too.
+#:
+#: The distributable — `url` / `checksum` / `assets` — is deliberately *not* here: it is not copied but
+#: rebuilt by [publish], which adds the signature only after fetching the bytes and checking their digest.
 ENTRY_FIELDS = (
     "name",
     "desc",
@@ -62,8 +71,6 @@ ENTRY_FIELDS = (
     "repo",
     "os",
     "category",
-    "url",
-    "checksum",
     "official",
     "payload_v",
     "min_amenbo",
@@ -145,18 +152,18 @@ def check_checksum(data: bytes, checksum: str) -> None:
         raise Rejected(f"checksum does not match the asset (url serves sha256:{actual})")
 
 
-def sign(data: bytes, name: str, key: Path, password: str, public_key: Path) -> str:
+def sign(data: bytes, label: str, key: Path, password: str, public_key: Path) -> str:
     """Sign the asset bytes with the catalog key and return the full minisign signature text.
 
     The signature is verified against the public key before it is returned: a signature this catalog
     cannot itself verify would fail on every user's machine, and it is far cheaper to learn that here.
 
-    The bytes are signed under the plugin's name so that minisign's trusted comment — which is signed
-    too — names what was signed rather than a temporary file.
+    The bytes are signed under `label` so that minisign's trusted comment — which is signed too — names
+    what was signed (the plugin, and its OS where there is one per OS) rather than a temporary file.
     """
     with tempfile.TemporaryDirectory() as tmp:
-        asset = Path(tmp) / name
-        signature = Path(tmp) / f"{name}.minisig"
+        asset = Path(tmp) / label
+        signature = Path(tmp) / f"{label}.minisig"
         asset.write_bytes(data)
         signing = subprocess.run(
             ["minisign", "-S", "-s", str(key), "-m", str(asset), "-x", str(signature)],
@@ -197,6 +204,29 @@ def added_at(path: Path) -> str | None:
 # --- assembling ------------------------------------------------------------------------------------
 
 
+def publish(distributable: dict, label: str, args: argparse.Namespace) -> dict:
+    """Fetch one distributable, check it against its declared digest, sign it, and return the catalog's
+    copy of it — `url`, `checksum`, and the `signature` over the exact bytes served.
+
+    `label` names the bytes in minisign's trusted comment, which is signed along with them. For a per-OS
+    asset it carries the OS, so a signature says which distributable of a plugin it covers.
+    """
+    data = download(distributable["url"])
+    check_checksum(data, distributable["checksum"])
+    published = {"url": distributable["url"], "checksum": distributable["checksum"]}
+    if args.sign_key:
+        published["signature"] = sign(data, label, args.sign_key, args.sign_password, args.public_key)
+    return published
+
+
+def is_signed(entry: dict) -> bool:
+    """Whether every distributable in a built entry carries a signature — what a run without a key lacks."""
+    assets = entry.get("assets")
+    if assets:
+        return all("signature" in asset for asset in assets.values())
+    return "signature" in entry
+
+
 def build_entry(path: Path, args: argparse.Namespace) -> dict:
     """Run one manifest through every check and return the catalog entry, or raise [Rejected]."""
     try:
@@ -210,14 +240,25 @@ def build_entry(path: Path, args: argparse.Namespace) -> dict:
     check_file_name(path, manifest)
     check_official(manifest)
 
-    data = download(manifest["url"])
-    check_checksum(data, manifest["checksum"])
-
     entry = {field: manifest[field] for field in ENTRY_FIELDS if field in manifest}
     entry.setdefault("official", False)
 
-    if args.sign_key:
-        entry["signature"] = sign(data, entry["name"], args.sign_key, args.sign_password, args.public_key)
+    # `assets` alone decides which of the two distributable forms is in play — the same rule the client's
+    # install door reads, so an entry can never mean one thing here and another there. The validator above
+    # has already established that whichever form this manifest uses is complete.
+    assets = manifest.get("assets")
+    if assets:
+        published = {}
+        for os_name, asset in sorted(assets.items()):
+            try:
+                published[os_name] = publish(asset, f"{entry['name']}-{os_name}", args)
+            except Rejected as e:
+                # *Which* distributable failed is an author's first question once an entry publishes
+                # several, so name it where the validator names it — under `assets.<os>`.
+                raise Rejected(f"assets.{os_name}: {e}")
+        entry["assets"] = published
+    else:
+        entry.update(publish(manifest, entry["name"], args))
 
     first_seen = added_at(path)
     if first_seen:
@@ -261,7 +302,12 @@ def main() -> int:
             rejections.append(f"{path}: {e}")
 
     lines = [f"## Catalog: {len(entries)} of {len(manifests)} manifests"]
-    lines += [f"- ok: `{e['name']}`" + ("" if "signature" in e else " (unsigned)") for e in entries]
+    lines += [
+        f"- ok: `{e['name']}`"
+        + (f" ({', '.join(e['assets'])})" if "assets" in e else "")
+        + ("" if is_signed(e) else " (unsigned)")
+        for e in entries
+    ]
     lines += [f"- **rejected** {r}" for r in rejections]
     report(lines)
 

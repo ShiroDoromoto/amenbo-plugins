@@ -22,8 +22,31 @@ manifest may omit them.
 | `repo` | string | Source repository as `owner/name`. A detail view reads stars and README from it, lazily. |
 | `os` | list | Operating systems the plugin runs on: any of `macos`, `windows`, `linux`. Must be non-empty. |
 | `category` | string | A label for filtering (e.g. `workflow`). A free label — the catalog curates the vocabulary. |
-| `url` | string | Where the plugin asset is fetched from on install. |
+
+…plus **the distributable**, in one of the two forms below.
+
+### The distributable: one for everything, or one per OS
+
+A plugin that is a single file everywhere — a script — publishes one asset with `url` and `checksum`:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `url` | string | Where the plugin asset is fetched from on install. Must be `https://`. |
 | `checksum` | string | The asset's integrity digest, e.g. `sha256:…`, verified on download against what `url` served. A third-party plugin additionally requires a minisign signature at install time. |
+
+A plugin built per platform — a native binary — cannot: three OSes are three different files, and the name
+is the identity, so it cannot be split into three listings either. It publishes **one asset per OS**
+instead, under `assets`:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `assets` | map | One `{ url, checksum }` per OS, keyed exactly as `os` spells them. Each entry means the same as the `url` / `checksum` above, for the bytes served on that OS. |
+
+The keys of `assets` and the entries of `os` must answer for the same platforms — no OS claimed with
+nothing to serve there, and nothing served for an OS the plugin does not claim.
+
+Write **one** of the two. Where a manifest has both, `assets` is what answers, on the client and here; the
+single-`url` form stays valid and is not deprecated.
 
 ### Optional
 
@@ -39,7 +62,8 @@ older one.
 
 ## Example
 
-A complete example — copy it, then replace every value with your plugin's:
+A complete example — copy it, then replace every value with your plugin's. This one is a native plugin,
+so it publishes one asset per OS:
 
 ```yaml
 # plugins/worktree.yaml
@@ -51,13 +75,26 @@ os:
   - macos
   - linux
 category: workflow
-url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1.tar.gz
-checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+assets:
+  macos:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-macos.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  linux:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
 # official: true   # set by catalog curation, not by submitters
 ```
 
-> The `url` and `checksum` above are placeholders. Point `url` at a real release asset and set `checksum`
-> to that asset's real digest — the digest is verified on download, so a wrong one fails the install.
+A plugin that is one file on every OS it lists writes the single form in place of `assets`:
+
+```yaml
+url: https://github.com/you/your-plugin/releases/download/v1/your-plugin-v1.tar.gz
+checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+```
+
+> Every `url` and `checksum` above is a placeholder. Point each `url` at a real release asset and set its
+> `checksum` to that asset's real digest — the digest is verified on download, so a wrong one fails the
+> install.
 
 A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest.example.yaml).
 
@@ -65,7 +102,9 @@ A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest
 
 - [ ] The file is `plugins/<name>.yaml`, and `<name>` matches the manifest's `name`.
 - [ ] All required fields are present and `os` is non-empty.
-- [ ] `url` points at a real, downloadable release asset, and `checksum` is that asset's real digest.
+- [ ] You wrote **one** distributable form: either `url` + `checksum`, or `assets`.
+- [ ] Using `assets`: it has an entry for every OS in `os`, and no entry for an OS that is not in it.
+- [ ] Every `url` points at a real, downloadable release asset, and its `checksum` is that asset's real digest.
 - [ ] `repo` is the plugin's own `owner/name`, not this catalog.
 - [ ] You did **not** set `official: true` (unless you are the amenbo team).
 
@@ -83,24 +122,28 @@ It prints every problem it finds at once, and exits non-zero if there are any.
 
 Your pull request then goes through the catalog build itself, over the manifest you submitted, as a dry
 run: the file name must match the manifest's `name`, `official: true` is refused from anyone outside the
-amenbo team, and **your `url` is downloaded and hashed** — bytes that do not match your `checksum` fail
-the check, before the merge rather than after it. Already-listed entries are not re-fetched, so someone
-else's asset going offline never blocks your PR.
+amenbo team, and **every asset you publish is downloaded and hashed** — bytes that do not match the
+`checksum` beside them fail the check, before the merge rather than after it. With `assets`, that is once
+per OS, and the failure names which one (`assets.linux: …`). Already-listed entries are not re-fetched, so
+someone else's asset going offline never blocks your PR.
 
 **On the merge**, the catalog build ([`catalog.yml`](.github/workflows/catalog.yml)) runs all of that
 again over every listed manifest, and then does what only it can:
 
-- **signs your asset with the catalog key** and publishes the aggregated `catalog.json` to GitHub Pages,
-  where every amenbo picks it up;
+- **signs each of your assets with the catalog key** — one signature per set of bytes, stored beside the
+  `checksum` it belongs to — and publishes the aggregated `catalog.json` to GitHub Pages, where every
+  amenbo picks it up;
 - **drops** an entry whose checks now fail — a `url` that has rotted since it was merged, say — with the
   reason in the workflow summary, rather than holding the whole catalog back.
 
 You never handle a key — see [Signatures](README.md#signatures--what-a-merge-into-this-catalog-means) for
 why the catalog signs rather than the author.
 
-Two consequences worth knowing:
+Three consequences worth knowing:
 
 - **Changing the asset behind a released `url` breaks the listing.** The digest and the signature are over
   the exact bytes; publish a new asset at a new URL and open a PR updating `url` and `checksum`.
 - **A URL that stops resolving drops your entry** from the next catalog build. Everything else stays
   listed.
+- **An entry is all-or-nothing.** One OS's asset failing drops the whole listing, not that one OS — a
+  listing that claims an OS it cannot serve is exactly what amenbo refuses to install.

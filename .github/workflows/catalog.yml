@@ -2,8 +2,9 @@
 #
 # amenbo has no server: its plugin browser fetches ONE static file and does everything else locally. This
 # workflow is what makes that file. For every reviewed manifest it validates the manifest with amenbo's
-# own validator, downloads the asset and checks it against the declared digest, signs those exact bytes
-# with the catalog key, and publishes the aggregated `catalog.json` to GitHub Pages.
+# own validator, downloads each distributable it publishes — one for every OS, where the plugin is built
+# per platform — checks it against the declared digest, signs those exact bytes with the catalog key, and
+# publishes the aggregated `catalog.json` to GitHub Pages.
 #
 # It runs on `main` only — never on a pull request. Two reasons: the private key stays out of any run a
 # submitter can influence, and a signature that says "these bytes went through this catalog's review" is

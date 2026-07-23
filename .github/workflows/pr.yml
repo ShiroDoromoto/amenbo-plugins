@@ -8,7 +8,7 @@ name: PR
 # them — restate them here and the two drift, and the drift shows up as a manifest this repo accepted and
 # every client then refuses.
 #
-# The shape is checked over every listed manifest; the asset behind it only for the manifests this pull
+# The shape is checked over every listed manifest; the assets behind it only for the manifests this pull
 # request touches. Those two scopes differ on purpose. A rule tightened in amenbo should surface against
 # the entries already listed, and costs nothing to check. An asset is a third party's to keep alive, and
 # fetching all of them on every pull request would both grow without bound and let one rotted URL block
