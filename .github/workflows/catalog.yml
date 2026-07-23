@@ -7,8 +7,9 @@
 #
 # It runs on `main` only — never on a pull request. Two reasons: the private key stays out of any run a
 # submitter can influence, and a signature that says "these bytes went through this catalog's review" is
-# only true once the review has happened. The gate *before* the merge is `pr.yml`, which asks amenbo
-# whether the manifest is well-formed; this is the door after it.
+# only true once the review has happened. The gate *before* the merge is `pr.yml`, which runs this same
+# aggregation over the submitted manifests, strict and unsigned; what is left to this workflow is the
+# signature, and the sweep of every entry already listed.
 
 name: catalog
 

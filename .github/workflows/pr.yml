@@ -1,25 +1,32 @@
 name: PR
 
-# The gate on a listing pull request: is every manifest well-formed?
+# The gate on a listing pull request: is every manifest well-formed, and does the one being submitted
+# describe the bytes it points at?
 #
 # Whether a manifest is well-formed is amenbo's judgment, not this repository's. The rules are the ones
 # its install door enforces, so this runs amenbo's real validator rather than a second implementation of
 # them — restate them here and the two drift, and the drift shows up as a manifest this repo accepted and
 # every client then refuses.
 #
-# What this door does NOT do is touch the network: it judges the manifest's shape, not the asset it
-# points at. Downloading each asset to check it against the declared digest is the catalog build's, one
-# workflow over, on `main`. That leaves a window worth knowing about: a digest that does not match the
-# bytes it names is caught after the merge, not before it.
+# The shape is checked over every listed manifest; the asset behind it only for the manifests this pull
+# request touches. Those two scopes differ on purpose. A rule tightened in amenbo should surface against
+# the entries already listed, and costs nothing to check. An asset is a third party's to keep alive, and
+# fetching all of them on every pull request would both grow without bound and let one rotted URL block
+# submitters who never touched it — that rot is the catalog build's to handle, by dropping the entry.
 #
 # The validator is built from amenbo's `main` rather than a published release, because no release carries
 # `plugin validate` yet. It also means a rule added there reaches this door on the very next pull request,
 # with nothing to update here.
+#
+# Nothing here needs a secret, which is what lets the asset check run on a pull request from a fork at
+# all: downloading bytes and hashing them is unprivileged. Signing those bytes is not, and stays on
+# `main`, one workflow over.
 
 on:
   pull_request:
     paths:
       - 'plugins/**'
+      - 'scripts/**'
       - '.github/workflows/pr.yml'
   workflow_dispatch:
 
@@ -36,6 +43,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The full history: naming the manifests this pull request touched is a diff against its base,
+          # and the shallow checkout a pull request gets by default cannot reach that far back.
+          fetch-depth: 0
 
       - name: Check out amenbo (for its manifest validator)
         uses: actions/checkout@v7
@@ -79,3 +90,39 @@ jobs:
             exit 1
           fi
           echo "All ${#manifests[@]} manifest(s) are valid."
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - run: pip install pyyaml
+
+      # The catalog build's own aggregator, run over the submitted manifests only and made fatal with
+      # `--strict`: whatever it would reject after the merge is rejected here instead. Reusing it rather
+      # than curling and hashing in-line is the same argument as the validator above — a second
+      # implementation of "does this asset match its digest" is a second thing to keep in step.
+      #
+      # No signing key is passed, so the entries it builds are unsigned and the catalog it writes is
+      # thrown away with the runner. What survives the step is its verdict.
+      - name: Fetch the submitted assets and check them against their digests
+        env:
+          AMENBO_BIN: ${{ github.workspace }}/.amenbo-src/target/debug/amenbo
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          if [ -n "${BASE_SHA:-}" ]; then
+            # Excluding deletions: a manifest on its way out of the catalog has no asset left to fetch.
+            mapfile -t submitted < <(git diff --name-only --diff-filter=d "${BASE_SHA:-}" HEAD -- 'plugins/*.yaml')
+          else
+            # A manual run has no pull request to diff against, so it sweeps the whole catalog — which is
+            # exactly what someone reaching for the button wants to know.
+            submitted=(plugins/*.yaml)
+          fi
+          if [ ${#submitted[@]} -eq 0 ]; then
+            echo "This pull request touches no manifest — no asset to fetch."
+            exit 0
+          fi
+          python3 scripts/aggregate.py --strict \
+            --out "${RUNNER_TEMP}/catalog-dry-run.json" \
+            "${submitted[@]}"

@@ -21,6 +21,11 @@ review". That is the whole trust root, so it is produced here and nowhere else â
 Entries that fail are **dropped** with a reason: a rotted third-party URL should stop that one plugin
 from being listed, not stop the catalog from being published. `--strict` turns any rejection into a
 failed run instead, which is what a dry run before merging wants.
+
+Naming manifests on the command line aggregates just those, instead of everything under `--plugins-dir`.
+That is the other half of the dry run: the pull-request gate fetches the assets of the manifests *that
+pull request touches*, and leaves the already-listed ones alone â€” their URLs are not the submitter's to
+keep alive, and under `--strict` one rotted third-party asset would otherwise block every unrelated PR.
 """
 
 from __future__ import annotations
@@ -238,6 +243,7 @@ def main() -> int:
     parser.add_argument("--sign-key", type=Path, help="the catalog signing key; without it, entries are unsigned")
     parser.add_argument("--public-key", type=Path, default=Path("catalog-key.pub"), help="the public half, to verify each signature")
     parser.add_argument("--strict", action="store_true", help="fail the run on any rejected manifest, rather than dropping it (a dry run before merging)")
+    parser.add_argument("manifests", nargs="*", type=Path, help="the manifests to aggregate; default: every *.yaml under --plugins-dir")
     args = parser.parse_args()
 
     args.sign_password = os.environ.get("CATALOG_SIGNING_PRIVATE_KEY_PASSWORD", "")
@@ -245,7 +251,7 @@ def main() -> int:
         print(f"error: signing key not found: {args.sign_key}", file=sys.stderr)
         return 1
 
-    manifests = sorted(args.plugins_dir.glob("*.yaml"))
+    manifests = sorted(args.manifests) if args.manifests else sorted(args.plugins_dir.glob("*.yaml"))
     entries: list[dict] = []
     rejections: list[str] = []
     for path in manifests:

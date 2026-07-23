@@ -81,15 +81,19 @@ amenbo plugin validate plugins/<name>.yaml
 
 It prints every problem it finds at once, and exits non-zero if there are any.
 
-**On the merge**, the catalog build ([`catalog.yml`](.github/workflows/catalog.yml)) re-runs that
-validation and then does what only it can:
+Your pull request then goes through the catalog build itself, over the manifest you submitted, as a dry
+run: the file name must match the manifest's `name`, `official: true` is refused from anyone outside the
+amenbo team, and **your `url` is downloaded and hashed** — bytes that do not match your `checksum` fail
+the check, before the merge rather than after it. Already-listed entries are not re-fetched, so someone
+else's asset going offline never blocks your PR.
 
-- **checks the file name** matches the manifest's `name`;
-- **refuses `official: true`** from anyone outside the amenbo team;
-- **downloads your `url` and hashes it** — if the bytes do not match your `checksum`, the entry is dropped
-  with the reason in the workflow summary;
+**On the merge**, the catalog build ([`catalog.yml`](.github/workflows/catalog.yml)) runs all of that
+again over every listed manifest, and then does what only it can:
+
 - **signs your asset with the catalog key** and publishes the aggregated `catalog.json` to GitHub Pages,
-  where every amenbo picks it up.
+  where every amenbo picks it up;
+- **drops** an entry whose checks now fail — a `url` that has rotted since it was merged, say — with the
+  reason in the workflow summary, rather than holding the whole catalog back.
 
 You never handle a key — see [Signatures](README.md#signatures--what-a-merge-into-this-catalog-means) for
 why the catalog signs rather than the author.
