@@ -53,12 +53,25 @@ single-`url` form stays valid and is not deprecated.
 | Field | Type | Default | Meaning |
 |---|---|---|---|
 | `official` | bool | `false` | The official badge (author is the amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
+| `scope` | string | `project` | Which switch enables the plugin: `project` (each project answers for itself) or `machine` (one answer for the device). Declare `machine` only when a per-project answer would mean nothing for your plugin — a user is never shown both. |
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
 | `min_amenbo` | string | none | Minimum amenbo version the plugin needs, as semver — below it, amenbo warns or refuses to enable/run it. |
 | `config` | list | none | The plugin's configuration schema: a flat list of fields amenbo renders as a form and injects at run time. |
+| `events` | list | none | The events your plugin's hook fires on. Absent means it observes nothing — a command-only plugin. |
+
+An `events` entry is either the event's name, or an object narrowing where it fires:
+
+```yaml
+events:
+  - task.done                  # both faces, no reply — the notification default
+  - event: task.status_changed
+    faces: [cli]               # cli / gui; must be non-empty
+    reply: true                # relay the hook's output back to the caller; only with faces: [cli]
+```
 
 Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on an
-older one.
+older one. The catalog build says so out loud: a key it does not yet carry is named in the run summary, so
+a field amenbo grew cannot quietly vanish from the entry your plugin installs from.
 
 ## Example
 

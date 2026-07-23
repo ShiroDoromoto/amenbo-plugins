@@ -24,6 +24,11 @@ The signature is what an amenbo client verifies at install time against the cata
 with. It does not say "the author signed this"; it says "these exact bytes went through this catalog's
 review". That is the whole trust root, so it is produced here and nowhere else — authors never hold a key.
 
+An entry is not a summary of a manifest but **the manifest a client installs from**: amenbo reads it back
+and writes it down as the installed plugin's own `manifest.json`. A field this script does not copy is
+therefore a field the plugin loses, which is why the run reports every key a manifest declared and the
+entry does not carry, instead of dropping it in silence.
+
 Entries that fail are **dropped** with a reason: a rotted third-party URL should stop that one plugin
 from being listed, not stop the catalog from being published. `--strict` turns any rejection into a
 failed run instead, which is what a dry run before merging wants.
@@ -62,6 +67,11 @@ OFFICIAL_OWNERS = frozenset({"ShiroDoromoto"})
 #: than a pass-through: an entry stays small and predictable, and a manifest cannot inflate the one file
 #: every client downloads. A field amenbo adds later is added here too.
 #:
+#: **The catalog entry is the manifest a client installs from** — amenbo reads it back as one and writes
+#: it down as the plugin's `manifest.json`. So a field left out of this list is not merely absent from a
+#: browse view: it is absent from the installed plugin, and the plugin runs as if its author never
+#: declared it. That is why [drifted_fields] reports what a manifest declares and this list does not carry.
+#:
 #: The distributable — `url` / `checksum` / `assets` — is deliberately *not* here: it is not copied but
 #: rebuilt by [publish], which adds the signature only after fetching the bytes and checking their digest.
 ENTRY_FIELDS = (
@@ -72,10 +82,17 @@ ENTRY_FIELDS = (
     "os",
     "category",
     "official",
+    "scope",
     "payload_v",
     "min_amenbo",
     "config",
+    "events",
 )
+
+#: The manifest keys a catalog entry carries without copying them: the distributable, which [publish]
+#: rebuilds around a signature. Held apart from [ENTRY_FIELDS] so [drifted_fields] does not mistake them
+#: for something this catalog drops.
+REBUILT_FIELDS = frozenset({"url", "checksum", "assets"})
 
 #: The largest asset this catalog will fetch to hash and sign.
 MAX_ASSET_BYTES = 256 * 1024 * 1024
@@ -227,8 +244,29 @@ def is_signed(entry: dict) -> bool:
     return "signature" in entry
 
 
-def build_entry(path: Path, args: argparse.Namespace) -> dict:
-    """Run one manifest through every check and return the catalog entry, or raise [Rejected]."""
+def drifted_fields(manifest: dict) -> list[str]:
+    """The manifest's keys this catalog neither copies nor rebuilds — a field amenbo grew and the
+    aggregator has not caught up with.
+
+    Silence is the failure mode this exists to break. A dropped field costs nothing at build time and
+    everything at run time: the plugin installs from an entry that no longer says what its author
+    declared. Reported rather than rejected, because ignoring a key it does not know is exactly how a
+    manifest written for a newer amenbo stays installable on an older one — the answer is to widen
+    [ENTRY_FIELDS], not to turn the submitter away.
+
+    It fires only on a manifest that actually declares the field, which is also the only moment the drift
+    can do harm: a field amenbo supports and nobody uses drops nothing.
+    """
+    return sorted(set(manifest) - set(ENTRY_FIELDS) - REBUILT_FIELDS)
+
+
+def build_entry(path: Path, args: argparse.Namespace) -> tuple[dict, list[str]]:
+    """Run one manifest through every check and return the catalog entry alongside the fields it declared
+    that this catalog does not carry ([drifted_fields]), or raise [Rejected].
+
+    The drift travels beside the entry rather than inside it: it is something the *build* has to say, and
+    an entry carries only what a client reads.
+    """
     try:
         manifest = yaml.safe_load(path.read_text())
     except yaml.YAMLError as e:
@@ -263,7 +301,7 @@ def build_entry(path: Path, args: argparse.Namespace) -> dict:
     first_seen = added_at(path)
     if first_seen:
         entry["added_at"] = first_seen
-    return entry
+    return entry, drifted_fields(manifest)
 
 
 def report(lines: list[str]) -> None:
@@ -295,11 +333,16 @@ def main() -> int:
     manifests = sorted(args.manifests) if args.manifests else sorted(args.plugins_dir.glob("*.yaml"))
     entries: list[dict] = []
     rejections: list[str] = []
+    drifts: list[str] = []
     for path in manifests:
         try:
-            entries.append(build_entry(path, args))
+            entry, drifted = build_entry(path, args)
         except Rejected as e:
             rejections.append(f"{path}: {e}")
+            continue
+        entries.append(entry)
+        if drifted:
+            drifts.append(f"`{entry['name']}` declares {', '.join(f'`{f}`' for f in drifted)}")
 
     lines = [f"## Catalog: {len(entries)} of {len(manifests)} manifests"]
     lines += [
@@ -309,6 +352,13 @@ def main() -> int:
         for e in entries
     ]
     lines += [f"- **rejected** {r}" for r in rejections]
+    if drifts:
+        lines.append("")
+        lines.append(
+            "**Fields this catalog dropped** — the entry a client installs from is missing them, so add "
+            "them to `ENTRY_FIELDS` in `scripts/aggregate.py`:"
+        )
+        lines += [f"- {d}" for d in drifts]
     report(lines)
 
     if rejections and args.strict:
