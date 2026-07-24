@@ -7,6 +7,11 @@ Each plugin is one manifest under [`plugins/`](plugins/): a small YAML file desc
 enough to **list it, judge it, and fetch it** — without any central server. Add yours by opening a pull
 request (see **[CONTRIBUTING.md](CONTRIBUTING.md)**).
 
+This repository is about **being listed**. Writing the plugin itself — the JSON amenbo hands it, what its
+output means, the manifest fields, enabling, signatures — is the contract on amenbo's own site:
+**[Writing a plugin](https://amenbo.work/en/plugins/)** ([日本語](https://amenbo.work/plugins/)). That
+page is the canon; what follows here is the catalog's side of it.
+
 ## How the catalog works
 
 amenbo has no server. Discovery is served entirely from static files and from GitHub's own numbers:

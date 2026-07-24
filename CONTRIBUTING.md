@@ -7,6 +7,12 @@ Listing is review, not endorsement: a merged PR means the manifest is well-forme
 reasonable — it does **not** make the plugin *official* (see the trust tiers in the
 [README](README.md#trust-tiers--official-is-not-the-same-as-listed)).
 
+Have something to list already? Read on. Still building it? The contract your executable has to hold to
+is **[Writing a plugin](https://amenbo.work/en/plugins/)** ([日本語](https://amenbo.work/plugins/)) —
+what arrives on stdin, what amenbo does with your output, and what a manifest must hold. Run
+`amenbo plugin validate <manifest>` before you open the pull request: this repository's PR workflow
+runs that very command on what you submit.
+
 ## The manifest
 
 A manifest is a small YAML file. Required fields must be present; optional fields have safe defaults, so a
