@@ -95,8 +95,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - run: pip install pyyaml
-
       # The catalog build's own aggregator, run over the submitted manifests only and made fatal with
       # `--strict`: whatever it would reject after the merge is rejected here instead. Reusing it rather
       # than curling and hashing in-line is the same argument as the validator above — a second

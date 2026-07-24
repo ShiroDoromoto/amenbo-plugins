@@ -70,8 +70,9 @@ events:
 ```
 
 Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on an
-older one. The catalog build says so out loud: a key it does not yet carry is named in the run summary, so
-a field amenbo grew cannot quietly vanish from the entry your plugin installs from.
+older one. The catalog entry is built from the manifest amenbo itself reads, so every field amenbo knows
+about is carried into the entry your plugin installs from — none is quietly dropped for the aggregator to
+catch up with later.
 
 ## Example
 
