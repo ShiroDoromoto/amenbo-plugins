@@ -25,12 +25,19 @@ The signature is what an amenbo client verifies at install time against the cata
 with. It does not say "the author signed this"; it says "these exact bytes went through this catalog's
 review". That is the whole trust root, so it is produced here and nowhere else — authors never hold a key.
 
-An entry is not a summary of a manifest but **the manifest a client installs from**: amenbo reads it back
-and writes it down as the installed plugin's own `manifest.json`. So the entry is built from amenbo's own
-reading of the manifest — `plugin validate --json` hands the whole shape back — rather than a list of
-fields this script picks out. A field amenbo grows is carried without a change here, instead of being
-dropped from every install until someone notices; the one thing this script still names by hand is the
-distributable, which it does not copy but rebuilds around a signature (see [DISTRIBUTABLE_KEYS]).
+The catalog is published as **two kinds of document**. `catalog.json` holds one small entry per plugin —
+what a browse view draws — and everyone fetches it whole, once. `plugins/<name>.json` holds what an install
+needs, signature and digests included, and is fetched for the one plugin someone opened or is installing.
+Which half a field belongs in is amenbo's answer, not this script's: `plugin validate --json` hands back the
+manifest already split into `entry` and `detail`, and this script publishes them. A field amenbo grows is
+carried without a change here, instead of being dropped from every install until someone notices; the one
+thing this script still names by hand is the distributable, which it does not copy but rebuilds around a
+signature (see [DISTRIBUTABLE_KEYS]).
+
+Each entry also carries `detail_sum`, the digest of the detail document exactly as published. It is what
+lets a client notice a plugin has a different build from the one list fetch it already makes, now that the
+checksums themselves are a document away. It is computed here, over the bytes written, so it cannot be
+declared wrong by an author or drift from the file it names.
 
 Entries that fail are **dropped** with a reason: a rotted third-party URL should stop that one plugin
 from being listed, not stop the catalog from being published. `--strict` turns any rejection into a
@@ -53,6 +60,7 @@ import sys
 import tempfile
 import urllib.error
 import urllib.request
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -64,14 +72,14 @@ CATALOG_V = 1
 #: author is the team; being listed here at all is a separate, weaker thing (review, not endorsement).
 OFFICIAL_OWNERS = frozenset({"ShiroDoromoto"})
 
-#: The manifest keys a catalog entry does not copy but **rebuilds**: the distributable. [publish] fetches
+#: The keys a detail document does not carry through but **rebuilds**: the distributable. [publish] fetches
 #: the bytes, checks them against the declared digest, and signs them, so `url` / `checksum` / `assets`
 #: are replaced with the catalog's own copy carrying the signature over the exact bytes served.
 #:
 #: This is the *only* schema this script still holds by name. Every other field a manifest declares rides
-#: through from amenbo's own reading of it (see [build_entry]) — the catalog keeps no whitelist of
-#: descriptive fields to fall out of step with amenbo, which is exactly how `scope` and `events` were once
-#: dropped from every install.
+#: through from amenbo's own reading of it (see [build_documents]) — the catalog keeps no whitelist of
+#: fields, and no opinion about which document each belongs in, to fall out of step with amenbo. A
+#: whitelist here is what drops a field amenbo adds from every install until somebody notices.
 DISTRIBUTABLE_KEYS = frozenset({"url", "checksum", "assets"})
 
 #: The largest asset this catalog will fetch to hash and sign.
@@ -95,15 +103,15 @@ def check_file_name(path: Path, manifest: dict) -> None:
         raise Rejected(f"file name does not match the manifest name ({path.name} vs name: {declared!r})")
 
 
-def check_manifest(amenbo: str, path: Path) -> dict:
-    """Run amenbo's validator over the manifest and, on success, return the manifest it read — the whole
-    shape, which becomes the catalog entry's base. Every problem it reports is re-raised instead.
+def check_manifest(amenbo: str, path: Path) -> tuple[dict, dict]:
+    """Run amenbo's validator over the manifest and, on success, return the two documents it split the
+    manifest into: `(entry, detail)`. Every problem it reports is re-raised instead.
 
-    Building the entry from amenbo's own reading is what lets this script hold no list of descriptive
-    fields to copy: a field amenbo grows rides through untouched, and one amenbo does not know is not a
-    field at all (its deserializer ignores unknown keys, the same forward-compatibility a client relies on).
-    An amenbo too old to return the body is refused rather than guessed around — an entry built from a guess
-    is the silent drop this change exists to end.
+    Publishing amenbo's own reading is what lets this script hold no list of fields to copy, and no idea of
+    which half each belongs in: a field amenbo grows rides through untouched, and one amenbo does not know
+    is not a field at all (its deserializer ignores unknown keys, the same forward-compatibility a client
+    relies on). An amenbo too old to split the manifest is refused rather than guessed around — a document
+    built from a guess is the silent drop this arrangement exists to end.
     """
     proc = subprocess.run(
         [amenbo, "--json", "plugin", "validate", str(path)],
@@ -121,13 +129,13 @@ def check_manifest(amenbo: str, path: Path) -> dict:
             f"{p.get('location', '?')}: {p.get('message', '?')}" for p in report.get("problems", [])
         )
         raise Rejected(f"invalid manifest — {problems}")
-    manifest = report.get("manifest")
-    if not isinstance(manifest, dict):
+    entry, detail = report.get("entry"), report.get("detail")
+    if not isinstance(entry, dict) or not isinstance(detail, dict):
         raise Rejected(
-            "amenbo plugin validate reported ok but returned no manifest body — the amenbo CLI is too old "
-            "(it needs the build that returns the read manifest)"
+            "amenbo plugin validate reported ok but returned no entry/detail — the amenbo CLI is too old "
+            "(it needs the build that splits a manifest into the two documents the catalog serves)"
         )
-    return manifest
+    return entry, detail
 
 
 def check_official(manifest: dict) -> None:
@@ -235,50 +243,71 @@ def publish(distributable: dict, label: str, args: argparse.Namespace) -> dict:
     return published
 
 
-def is_signed(entry: dict) -> bool:
-    """Whether every distributable in a built entry carries a signature — what a run without a key lacks."""
-    assets = entry.get("assets")
+def is_signed(detail: dict) -> bool:
+    """Whether every distributable in a built detail carries a signature — what a run without a key lacks."""
+    assets = detail.get("assets")
     if assets:
         return all("signature" in asset for asset in assets.values())
-    return "signature" in entry
+    return "signature" in detail
 
 
-def build_entry(path: Path, args: argparse.Namespace) -> dict:
-    """Run one manifest through every check and return the catalog entry, or raise [Rejected].
+def encode(document: dict) -> str:
+    """Serialize one published document. Both files go through here, so `detail_sum` is a digest of exactly
+    the bytes the detail file is written with — sorted keys and all — rather than of a second rendering that
+    could differ by a space."""
+    return json.dumps(document, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
 
-    The entry *is* the manifest amenbo read, minus the distributable — [publish] rebuilds `url` / `checksum`
-    / `assets` around a signature over the exact bytes served, so those are the only keys this script picks
-    out by name ([DISTRIBUTABLE_KEYS]). Everything else a manifest declares rides through untouched, which
-    is the point: the catalog holds no second copy of amenbo's schema to fall out of step with it.
+
+@dataclass
+class Published:
+    """One plugin, as the catalog publishes it: its list entry, and the detail document the entry's
+    `detail_sum` names — carried together with the exact text that document is written as."""
+
+    entry: dict
+    detail: dict
+    detail_text: str
+
+
+def build_documents(path: Path, args: argparse.Namespace) -> Published:
+    """Run one manifest through every check and return what the catalog publishes for it, or raise
+    [Rejected].
+
+    The two documents are amenbo's own split of the manifest, with one thing rebuilt: [publish] replaces
+    the detail's `url` / `checksum` / `assets` with the catalog's copy, signed over the exact bytes served
+    ([DISTRIBUTABLE_KEYS]). Everything else rides through untouched, which is the point — the catalog holds
+    no second copy of amenbo's schema, and no second opinion about which document a field belongs in.
     """
-    manifest = check_manifest(args.amenbo, path)
-    check_file_name(path, manifest)
-    check_official(manifest)
-
-    entry = {key: value for key, value in manifest.items() if key not in DISTRIBUTABLE_KEYS}
+    entry, manifest_detail = check_manifest(args.amenbo, path)
+    check_file_name(path, entry)
+    check_official(entry)
     entry.setdefault("official", False)
 
+    detail = {key: value for key, value in manifest_detail.items() if key not in DISTRIBUTABLE_KEYS}
+
     # `assets` alone decides which of the two distributable forms is in play — the same rule the client's
-    # install door reads, so an entry can never mean one thing here and another there. The validator above
+    # install door reads, so a detail can never mean one thing here and another there. The validator above
     # has already established that whichever form this manifest uses is complete.
-    assets = manifest.get("assets")
+    assets = manifest_detail.get("assets")
     if assets:
         published = {}
         for platform, asset in sorted(assets.items()):
             try:
                 published[platform] = publish(asset, f"{entry['name']}-{platform}", args)
             except Rejected as e:
-                # *Which* distributable failed is an author's first question once an entry publishes
+                # *Which* distributable failed is an author's first question once a plugin publishes
                 # several, so name it where the validator names it — under `assets.<platform>`.
                 raise Rejected(f"assets.{platform}: {e}")
-        entry["assets"] = published
+        detail["assets"] = published
     else:
-        entry.update(publish(manifest, entry["name"], args))
+        detail.update(publish(manifest_detail, entry["name"], args))
 
-    first_seen = added_at(path)
-    if first_seen:
-        entry["added_at"] = first_seen
-    return entry
+    # The digest is taken over the text that will be written, and written into the entry that points at it,
+    # so the pair is consistent by construction. amenbo compares this value and nothing else to notice a
+    # plugin whose install information has moved.
+    detail_text = encode(detail)
+    entry["detail_sum"] = "sha256:" + hashlib.sha256(detail_text.encode("utf-8")).hexdigest()
+    entry["added_at"] = added_at(path)
+    return Published(entry=entry, detail=detail, detail_text=detail_text)
 
 
 def report(lines: list[str]) -> None:
@@ -294,7 +323,8 @@ def report(lines: list[str]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plugins-dir", type=Path, default=Path("plugins"), help="where the manifests live")
-    parser.add_argument("--out", type=Path, default=Path("catalog.json"), help="the catalog to write")
+    parser.add_argument("--out", type=Path, default=Path("_site/catalog.json"), help="the catalog to write")
+    parser.add_argument("--detail-dir", type=Path, help="where to write plugins/<name>.json; default: a plugins/ directory beside --out")
     parser.add_argument("--amenbo", default=os.environ.get("AMENBO_BIN", "amenbo"), help="the amenbo CLI to validate with")
     parser.add_argument("--sign-key", type=Path, help="the catalog signing key; without it, entries are unsigned")
     parser.add_argument("--public-key", type=Path, default=Path("catalog-key.pub"), help="the public half, to verify each signature")
@@ -307,23 +337,37 @@ def main() -> int:
         print(f"error: signing key not found: {args.sign_key}", file=sys.stderr)
         return 1
 
+    # The detail documents sit under the catalog, so a client resolves one by name against the URL it
+    # already fetched the list from. Writing them into the reviewed manifests instead would put derived
+    # files in the one directory that is the source of truth, so that shape is refused rather than tidied
+    # up afterwards.
+    if args.detail_dir is None:
+        args.detail_dir = args.out.parent / "plugins"
+    if args.detail_dir.resolve() == args.plugins_dir.resolve():
+        print(
+            f"error: --detail-dir would write the published documents into the reviewed manifests "
+            f"({args.detail_dir}) — point --out at a build directory, or pass --detail-dir",
+            file=sys.stderr,
+        )
+        return 1
+
     manifests = sorted(args.manifests) if args.manifests else sorted(args.plugins_dir.glob("*.yaml"))
-    entries: list[dict] = []
+    published: list[Published] = []
     rejections: list[str] = []
     for path in manifests:
         try:
-            entry = build_entry(path, args)
+            documents = build_documents(path, args)
         except Rejected as e:
             rejections.append(f"{path}: {e}")
             continue
-        entries.append(entry)
+        published.append(documents)
 
-    lines = [f"## Catalog: {len(entries)} of {len(manifests)} manifests"]
+    lines = [f"## Catalog: {len(published)} of {len(manifests)} manifests"]
     lines += [
-        f"- ok: `{e['name']}`"
-        + (f" ({', '.join(e['assets'])})" if "assets" in e else "")
-        + ("" if is_signed(e) else " (unsigned)")
-        for e in entries
+        f"- ok: `{p.entry['name']}`"
+        + (f" ({', '.join(p.detail['assets'])})" if "assets" in p.detail else "")
+        + ("" if is_signed(p.detail) else " (unsigned)")
+        for p in published
     ]
     lines += [f"- **rejected** {r}" for r in rejections]
     report(lines)
@@ -333,17 +377,25 @@ def main() -> int:
         return 1
     # Publishing a catalog where nothing survived would replace a good catalog with an empty one. That is
     # a systemic failure (the network, the validator, the key), not a plugin going away.
-    if manifests and not entries:
+    if manifests and not published:
         print("error: every manifest was rejected — refusing to publish an empty catalog", file=sys.stderr)
         return 1
+
+    # The details go down first: an entry naming a detail_sum for a document that is not there yet is the
+    # one ordering a client can actually catch out. Nothing is deleted here — a run over some of the
+    # manifests (the pull-request gate) is not evidence that the rest have gone away.
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.detail_dir.mkdir(parents=True, exist_ok=True)
+    for p in published:
+        (args.detail_dir / f"{p.entry['name']}.json").write_text(p.detail_text)
 
     catalog = {
         "catalog_v": CATALOG_V,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "plugins": entries,
+        "plugins": [p.entry for p in published],
     }
-    args.out.write_text(json.dumps(catalog, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
-    print(f"wrote {args.out}")
+    args.out.write_text(encode(catalog))
+    print(f"wrote {args.out} and {len(published)} detail document(s) under {args.detail_dir}")
     return 0
 
 

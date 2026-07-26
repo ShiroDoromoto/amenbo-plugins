@@ -167,8 +167,9 @@ re-fetched, so someone else's asset going offline never blocks your PR.
 again over every listed manifest, and then does what only it can:
 
 - **signs each of your assets with the catalog key** — one signature per set of bytes, stored beside the
-  `checksum` it belongs to — and publishes the aggregated `catalog.json` to GitHub Pages, where every
-  amenbo picks it up;
+  `checksum` it belongs to — and publishes to GitHub Pages, where every amenbo picks it up: your plugin's
+  line in the aggregated `catalog.json`, and the `plugins/<name>.json` an install reads the signature and
+  digests from;
 - **drops** an entry whose checks now fail — a `url` that has rotted since it was merged, say — with the
   reason in the workflow summary, rather than holding the whole catalog back.
 

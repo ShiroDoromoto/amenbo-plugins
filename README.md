@@ -17,23 +17,31 @@ page is the canon; what follows here is the catalog's side of it.
 amenbo has no server. Discovery is served entirely from static files and from GitHub's own numbers:
 
 - The reviewed manifests in `plugins/` are aggregated into a single `catalog.json` and served statically.
+  It holds one small entry per plugin: what a list has to draw, and nothing an install needs.
 - amenbo's in-app plugin browser fetches that **one file once**, then filters, searches, sorts, and pages
   it **locally** — it never queries GitHub once per plugin.
-- Heavy signals (stars, download counts, README) are fetched **lazily**, only for the one plugin a user
-  opens — never for the whole catalog.
+- What an install needs — the signature, the digests, the settings and events a plugin declares — is a
+  second document per plugin, `plugins/<name>.json`, fetched **only** for the one plugin being opened or
+  installed. A signature is the largest thing in a listing and the one thing nobody browsing needs.
+- Heavy signals (stars, download counts, README) are fetched **lazily** the same way, only for the one
+  plugin a user opens — never for the whole catalog.
 
 This keeps browsing fast and offline-friendly no matter how many plugins the catalog holds: what grows is
-the number of manifests, and the client already holds them all after one fetch.
+the number of manifests, and the client already holds every listing after one fetch.
 
-The aggregated catalog is served at:
+The catalog is served at:
 
 ```
 https://shirodoromoto.github.io/amenbo-plugins/catalog.json
+https://shirodoromoto.github.io/amenbo-plugins/plugins/<name>.json
 ```
 
-It is rebuilt by [`.github/workflows/catalog.yml`](.github/workflows/catalog.yml) on every push to `main`
-and published to GitHub Pages — no server, just a static file. Nothing is committed back to the repository:
-`plugins/` stays the reviewed truth, and `catalog.json` is derived from it every time.
+Each entry carries a `detail_sum` — the digest of its detail document — so a client can tell that a plugin
+has a different build from the list fetch it already makes, without opening every detail to find out.
+
+Both are rebuilt by [`.github/workflows/catalog.yml`](.github/workflows/catalog.yml) on every push to
+`main` and published to GitHub Pages — no server, just static files. Nothing is committed back to the
+repository: `plugins/` stays the reviewed truth, and everything served is derived from it every time.
 
 ## Signatures — what a merge into this catalog means
 

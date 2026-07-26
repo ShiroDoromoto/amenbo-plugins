@@ -100,7 +100,7 @@ jobs:
       # than curling and hashing in-line is the same argument as the validator above — a second
       # implementation of "does this asset match its digest" is a second thing to keep in step.
       #
-      # No signing key is passed, so the entries it builds are unsigned and the catalog it writes is
+      # No signing key is passed, so the documents it builds are unsigned and everything it writes is
       # thrown away with the runner. What survives the step is its verdict.
       - name: Fetch the submitted assets and check them against their digests
         env:

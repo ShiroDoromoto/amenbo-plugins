@@ -4,7 +4,8 @@
 # workflow is what makes that file. For every reviewed manifest it validates the manifest with amenbo's
 # own validator, downloads each distributable it publishes — one for every OS, where the plugin is built
 # per platform — checks it against the declared digest, signs those exact bytes with the catalog key, and
-# publishes the aggregated `catalog.json` to GitHub Pages.
+# publishes to GitHub Pages: the aggregated `catalog.json` everyone fetches, and a `plugins/<name>.json`
+# per plugin holding what an install needs, which is fetched only for the plugin being opened or installed.
 #
 # It runs on `main` only — never on a pull request. Two reasons: the private key stays out of any run a
 # submitter can influence, and a signature that says "these bytes went through this catalog's review" is
@@ -100,6 +101,8 @@ jobs:
           # Not --strict: a plugin whose asset URL has rotted drops out of the catalog with a reason in
           # the summary, rather than holding the whole catalog back. The gate that keeps a malformed
           # manifest from ever reaching main is the pull-request check, one workflow over.
+          # The detail documents land in `_site/plugins/` beside the catalog, which is how a client
+          # resolves one by name against the URL it already fetched the listing from.
           python3 scripts/aggregate.py --out _site/catalog.json --sign-key "$RUNNER_TEMP/catalog.key"
 
       - name: Upload the catalog as the Pages artifact
@@ -108,6 +111,7 @@ jobs:
           path: _site
 
   # Serve it: https://shirodoromoto.github.io/amenbo-plugins/catalog.json
+  #       and: https://shirodoromoto.github.io/amenbo-plugins/plugins/<name>.json
   publish:
     needs: build
     runs-on: ubuntu-latest
