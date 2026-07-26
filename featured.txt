@@ -1,0 +1,12 @@
+# The plugins this catalog recommends — the "featured" list amenbo's plugin browser leads with.
+#
+# One plugin name per line, matching a `plugins/<name>.yaml`. Blank lines and `#` comments are ignored,
+# and the order carries no meaning: this says *which* plugins are recommended, not how they rank.
+#
+# It lives here rather than in the manifests on purpose. `official` can sit in a manifest because it is a
+# fact about who wrote the plugin, checkable from the repository it points at. Being recommended is a
+# judgement about the plugin, so there is nothing in a submission to check — and a submitter's pull
+# request should not be able to express it at all. Editing this file is the catalog's own act, and shows
+# up as its own diff.
+#
+# Nothing is recommended yet.

@@ -73,6 +73,22 @@ amenbo anywhere, and amenbo vouches for nothing you point it at.
 - The **free** tier needs nothing from this repository: point amenbo at any manifest or catalog URL, or a
   local file. amenbo takes no position on those.
 
+### Featured — a third axis, and not a tier
+
+amenbo's plugin browser leads with a **featured** view: the plugins this catalog recommends. That is a
+separate question from both of the above — a listed third-party plugin can be featured, and an official
+one need not be.
+
+It is curated by hand in [`featured.txt`](featured.txt), one plugin name per line, and nowhere else. There
+is no manifest field for it and a submission cannot ask for it: `official` can sit in a manifest because
+it is a fact about authorship that the review can check, while being recommended is a judgement about the
+plugin, which nothing in a pull request could establish. Changing what is featured is this catalog's own
+act, and arrives as its own diff.
+
+The list is a set, not a ranking — it says which plugins are recommended, and leaves their order to the
+client. amenbo also ignores the flag on any catalog but this one, so a third-party catalog cannot
+recommend its own entries into that view.
+
 ## Getting listed
 
 Open a PR that adds a single `plugins/<name>.yaml`. The full field reference, an example, and the review

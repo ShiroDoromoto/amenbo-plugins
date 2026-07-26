@@ -4,7 +4,7 @@ To list a plugin, open a pull request that adds **one** file: `plugins/<name>.ya
 plugin, one file named for the plugin.
 
 Listing is review, not endorsement: a merged PR means the manifest is well-formed and the plugin looked
-reasonable — it does **not** make the plugin *official* (see the trust tiers in the
+reasonable — it does **not** make the plugin *official*, nor *featured* (see the trust tiers in the
 [README](README.md#trust-tiers--official-is-not-the-same-as-listed)).
 
 Have something to list already? Read on. Still building it? The contract your executable has to hold to
@@ -86,6 +86,10 @@ events:
     faces: [cli]               # cli / gui; must be non-empty
     reply: true                # relay the hook's output back to the caller; only with faces: [cli]
 ```
+
+There is no `featured` field, and writing one does nothing: what the browser's featured view shows is
+curated in [`featured.txt`](featured.txt), which only this catalog edits. See
+[the README](README.md#featured--a-third-axis-and-not-a-tier) for why it is not a manifest field.
 
 Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on an
 older one. The catalog entry is built from the manifest amenbo itself reads, so every field amenbo knows

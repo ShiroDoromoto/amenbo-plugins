@@ -39,6 +39,14 @@ lets a client notice a plugin has a different build from the one list fetch it a
 checksums themselves are a document away. It is computed here, over the bytes written, so it cannot be
 declared wrong by an author or drift from the file it names.
 
+An entry is marked `featured` when the curation list (`--featured`, [read_featured]) names it. That list
+is the only place the recommendation exists: a manifest cannot carry it, because a manifest is written by
+the person asking to be recommended. `official` can afford to live in a manifest and be refused from the
+wrong owner — it is a fact about authorship, checkable from the repository. Being recommended is a
+judgement about the plugin, so no owner test can grant it and there is nothing in a submission to check.
+Keeping it in a separate file makes a submitter's pull request unable to express it at all, and makes a
+change to the curation a diff of its own.
+
 Entries that fail are **dropped** with a reason: a rotted third-party URL should stop that one plugin
 from being listed, not stop the catalog from being published. `--strict` turns any rejection into a
 failed run instead, which is what a dry run before merging wants.
@@ -207,6 +215,27 @@ def sign(data: bytes, label: str, key: Path, password: str, public_key: Path) ->
         return signature.read_text()
 
 
+def read_featured(path: Path) -> set[str]:
+    """The plugins this catalog recommends, one name per line — the hand-curated "featured" axis.
+
+    A flat list of names, not YAML: it has no structure to gain from one, and this script's only
+    dependency is the amenbo binary it validates with. Blank lines and `#` comments are ignored, and a
+    missing file simply means nothing is recommended yet.
+
+    The list is a set, not a ranking. It says *which* plugins are recommended and nothing about their
+    order among themselves, so the order of the lines here carries no meaning and a client is free to sort
+    the recommended ones however it likes.
+    """
+    if not path.exists():
+        return set()
+    names = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        name = line.split("#", 1)[0].strip()
+        if name:
+            names.add(name)
+    return names
+
+
 def added_at(path: Path) -> str | None:
     """When this manifest first landed in the catalog, from git history — the "new" axis of the browser.
 
@@ -307,6 +336,9 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
     detail_text = encode(detail)
     entry["detail_sum"] = "sha256:" + hashlib.sha256(detail_text.encode("utf-8")).hexdigest()
     entry["added_at"] = added_at(path)
+    # Written here and nowhere else: whatever the manifest said about being recommended (amenbo does not
+    # even read such a key) is replaced by what the curation list says.
+    entry["featured"] = entry["name"] in args.featured_names
     return Published(entry=entry, detail=detail, detail_text=detail_text)
 
 
@@ -328,11 +360,13 @@ def main() -> int:
     parser.add_argument("--amenbo", default=os.environ.get("AMENBO_BIN", "amenbo"), help="the amenbo CLI to validate with")
     parser.add_argument("--sign-key", type=Path, help="the catalog signing key; without it, entries are unsigned")
     parser.add_argument("--public-key", type=Path, default=Path("catalog-key.pub"), help="the public half, to verify each signature")
+    parser.add_argument("--featured", type=Path, default=Path("featured.txt"), help="the curation list: the plugins this catalog recommends, one name per line")
     parser.add_argument("--strict", action="store_true", help="fail the run on any rejected manifest, rather than dropping it (a dry run before merging)")
     parser.add_argument("manifests", nargs="*", type=Path, help="the manifests to aggregate; default: every *.yaml under --plugins-dir")
     args = parser.parse_args()
 
     args.sign_password = os.environ.get("CATALOG_SIGNING_PRIVATE_KEY_PASSWORD", "")
+    args.featured_names = read_featured(args.featured)
     if args.sign_key and not args.sign_key.exists():
         print(f"error: signing key not found: {args.sign_key}", file=sys.stderr)
         return 1
@@ -365,11 +399,18 @@ def main() -> int:
     lines = [f"## Catalog: {len(published)} of {len(manifests)} manifests"]
     lines += [
         f"- ok: `{p.entry['name']}`"
+        + (" featured" if p.entry["featured"] else "")
         + (f" ({', '.join(p.detail['assets'])})" if "assets" in p.detail else "")
         + ("" if is_signed(p.detail) else " (unsigned)")
         for p in published
     ]
     lines += [f"- **rejected** {r}" for r in rejections]
+    # A curated name that matches no manifest is a typo that would otherwise fail silently — the plugin
+    # simply never gets its badge. Only worth saying on a full run: the pull-request gate aggregates the
+    # manifests one PR touched, where every *other* recommended plugin is legitimately absent.
+    if not args.manifests:
+        stray = sorted(args.featured_names - {p.entry["name"] for p in published})
+        lines += [f"- **not listed, so not featured**: `{name}` (in {args.featured})" for name in stray]
     report(lines)
 
     if rejections and args.strict:
