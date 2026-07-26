@@ -31,7 +31,7 @@ manifest may omit them.
 
 …plus **the distributable**, in one of the two forms below.
 
-### The distributable: one for everything, or one per OS
+### The distributable: one for everything, or one per platform
 
 A plugin that is a single file everywhere — a script — publishes one asset with `url` and `checksum`:
 
@@ -41,15 +41,27 @@ A plugin that is a single file everywhere — a script — publishes one asset w
 | `checksum` | string | The asset's integrity digest, e.g. `sha256:…`, verified on download against what `url` served. A third-party plugin additionally requires a minisign signature at install time. |
 
 A plugin built per platform — a native binary — cannot: three OSes are three different files, and the name
-is the identity, so it cannot be split into three listings either. It publishes **one asset per OS**
+is the identity, so it cannot be split into three listings either. It publishes **one asset per platform**
 instead, under `assets`:
 
 | Field | Type | Meaning |
 |---|---|---|
-| `assets` | map | One `{ url, checksum }` per OS, keyed exactly as `os` spells them. Each entry means the same as the `url` / `checksum` above, for the bytes served on that OS. |
+| `assets` | map | One `{ url, checksum }` per platform. Each entry means the same as the `url` / `checksum` above, for the bytes served on that platform. |
 
-The keys of `assets` and the entries of `os` must answer for the same platforms — no OS claimed with
-nothing to serve there, and nothing served for an OS the plugin does not claim.
+A platform key takes one of two shapes:
+
+| Key | What it serves |
+|---|---|
+| `macos` | Every architecture of that OS — a universal binary, or a script. |
+| `macos-arm64` | That OS on that architecture alone. Architectures are spelled `arm64` and `x64`. |
+
+Two rules hold the keys and `os` together: **every OS in `os` is answered by at least one key**, and **no
+key names an OS that `os` does not**. Within an OS, mix the shapes as your builds require — one `macos`
+for every Mac beside a `linux-x64` and a `linux-arm64`.
+
+On install, amenbo resolves the machine it is running on **exactly first, then OS-wide**: it looks for
+`<os>-<arch>`, then for `<os>` alone. When neither is there it refuses at the door, so an `x64`-only build
+is never handed to someone on `arm64` to discover at run time.
 
 Write **one** of the two. Where a manifest has both, `assets` is what answers, on the client and here; the
 single-`url` form stays valid and is not deprecated.
@@ -83,7 +95,8 @@ catch up with later.
 ## Example
 
 A complete example — copy it, then replace every value with your plugin's. This one is a native plugin,
-so it publishes one asset per OS:
+so it publishes one asset per platform: one universal build for every Mac, and one per architecture on
+Linux.
 
 ```yaml
 # plugins/worktree.yaml
@@ -97,15 +110,18 @@ os:
 category: workflow
 assets:
   macos:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-macos.tar.gz
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-macos-universal.tar.gz
     checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
-  linux:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux.tar.gz
+  linux-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux-x64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  linux-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux-arm64.tar.gz
     checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
 # official: true   # set by catalog curation, not by submitters
 ```
 
-A plugin that is one file on every OS it lists writes the single form in place of `assets`:
+A plugin that is one file on every platform it lists writes the single form in place of `assets`:
 
 ```yaml
 url: https://github.com/you/your-plugin/releases/download/v1/your-plugin-v1.tar.gz
@@ -123,7 +139,7 @@ A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest
 - [ ] The file is `plugins/<name>.yaml`, and `<name>` matches the manifest's `name`.
 - [ ] All required fields are present and `os` is non-empty.
 - [ ] You wrote **one** distributable form: either `url` + `checksum`, or `assets`.
-- [ ] Using `assets`: it has an entry for every OS in `os`, and no entry for an OS that is not in it.
+- [ ] Using `assets`: every OS in `os` is answered by at least one key (`<os>` or `<os>-<arch>`), and no key names an OS that is not in it.
 - [ ] Every `url` points at a real, downloadable release asset, and its `checksum` is that asset's real digest.
 - [ ] `repo` is the plugin's own `owner/name`, not this catalog.
 - [ ] You did **not** set `official: true` (unless you are the amenbo team).
@@ -144,8 +160,8 @@ Your pull request then goes through the catalog build itself, over the manifest 
 run: the file name must match the manifest's `name`, `official: true` is refused from anyone outside the
 amenbo team, and **every asset you publish is downloaded and hashed** — bytes that do not match the
 `checksum` beside them fail the check, before the merge rather than after it. With `assets`, that is once
-per OS, and the failure names which one (`assets.linux: …`). Already-listed entries are not re-fetched, so
-someone else's asset going offline never blocks your PR.
+per platform key, and the failure names which one (`assets.linux-x64: …`). Already-listed entries are not
+re-fetched, so someone else's asset going offline never blocks your PR.
 
 **On the merge**, the catalog build ([`catalog.yml`](.github/workflows/catalog.yml)) runs all of that
 again over every listed manifest, and then does what only it can:
@@ -165,5 +181,5 @@ Three consequences worth knowing:
   the exact bytes; publish a new asset at a new URL and open a PR updating `url` and `checksum`.
 - **A URL that stops resolving drops your entry** from the next catalog build. Everything else stays
   listed.
-- **An entry is all-or-nothing.** One OS's asset failing drops the whole listing, not that one OS — a
-  listing that claims an OS it cannot serve is exactly what amenbo refuses to install.
+- **An entry is all-or-nothing.** One platform's asset failing drops the whole listing, not that one
+  platform — a listing that claims a platform it cannot serve is exactly what amenbo refuses to install.

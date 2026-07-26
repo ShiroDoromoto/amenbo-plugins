@@ -12,17 +12,23 @@ os:
 category: workflow
 
 # The distributable, in one of two forms. This plugin is a native binary, so it publishes one asset per
-# OS — the keys here must be exactly the OSes listed above, no more and no fewer.
+# platform. A key is either an OS on its own — one build for every architecture there, as the macOS
+# universal binary below — or an OS with an architecture (`arm64` / `x64`) for a build that runs on that
+# one only. Every OS listed above needs at least one key answering for it, and no key may name an OS the
+# list does not.
 assets:
   macos:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-macos.tar.gz
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-macos-universal.tar.gz
     checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
-  linux:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux.tar.gz
+  linux-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux-x64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  linux-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux-arm64.tar.gz
     checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
 
-# A plugin that is one file on every OS it lists — a script — writes this instead of `assets`, and it
-# stays just as valid:
+# A plugin that is one file on every platform it lists — a script — writes this instead of `assets`, and
+# it stays just as valid:
 #
 # url: https://github.com/you/your-plugin/releases/download/v1/your-plugin-v1.tar.gz
 # checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000

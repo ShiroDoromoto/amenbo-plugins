@@ -14,11 +14,12 @@ For every `plugins/<name>.yaml` it:
 5. signs the downloaded bytes with the amenbo **catalog key** (`--sign-key`) and verifies the signature
    back against the public key before trusting it.
 
-A manifest publishes either one distributable for every OS it lists (`url` / `checksum`) or **one per OS**
-(`assets`); `assets` is what decides which, exactly as it does at amenbo's install door. Steps 4 and 5 run
-over each of them, because a checksum and a signature are claims about the bytes that will actually run —
-so their grain is the bytes', not the entry's. An entry is all-or-nothing: one OS's asset failing rejects
-the whole entry, since a listing that claims an OS it cannot serve is what the client refuses.
+A manifest publishes either one distributable for every platform it lists (`url` / `checksum`) or **one
+per platform** (`assets`, keyed `<os>` or `<os>-<arch>`); `assets` is what decides which, exactly as it does
+at amenbo's install door. Steps 4 and 5 run over each of them, because a checksum and a signature are claims
+about the bytes that will actually run — so their grain is the bytes', not the entry's. An entry is
+all-or-nothing: one platform's asset failing rejects the whole entry, since a listing that claims a platform
+it cannot serve is what the client refuses.
 
 The signature is what an amenbo client verifies at install time against the catalog public key it ships
 with. It does not say "the author signed this"; it says "these exact bytes went through this catalog's
@@ -172,7 +173,8 @@ def sign(data: bytes, label: str, key: Path, password: str, public_key: Path) ->
     cannot itself verify would fail on every user's machine, and it is far cheaper to learn that here.
 
     The bytes are signed under `label` so that minisign's trusted comment — which is signed too — names
-    what was signed (the plugin, and its OS where there is one per OS) rather than a temporary file.
+    what was signed (the plugin, and its platform where there is one per platform) rather than a temporary
+    file.
     """
     with tempfile.TemporaryDirectory() as tmp:
         asset = Path(tmp) / label
@@ -221,8 +223,9 @@ def publish(distributable: dict, label: str, args: argparse.Namespace) -> dict:
     """Fetch one distributable, check it against its declared digest, sign it, and return the catalog's
     copy of it — `url`, `checksum`, and the `signature` over the exact bytes served.
 
-    `label` names the bytes in minisign's trusted comment, which is signed along with them. For a per-OS
-    asset it carries the OS, so a signature says which distributable of a plugin it covers.
+    `label` names the bytes in minisign's trusted comment, which is signed along with them. For a
+    per-platform asset it carries the platform, so a signature says which distributable of a plugin it
+    covers.
     """
     data = download(distributable["url"])
     check_checksum(data, distributable["checksum"])
@@ -261,13 +264,13 @@ def build_entry(path: Path, args: argparse.Namespace) -> dict:
     assets = manifest.get("assets")
     if assets:
         published = {}
-        for os_name, asset in sorted(assets.items()):
+        for platform, asset in sorted(assets.items()):
             try:
-                published[os_name] = publish(asset, f"{entry['name']}-{os_name}", args)
+                published[platform] = publish(asset, f"{entry['name']}-{platform}", args)
             except Rejected as e:
                 # *Which* distributable failed is an author's first question once an entry publishes
-                # several, so name it where the validator names it — under `assets.<os>`.
-                raise Rejected(f"assets.{os_name}: {e}")
+                # several, so name it where the validator names it — under `assets.<platform>`.
+                raise Rejected(f"assets.{platform}: {e}")
         entry["assets"] = published
     else:
         entry.update(publish(manifest, entry["name"], args))
