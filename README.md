@@ -55,8 +55,11 @@ declared SHA-256) before it will install anything.
   review of a formula rather than the upstream author's signature.
 - **Signing happens at merge, never on a pull request.** A submitter's branch never runs with the key.
 
-An asset outside this catalog carries no such signature, which is the **free** tier's trade: you may point
-amenbo anywhere, and amenbo vouches for nothing you point it at.
+An asset outside this catalog carries no signature of *ours*, which is the **free** tier's trade: you may
+point amenbo at any catalog, and this repository vouches for nothing you point it at. It is still signed
+and verified — against the key that catalog publishes, which its users are shown and agree to when they
+register it. Running one is **[Running a catalog](https://amenbo.work/en/catalogs/)**
+([日本語](https://amenbo.work/catalogs/)): three static files, no server, and a key of your own.
 
 ## Trust tiers — *official* is not the same as *listed*
 
@@ -71,7 +74,8 @@ amenbo anywhere, and amenbo vouches for nothing you point it at.
 - **`official` is decided by curation here, never self-declared.** A pull request setting `official: true`
   on a third-party plugin will not be merged with that flag.
 - The **free** tier needs nothing from this repository: point amenbo at any manifest or catalog URL, or a
-  local file. amenbo takes no position on those.
+  local file. This catalog takes no position on those; what stands behind a registered catalog is the key
+  that catalog publishes, not ours.
 
 ### Featured — a third axis, and not a tier
 
