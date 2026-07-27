@@ -8,7 +8,7 @@ reasonable — it does **not** make the plugin *official*, nor *featured* (see t
 [README](README.md#trust-tiers--official-is-not-the-same-as-listed)).
 
 Have something to list already? Read on. Still building it? The contract your executable has to hold to
-is **[Writing a plugin](https://amenbo.work/en/plugins/)** ([日本語](https://amenbo.work/plugins/)) —
+is **[Writing a plugin](docs/writing-a-plugin.md)** ([日本語](docs/writing-a-plugin.ja.md)) —
 what arrives on stdin, what amenbo does with your output, and what a manifest must hold. Run
 `amenbo plugin validate <manifest>` before you open the pull request: this repository's PR workflow
 runs that very command on what you submit.

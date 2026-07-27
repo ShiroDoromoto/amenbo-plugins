@@ -3,14 +3,21 @@
 The public plugin catalog for [**amenbo**](https://github.com/ShiroDoromoto/amenbo) — a local-first
 task & project manager where an AI and a human collaborate on one machine.
 
+**Documentation** — the contracts an author is held to, in English and Japanese:
+
+| | English | 日本語 |
+|---|---|---|
+| Writing a plugin | [`docs/writing-a-plugin.md`](docs/writing-a-plugin.md) | [`docs/writing-a-plugin.ja.md`](docs/writing-a-plugin.ja.md) |
+| Running a catalog | [`docs/running-a-catalog.md`](docs/running-a-catalog.md) | [`docs/running-a-catalog.ja.md`](docs/running-a-catalog.ja.md) |
+
 Each plugin is one manifest under [`plugins/`](plugins/): a small YAML file describing the plugin well
 enough to **list it, judge it, and fetch it** — without any central server. Add yours by opening a pull
 request (see **[CONTRIBUTING.md](CONTRIBUTING.md)**).
 
 This repository is about **being listed**. Writing the plugin itself — the JSON amenbo hands it, what its
-output means, the manifest fields, enabling, signatures — is the contract on amenbo's own site:
-**[Writing a plugin](https://amenbo.work/en/plugins/)** ([日本語](https://amenbo.work/plugins/)). That
-page is the canon; what follows here is the catalog's side of it.
+output means, the manifest fields, enabling, signatures — is
+**[Writing a plugin](docs/writing-a-plugin.md)** ([日本語](docs/writing-a-plugin.ja.md)). That document is
+the canon; what follows here is the catalog's side of it.
 
 ## How the catalog works
 
@@ -58,8 +65,8 @@ declared SHA-256) before it will install anything.
 An asset outside this catalog carries no signature of *ours*, which is the **free** tier's trade: you may
 point amenbo at any catalog, and this repository vouches for nothing you point it at. It is still signed
 and verified — against the key that catalog publishes, which its users are shown and agree to when they
-register it. Running one is **[Running a catalog](https://amenbo.work/en/catalogs/)**
-([日本語](https://amenbo.work/catalogs/)): three static files, no server, and a key of your own.
+register it. Running one is **[Running a catalog](docs/running-a-catalog.md)**
+([日本語](docs/running-a-catalog.ja.md)): three static files, no server, and a key of your own.
 
 ## Trust tiers — *official* is not the same as *listed*
 
