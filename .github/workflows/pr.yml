@@ -14,9 +14,10 @@ name: PR
 # fetching all of them on every pull request would both grow without bound and let one rotted URL block
 # submitters who never touched it — that rot is the catalog build's to handle, by dropping the entry.
 #
-# The validator is built from amenbo's `main` rather than a published release, because no release carries
-# `plugin validate` yet. It also means a rule added there reaches this door on the very next pull request,
-# with nothing to update here.
+# The validator is amenbo's published release, installed the way a person installs it, rather than a
+# build of its `main`: the rules this door holds submitters to are the ones every client already
+# enforces, and a rule that has not been released yet is one no client enforces. A rule tightened in
+# amenbo reaches this door on its release, with nothing to update here.
 #
 # Nothing here needs a secret, which is what lets the asset check run on a pull request from a fork at
 # all: downloading bytes and hashing them is unprivileged. Signing those bytes is not, and stays on
@@ -48,33 +49,28 @@ jobs:
           # and the shallow checkout a pull request gets by default cannot reach that far back.
           fetch-depth: 0
 
-      - name: Check out amenbo (for its manifest validator)
-        uses: actions/checkout@v7
-        with:
-          repository: ShiroDoromoto/amenbo
-          path: .amenbo-src
-
-      - name: Show the toolchain
-        working-directory: .amenbo-src
-        run: rustc --version
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: .amenbo-src
-
-      - name: Build the amenbo CLI
-        working-directory: .amenbo-src
-        run: cargo build -p amenbo-cli
+      # The manifest rules live in exactly one place — amenbo's validator — so this runs the real binary
+      # rather than a second implementation of the rules, which would drift from the client's install
+      # door. The binary is the published release, installed the way a person installs it: the door this
+      # catalog guards is the one clients actually hold, and a rule that has not been released yet is a
+      # rule no client enforces. It follows that a rule tightened in amenbo reaches this door when it
+      # reaches everyone else's — on the release, not on the commit.
+      - name: Install the amenbo CLI (its manifest validator)
+        run: |
+          set -euo pipefail
+          curl -fsSL https://github.com/ShiroDoromoto/amenbo/releases/latest/download/install.sh | sh
+          amenbo="$HOME/.local/bin/amenbo"
+          "$amenbo" --version
+          echo "AMENBO_BIN=$amenbo" >> "$GITHUB_ENV"
 
       # Every manifest, not only the ones this pull request touched: a rule tightened in amenbo should
-      # surface against the entries already listed too, and the catalog is small next to the build above.
+      # surface against the entries already listed too, and validating the whole catalog is cheap.
       #
       # `plugin validate` reports every problem in a manifest rather than the first, and the loop keeps
       # going after a failing one, so a single run tells a submitter everything they have to fix.
       - name: Validate every manifest
         run: |
           shopt -s nullglob
-          amenbo=".amenbo-src/target/debug/amenbo"
           manifests=(plugins/*.yaml)
           if [ ${#manifests[@]} -eq 0 ]; then
             echo "No manifests to validate."
@@ -83,7 +79,7 @@ jobs:
           failed=0
           for manifest in "${manifests[@]}"; do
             echo "── $manifest"
-            "$amenbo" plugin validate "$manifest" || failed=1
+            "$AMENBO_BIN" plugin validate "$manifest" || failed=1
           done
           if [ "$failed" -ne 0 ]; then
             echo "::error::One or more manifests are invalid — see the problems reported above."
@@ -104,7 +100,6 @@ jobs:
       # thrown away with the runner. What survives the step is its verdict.
       - name: Fetch the submitted assets and check them against their digests
         env:
-          AMENBO_BIN: ${{ github.workspace }}/.amenbo-src/target/debug/amenbo
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail

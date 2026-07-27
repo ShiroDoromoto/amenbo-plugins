@@ -40,24 +40,17 @@ jobs:
 
       # The manifest rules live in exactly one place — amenbo's validator — so this runs the real binary
       # rather than a second implementation of the rules, which would drift from the client's install
-      # door. Built from source because no published release carries `plugin validate` yet.
-      - name: Check out amenbo (for its manifest validator)
-        uses: actions/checkout@v7
-        with:
-          repository: ShiroDoromoto/amenbo
-          path: .amenbo-src
-
-      - name: Show the toolchain
-        working-directory: .amenbo-src
-        run: rustc --version
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: .amenbo-src
-
-      - name: Build the amenbo CLI
-        working-directory: .amenbo-src
-        run: cargo build -p amenbo-cli
+      # door. The binary is the published release, installed the way a person installs it: the door this
+      # catalog guards is the one clients actually hold, and a rule that has not been released yet is a
+      # rule no client enforces. It follows that a rule tightened in amenbo reaches this door when it
+      # reaches everyone else's — on the release, not on the commit.
+      - name: Install the amenbo CLI (its manifest validator)
+        run: |
+          set -euo pipefail
+          curl -fsSL https://github.com/ShiroDoromoto/amenbo/releases/latest/download/install.sh | sh
+          amenbo="$HOME/.local/bin/amenbo"
+          "$amenbo" --version
+          echo "AMENBO_BIN=$amenbo" >> "$GITHUB_ENV"
 
       - uses: actions/setup-python@v7
         with:
@@ -94,7 +87,6 @@ jobs:
 
       - name: Aggregate and sign the catalog
         env:
-          AMENBO_BIN: ${{ github.workspace }}/.amenbo-src/target/debug/amenbo
           CATALOG_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.CATALOG_SIGNING_PRIVATE_KEY_PASSWORD }}
         run: |
           mkdir -p _site

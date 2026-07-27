@@ -152,7 +152,8 @@ A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest
 
 **On your pull request**, your manifest is checked with **amenbo's own validator** — the very same one
 amenbo runs at its install door, so the catalog and the client can never disagree about what "valid"
-means. You can run it yourself first, with any amenbo that has the plugin commands:
+means. CI installs the latest released amenbo to do it, so the rules you are held to are the ones every
+client already enforces. You can run it yourself first, on an amenbo that is up to date:
 
 ```sh
 amenbo plugin validate plugins/<name>.yaml
