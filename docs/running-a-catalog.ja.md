@@ -98,8 +98,7 @@ install に要るものです。`name` だけが一覧と重複していて、�
   "url": "https://github.com/example/helloctl/releases/download/v1/helloctl-v1.tar.gz",
   "checksum": "sha256:e23f6791e6852331a4c4bf147e86d57e6088dcbffbf936f56ade7df8c0ca6d8f",
   "signature": "untrusted comment: signature from minisign secret key\nRUQlgzYA…\n",
-  "payload_v": 1,
-  "scope": "project"
+  "payload_v": 1
 }
 ```
 

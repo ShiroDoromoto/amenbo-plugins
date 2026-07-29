@@ -71,7 +71,6 @@ single-`url` form stays valid and is not deprecated.
 | Field | Type | Default | Meaning |
 |---|---|---|---|
 | `official` | bool | `false` | The official badge (author is the amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
-| `scope` | string | `project` | Which switch enables the plugin: `project` (each project answers for itself) or `machine` (one answer for the device). Declare `machine` only when a per-project answer would mean nothing for your plugin — a user is never shown both. |
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
 | `min_amenbo` | string | none | Minimum amenbo version the plugin needs, as semver — below it, amenbo warns or refuses to enable/run it. |
 | `config` | list | none | The plugin's configuration schema: a flat list of fields amenbo renders as a form and injects at run time. |

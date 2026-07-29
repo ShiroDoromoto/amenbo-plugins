@@ -187,7 +187,7 @@ from where you are standing:
 | Variable | What it says |
 | --- | --- |
 | `AMENBO_HOME` | the store to read — the one the run happened in, not whichever one your directory would resolve to |
-| `AMENBO_PLUGIN_REACH` | how far you may read: `all`, or a project's `AMB-P-<n>` ref |
+| `AMENBO_PLUGIN_REACH` | how far you may read: the project you fired for, as its `AMB-P-<n>` ref |
 
 Leave them alone and `amenbo` answers correctly with nothing extra from you:
 
@@ -199,9 +199,9 @@ amenbo task show "$id" --json         # AMENBO_HOME picks the store, the window 
 amenbo task list --filter "done:false" --json
 ```
 
-**Your window is the switch you declared.** A `scope: project` plugin reads the project it observes, and
-anything outside it is refused — `out_of_reach`, with a non-zero exit, never an empty result. A
-`scope: machine` plugin reads the device. What you can observe is what you can read.
+**Your window is the switch that let you fire.** You read the project you are observing, and anything
+outside it is refused — `out_of_reach`, with a non-zero exit, never an empty result. What you can observe
+is what you can read.
 
 Do not go looking for a project directory of your own. You are started by amenbo, not by a person standing
 in a folder, so there is no `.amenbo` under you to find — which is exactly why the store is named to you
@@ -240,7 +240,6 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | Field | Default | Meaning |
 | --- | --- | --- |
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
-| `scope` | `project` | which switch enables you: `project` (each project answers) or `machine` (one answer for the device) |
 | `payload_v` | `1` | the payload contract version you read |
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
 | `config` | none | your settings schema: `key` / `label` / `secret` / `required` |
@@ -298,11 +297,11 @@ If you want to run a catalog of your own, [Running a catalog](running-a-catalog.
 
 ## Install is not enable
 
-An install lays the binary down and runs nothing. What starts it is `amenbo plugin enable <name>` — the
-one-time consent to run your code, asked once.
+An install lays the binary down and runs nothing. What starts it is `amenbo plugin enable <name>`, and
+doing that is itself the user's permission to run your code.
 
-A plugin has exactly one switch, and its author declares which one with `scope`. A user is never shown
-two switches for one plugin.
+A plugin has exactly one switch and it is a project's: each project answers for itself, and a user is
+never shown two switches for one plugin.
 
 Enabling also checks compatibility:
 

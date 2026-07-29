@@ -17,7 +17,6 @@ assets:
     url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux-arm64.tar.gz
     checksum: sha256:a3b1ae53a6650e05673783d9d9e686b03c31582d488639a5af667f87e90988a5
 official: true
-scope: project
 payload_v: 1
 config:
   - key: base
