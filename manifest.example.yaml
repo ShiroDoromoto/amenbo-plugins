@@ -36,3 +36,18 @@ assets:
 # official: true   # set by catalog curation, not by submitters
 # payload_v: 1     # the payload contract version the plugin reads (default: 1)
 # min_amenbo: 1.8.0  # minimum amenbo version the plugin needs (default: none)
+
+# What the plugin says for itself where an AI reads how to work in a folder (`amenbo agent --json`).
+# Optional, and relayed in whatever language it is written in — amenbo has no words of its own for what
+# someone else's plugin is for.
+#
+# `cmd` holds this plugin's own command face and nothing more: amenbo puts `amenbo plugin run <name> ` in
+# front of it, from the name it read, so a reader gets a line they can type. A plugin whose whole surface
+# is observation hooks writes `when` alone and no `commands`.
+agent:
+  when: Starting work on a task that will produce commits, and wanting it isolated
+  commands:
+    - cmd: start <task-id>
+      does: Cuts a worktree for the task outside the repository, and returns the line to cd into it
+    - cmd: finish <task-id>
+      does: Removes that worktree and its branch, once the work has been merged

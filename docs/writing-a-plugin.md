@@ -307,6 +307,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
 | `config` | none | your settings schema: `key` / `label` / `secret` / `required` / `type` / `options` / `default` |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
+| `agent` | none | what you say for yourself where an AI reads how to work here: `when` / `commands` |
 
 An `events` entry is either the event's name or an object narrowing where it fires.
 
@@ -320,6 +321,39 @@ events:
 
 Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on
 an older one.
+
+### Saying what you are for
+
+An AI working in a folder reads one document to learn how to work there: `amenbo agent --json`. A plugin
+the user has installed and enabled is part of what that document owes — and amenbo has no words of its own
+for what your plugin is for. So it relays yours, from an optional `agent` block:
+
+```yaml
+agent:
+  when: when to reach for this plugin (one line)
+  commands:
+    - cmd: <subcommand and arguments>
+      does: what it does, and what it returns (one line)
+```
+
+| Field | Meaning |
+| --- | --- |
+| `when` | the occasion to reach for you. Required once you write the block — a block naming no occasion gives a reader nothing to act on |
+| `commands` | one entry per call your command face answers. Absent means none |
+
+**Write only your own command face.** amenbo puts `amenbo plugin run <name> ` in front of it, from the
+name it just read, so the reader receives a line they can type. Writing the whole line yourself would be
+writing your own name into it, which is the one thing this shape keeps out.
+
+**A plugin that is all observation hooks names its occasion and stops there** — no `commands`. There is
+nothing for a reader to call, and saying *when this plugin matters* is still worth saying.
+
+Two more things worth knowing:
+
+- **It is relayed in the language you wrote it in.** amenbo's own entry point carries its wording in more
+  than one; it holds no translation for yours.
+- **Only an enabled plugin is listed.** A plugin that is not enabled would be refused if it were called,
+  so it is not offered.
 
 ## What the asset may be
 
