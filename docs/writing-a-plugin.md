@@ -156,6 +156,26 @@ What this shape promises, and what it does not, is what shapes how you write a p
 There is no "acknowledged" call back into amenbo, either. **The reply is your process returning**, and the
 row leaves the queue whether you exited clean or failing. There is nothing here for you to implement.
 
+### How much is behind you
+
+You are launched once per event, so you cannot see your own queue — and deleting a project can put fifty
+events on it at once. The runner tells you how many there are:
+
+| | |
+| --- | --- |
+| `AMENBO_PLUGIN_QUEUE_REMAINING` | how many events are still queued for you **after this one** |
+
+It counts down to `0` and never rises while a batch is being worked through: five queued events are run
+with `4`, `3`, `2`, `1`, `0`. Anything queued while that is going on is not added to the count in flight —
+it arrives right after, as its own run of numbers.
+
+That makes batching yours to do, and cheap: hold what you were given, and send when you see `0`.
+
+**`0` means the queue is empty as of this launch — it does not promise nothing more is coming.** An event
+written a moment later is delivered like any other, so a batch you flushed on `0` may be followed by a
+second one. That is one message becoming two, never a message lost. amenbo itself never holds delivery
+back: what it sends, it sends in order, as fast as it can.
+
 ## Settings and secrets
 
 You declare your settings in the manifest. The user fills them in and amenbo delivers them.
@@ -174,6 +194,49 @@ A field with no value set contributes nothing — no variable, no `config` key. 
 only; whether a value is *valid* is yours to judge).
 
 You receive **your own settings and no one else's.**
+
+### What kind of field it is
+
+A field is a line of text unless you say otherwise. Where the answers are yours to know in advance, declare
+them and the user picks instead of spelling:
+
+| `type` | The form shows | You receive |
+| --- | --- | --- |
+| absent (the default) | a single-line box | what the user typed |
+| absent, with `secret: true` | a single-line box, masked | what the user typed, as an environment variable |
+| `multi` | a checkbox per option you declared | the chosen values, joined by `,` |
+
+```yaml
+config:
+  - key: events
+    label: Events to report
+    type: multi
+    default: task.done                  # in force until the user answers
+    options:
+      - value: task.done                # what you receive
+        label: Finished                 # what the user reads
+      - value: task.rejected
+        label: Decided against
+```
+
+`default` works on a text field too: it is simply the value in force while the field is unset. A field
+with a default is never unanswered, so it does not block `enable` however `required` is marked.
+
+An option's `value` may not contain `,` (they are joined by one) and may not be `none` (reserved, see
+below). Every value must be distinct, and a `default` must name options you actually offer — the validator
+refuses a manifest that breaks any of this, so you find out before you ship.
+
+**A `multi` field has three states, and you are handed the answer, never the bookkeeping:**
+
+| The user | You receive |
+| --- | --- |
+| has not answered | your `default` |
+| chose some | those values, joined by `,` |
+| chose none, deliberately | empty — no values at all, and not your `default` |
+
+The last row is why `none` is reserved: amenbo stores that deliberate empty answer under that word so it
+stays distinguishable from *not answered yet*, and resolves it away before you see it. You never read
+`none`, and you cannot offer it.
 
 ## Reading a record back
 
@@ -242,7 +305,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
 | `payload_v` | `1` | the payload contract version you read |
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
-| `config` | none | your settings schema: `key` / `label` / `secret` / `required` |
+| `config` | none | your settings schema: `key` / `label` / `secret` / `required` / `type` / `options` / `default` |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
 
 An `events` entry is either the event's name or an object narrowing where it fires.
