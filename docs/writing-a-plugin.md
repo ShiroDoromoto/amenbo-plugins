@@ -183,11 +183,15 @@ You declare your settings in the manifest. The user fills them in and amenbo del
 
 | Declared | Where it is kept | How it reaches you |
 | --- | --- | --- |
-| `secret: true` | a user-area secret file (never the store, never a backup) | the environment variable `AMENBO_CONFIG_<KEY>` |
-| not marked secret | the ordinary tiers: a machine default and a per-project override | the `config` object on stdin |
+| `secret: true` | the store, as this project's own row — carried by a backup, left out of an export | the environment variable `AMENBO_CONFIG_<KEY>` |
+| not marked secret | the store, as this project's own row | the `config` object on stdin |
 
 The variable's name follows from the key mechanically: upper-case it, and map anything that is not a
 letter or a digit to `_` (`webhook_url` → `AMENBO_CONFIG_WEBHOOK_URL`).
+
+**A setting belongs to a project, and there is one value under it.** A plugin is switched on per project,
+so it is answered per project: enabled in two, it has two sets of values and reaches each run with the one
+belonging to where the event happened. There is no machine-wide default beneath them to fall back to.
 
 A field with no value set contributes nothing — no variable, no `config` key. A field marked
 `required: true` keeps the plugin from being enabled until it holds a value (amenbo checks **presence**
