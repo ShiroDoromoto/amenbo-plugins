@@ -237,6 +237,23 @@ if __name__ == "__main__":
 It **stops on the first problem**. Once being listed matters more — when one rotted URL holding back the
 whole catalog becomes the worse failure — change it to drop that one entry with a reason and carry on.
 
+## Publish the same bytes twice
+
+A minisign signature carries the moment it was made. Sign the same asset again and you get a different
+signature, a different detail document, and a different `detail_sum` — which is the one thing a user's
+amenbo compares to decide a plugin has a new build. A catalog that re-signs everything on every publish
+therefore tells every user that every plugin was updated, every time anything at all was listed.
+
+So **carry the signature over when the bytes have not changed**: before signing, read what you currently
+publish for that plugin, and if the asset's digest is the one already published there, keep the signature
+published with it. Verify it against your public key over the bytes you just downloaded — carrying one
+over is a claim about those bytes, and a claim is worth checking. Anything that stops you (nothing
+published yet, an asset that moved, a signature that no longer verifies) just means signing afresh, which
+is what would have happened anyway.
+
+What the signature says is that these bytes went through your review. It does not say when, so the one
+made last time supports that exactly as well.
+
 ## GitHub Actions
 
 Rebuild on every push to `main` and publish to GitHub Pages. **Sign on merge only** — never hand the

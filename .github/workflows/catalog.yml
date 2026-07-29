@@ -95,7 +95,12 @@ jobs:
           # manifest from ever reaching main is the pull-request check, one workflow over.
           # The detail documents land in `_site/plugins/` beside the catalog, which is how a client
           # resolves one by name against the URL it already fetched the listing from.
-          python3 scripts/aggregate.py --out _site/catalog.json --sign-key "$RUNNER_TEMP/catalog.key"
+          # --published points at what is being replaced: an asset whose bytes are already published keeps
+          # the signature already published over it, so a detail document moves only when the plugin does.
+          # A client reads a moved document as a new build, and a fresh signature over unchanged bytes
+          # would tell every client that every plugin had one every time anything was listed.
+          python3 scripts/aggregate.py --out _site/catalog.json --sign-key "$RUNNER_TEMP/catalog.key" \
+            --published https://shirodoromoto.github.io/amenbo-plugins
 
       - name: Upload the catalog as the Pages artifact
         uses: actions/upload-pages-artifact@v5

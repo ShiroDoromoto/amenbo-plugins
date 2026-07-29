@@ -12,7 +12,8 @@ For every `plugins/<name>.yaml` it:
 4. downloads every distributable the manifest publishes and checks its SHA-256 against the declared
    `checksum`, so a manifest whose digest does not match what the URL actually serves never reaches a user;
 5. signs the downloaded bytes with the amenbo **catalog key** (`--sign-key`) and verifies the signature
-   back against the public key before trusting it.
+   back against the public key before trusting it — or, where the bytes are the ones already published,
+   carries the signature already made over them ([carried_over]).
 
 A manifest publishes either one distributable for every platform it lists (`url` / `checksum`) or **one
 per platform** (`assets`, keyed `<os>` or `<os>-<arch>`); `assets` is what decides which, exactly as it does
@@ -38,6 +39,12 @@ Each entry also carries `detail_sum`, the digest of the detail document exactly 
 lets a client notice a plugin has a different build from the one list fetch it already makes, now that the
 checksums themselves are a document away. It is computed here, over the bytes written, so it cannot be
 declared wrong by an author or drift from the file it names.
+
+**That digest is only worth comparing if publishing twice over the same plugin writes the same bytes.** A
+minisign signature carries the moment it was made, so a catalog that re-signs everything it publishes moves
+every plugin's detail document every time anything at all is listed — and every client reads that as a new
+build of every plugin. `--published` is what closes it: an asset whose bytes are the ones already published
+keeps the signature already published over them.
 
 An entry is marked `featured` when the curation list (`--featured`, [read_featured]) names it. That list
 is the only place the recommendation exists: a manifest cannot carry it, because a manifest is written by
@@ -182,11 +189,28 @@ def check_checksum(data: bytes, checksum: str) -> None:
         raise Rejected(f"checksum does not match the asset (url serves sha256:{actual})")
 
 
+def verify(data: bytes, signature: str, label: str, public_key: Path) -> bool:
+    """Whether this signature holds over these exact bytes, under the catalog's public key.
+
+    Every signature the catalog publishes goes through here, whether it was just made or is being carried
+    over from the last publish — a signature this catalog cannot itself verify would fail on every user's
+    machine, and it is far cheaper to learn that here.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        asset = Path(tmp) / label
+        signature_file = Path(tmp) / f"{label}.minisig"
+        asset.write_bytes(data)
+        signature_file.write_text(signature)
+        verifying = subprocess.run(
+            ["minisign", "-V", "-p", str(public_key), "-m", str(asset), "-x", str(signature_file)],
+            capture_output=True,
+            text=True,
+        )
+        return verifying.returncode == 0
+
+
 def sign(data: bytes, label: str, key: Path, password: str, public_key: Path) -> str:
     """Sign the asset bytes with the catalog key and return the full minisign signature text.
-
-    The signature is verified against the public key before it is returned: a signature this catalog
-    cannot itself verify would fail on every user's machine, and it is far cheaper to learn that here.
 
     The bytes are signed under `label` so that minisign's trusted comment — which is signed too — names
     what was signed (the plugin, and its platform where there is one per platform) rather than a temporary
@@ -205,14 +229,10 @@ def sign(data: bytes, label: str, key: Path, password: str, public_key: Path) ->
         if signing.returncode != 0 or not signature.exists():
             # The password is on stdin, never in argv or in this message.
             raise Rejected(f"signing failed: {signing.stderr.strip()}")
-        verifying = subprocess.run(
-            ["minisign", "-V", "-p", str(public_key), "-m", str(asset), "-x", str(signature)],
-            capture_output=True,
-            text=True,
-        )
-        if verifying.returncode != 0:
-            raise Rejected(f"the signature did not verify against the catalog public key: {verifying.stderr.strip()}")
-        return signature.read_text()
+        text = signature.read_text()
+    if not verify(data, text, label, public_key):
+        raise Rejected("the signature did not verify against the catalog public key")
+    return text
 
 
 def read_featured(path: Path) -> set[str]:
@@ -256,19 +276,64 @@ def added_at(path: Path) -> str | None:
 # --- assembling ------------------------------------------------------------------------------------
 
 
-def publish(distributable: dict, label: str, args: argparse.Namespace) -> dict:
+def already_published(name: str, source: str | None) -> dict | None:
+    """The detail document this catalog currently publishes for `name`, or None when there is none to read.
+
+    `source` is where the catalog is served from — the base URL, or a directory holding a copy of it. Every
+    way of failing to read it answers the same way: no previous document. What that costs is a fresh
+    signature, which is the outcome this script had before it could look at all.
+    """
+    if not source:
+        return None
+    try:
+        if source.startswith("http://") or source.startswith("https://"):
+            document = download(f"{source.rstrip('/')}/plugins/{name}.json")
+        else:
+            document = (Path(source) / "plugins" / f"{name}.json").read_bytes()
+        parsed = json.loads(document.decode("utf-8"))
+    except (Rejected, OSError, ValueError):
+        return None
+    return parsed if isinstance(parsed, dict) else None
+
+
+def carried_over(previous: dict | None, data: bytes, checksum: str, label: str, public_key: Path) -> str | None:
+    """The signature this catalog already published over these exact bytes, when it still holds.
+
+    A minisign signature carries the moment it was made, so signing the same bytes twice produces two
+    different documents — and a detail document that moves says a plugin has a new build when nothing about
+    it has changed. What a signature claims is that these bytes went through this catalog's review, not when
+    they did, so the one made last time supports that claim exactly as well.
+
+    It is carried over only when the bytes are the same ones (the digest published beside it) **and** it
+    verifies over them here. Anything else — no previous document, an unsigned one, a different asset, a
+    signature that no longer verifies — answers None and the caller signs afresh.
+    """
+    if not previous:
+        return None
+    signature = previous.get("signature")
+    if not isinstance(signature, str) or previous.get("checksum") != checksum:
+        return None
+    return signature if verify(data, signature, label, public_key) else None
+
+
+def publish(distributable: dict, label: str, args: argparse.Namespace, previous: dict | None) -> dict:
     """Fetch one distributable, check it against its declared digest, sign it, and return the catalog's
     copy of it — `url`, `checksum`, and the `signature` over the exact bytes served.
 
     `label` names the bytes in minisign's trusted comment, which is signed along with them. For a
     per-platform asset it carries the platform, so a signature says which distributable of a plugin it
     covers.
+
+    `previous` is what the catalog publishes for this distributable now, if anything: an unchanged asset
+    keeps the signature it already has ([carried_over]).
     """
     data = download(distributable["url"])
     check_checksum(data, distributable["checksum"])
     published = {"url": distributable["url"], "checksum": distributable["checksum"]}
     if args.sign_key:
-        published["signature"] = sign(data, label, args.sign_key, args.sign_password, args.public_key)
+        published["signature"] = carried_over(
+            previous, data, distributable["checksum"], label, args.public_key
+        ) or sign(data, label, args.sign_key, args.sign_password, args.public_key)
     return published
 
 
@@ -312,6 +377,9 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
     entry.setdefault("official", False)
 
     detail = {key: value for key, value in manifest_detail.items() if key not in DISTRIBUTABLE_KEYS}
+    # Read once per plugin, and only where a signature is being made at all: without a key there is
+    # nothing to carry over.
+    previous = already_published(entry["name"], args.published) if args.sign_key else None
 
     # `assets` alone decides which of the two distributable forms is in play — the same rule the client's
     # install door reads, so a detail can never mean one thing here and another there. The validator above
@@ -319,16 +387,19 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
     assets = manifest_detail.get("assets")
     if assets:
         published = {}
+        previous_assets = (previous or {}).get("assets") or {}
         for platform, asset in sorted(assets.items()):
             try:
-                published[platform] = publish(asset, f"{entry['name']}-{platform}", args)
+                published[platform] = publish(
+                    asset, f"{entry['name']}-{platform}", args, previous_assets.get(platform)
+                )
             except Rejected as e:
                 # *Which* distributable failed is an author's first question once a plugin publishes
                 # several, so name it where the validator names it — under `assets.<platform>`.
                 raise Rejected(f"assets.{platform}: {e}")
         detail["assets"] = published
     else:
-        detail.update(publish(manifest_detail, entry["name"], args))
+        detail.update(publish(manifest_detail, entry["name"], args, previous))
 
     # The digest is taken over the text that will be written, and written into the entry that points at it,
     # so the pair is consistent by construction. amenbo compares this value and nothing else to notice a
@@ -360,6 +431,7 @@ def main() -> int:
     parser.add_argument("--amenbo", default=os.environ.get("AMENBO_BIN", "amenbo"), help="the amenbo CLI to validate with")
     parser.add_argument("--sign-key", type=Path, help="the catalog signing key; without it, entries are unsigned")
     parser.add_argument("--public-key", type=Path, default=Path("catalog-key.pub"), help="the public half, to verify each signature")
+    parser.add_argument("--published", help="where this catalog is served from (a base URL, or a directory holding a copy): an asset that has not changed keeps the signature published there, so a detail document only moves when the plugin does")
     parser.add_argument("--featured", type=Path, default=Path("featured.txt"), help="the curation list: the plugins this catalog recommends, one name per line")
     parser.add_argument("--strict", action="store_true", help="fail the run on any rejected manifest, rather than dropping it (a dry run before merging)")
     parser.add_argument("manifests", nargs="*", type=Path, help="the manifests to aggregate; default: every *.yaml under --plugins-dir")
