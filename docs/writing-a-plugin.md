@@ -102,11 +102,23 @@ What that means depends on the face.
 | Command | with exit code 0, relayed verbatim as the caller's stdout | a non-zero (or signalled) exit **discards the return value** and the call is reported failed |
 | Observation hook | not used as a return value | warned about, and nothing else |
 
-The typical way to hand a shell a return value is one line to evaluate:
+The typical way to hand a shell a return value is one line to evaluate. amenbo relays that line
+verbatim and judges no dialect, so the shell it has to survive is the caller's, not yours:
 
 ```sh
-eval "$(amenbo plugin run worktree start 123)"
+eval "$(amenbo plugin run worktree start 123)"   # POSIX shell
 ```
+
+```powershell
+iex (amenbo plugin run worktree start 123)       # PowerShell
+```
+
+If you take that shape, **keep it to one line that both dialects take as it stands**, and put both
+launches in your plugin's README. A line like `cd '<path>'` passes either way; escaping is where they
+part, and getting a value through both is the condition you take on — amenbo has no layer that guesses
+the caller's shell, and the only one who knows which dialect the line is in is you. Meet that condition
+and whether your `os` can name `windows` is decided by how the launch is written, not by anything in
+your implementation.
 
 ### Time limits
 
