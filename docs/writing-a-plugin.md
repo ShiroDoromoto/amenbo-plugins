@@ -430,8 +430,8 @@ A hook is fire-and-forget, so its failure surfaces nowhere the caller was listen
 what answers *why did nothing happen*:
 
 ```sh
-amenbo plugin runs          # the last runs of every plugin
-amenbo plugin runs <name>   # narrowed to one
+amenbo plugin log          # the last runs of every plugin
+amenbo plugin log <name>   # narrowed to one
 ```
 
 One line per run: when, which plugin, on which event, how it ended, its exit code and how long it took. A

@@ -418,8 +418,8 @@ amenbo plugin validate plugins/<name>.yaml
 答えるのが実行ログです。
 
 ```sh
-amenbo plugin runs          # 全プラグインの直近の実行
-amenbo plugin runs <name>   # 1つに絞る
+amenbo plugin log          # 全プラグインの直近の実行
+amenbo plugin log <name>   # 1つに絞る
 ```
 
 いつ・どのプラグインが・どのイベントで走り、どう終わったか（終了コードと所要時間）が1行ずつ出ます。
