@@ -49,7 +49,7 @@ When an event fires, its JSON arrives on stdin.
 | `at` | when it fired, as `2026-07-22T09:00:00Z` |
 | `new` | the state after the change, on the events whose name does not already say it |
 | `record` | the vanished record itself, on the deletion events alone |
-| `parent` | what a vanished child hung on, by number — for `comment.removed`, its task |
+| `parent` | the task a comment belongs to, by number — on `comment.added` and `comment.removed` |
 | `config` | your own non-secret settings. Absent entirely when you have none |
 
 The v1 catalog is eleven events.
@@ -65,12 +65,13 @@ The v1 catalog is eleven events.
 | `task.deleted` | — | a task was deleted |
 | `decision.accepted` | — | a decision was accepted |
 | `decision.rejected` | — | a decision was rejected |
-| `comment.added` | — | a comment was added (`id` is the comment's) |
-| `comment.removed` | — | a comment was taken back (`id` is the comment's) |
+| `comment.added` | — | a comment was added (`id` is the comment's, `parent` its task) |
+| `comment.removed` | — | a comment was taken back (`id` is the comment's, `parent` its task) |
 
 No *before* value is carried: a record that still exists you read back by its number, so v1 loads the new
 state only. Deletion is the exception — there is nothing left to read back — so the vanished record travels
-in `record`, and its parent in `parent`.
+in `record`. A comment is the other one: you read it as part of a task's timeline, never by its own number,
+so both comment events name that task in `parent`.
 
 `v` rises only when an existing field's meaning changes. Adding a field never bumps it, so write your
 plugin to **ignore keys it does not know**.
