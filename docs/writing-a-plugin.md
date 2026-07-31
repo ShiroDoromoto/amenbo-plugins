@@ -176,17 +176,24 @@ events on it at once. The runner tells you how many there are:
 
 | | |
 | --- | --- |
-| `AMENBO_PLUGIN_QUEUE_REMAINING` | how many events are still queued for you **after this one** |
+| `AMENBO_PLUGIN_REACH_QUEUE_REMAINING` | how many events are still queued for you **after this one, in the project this run fires for** |
 
-It counts down to `0` and never rises while a batch is being worked through: five queued events are run
-with `4`, `3`, `2`, `1`, `0`. Anything queued while that is going on is not added to the count in flight —
-it arrives right after, as its own run of numbers.
+**The count is your window's, which is what `REACH` in the name says.** It is the same scope as
+`AMENBO_PLUGIN_REACH` below: the project you fired for, and no other. Enabled in two projects, you are run
+for each with its own count, and neither number says anything about the other. Events on records belonging
+to no project are one group of their own, counted like any other. There is always a number.
 
-That makes batching yours to do, and cheap: hold what you were given, and send when you see `0`.
+It counts down to `0` and never rises while a batch is being worked through: five queued events for one
+project are run with `4`, `3`, `2`, `1`, `0`. Anything queued while that is going on is not added to the
+count in flight — it arrives right after, as its own run of numbers.
 
-**`0` means the queue is empty as of this launch — it does not promise nothing more is coming.** An event
-written a moment later is delivered like any other, so a batch you flushed on `0` may be followed by a
-second one. That is one message becoming two, never a message lost. amenbo itself never holds delivery
+That makes batching yours to do, and cheap: hold what you were given **per project**, and send that
+project's batch when you see `0`. What you hold for another project is not ready to go — its own runs will
+say so.
+
+**`0` means your project's queue is empty as of this launch — it does not promise nothing more is coming.**
+An event written a moment later is delivered like any other, so a batch you flushed on `0` may be followed
+by a second one. That is one message becoming two, never a message lost. amenbo itself never holds delivery
 back: what it sends, it sends in order, as fast as it can.
 
 ## Settings and secrets
