@@ -331,7 +331,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
 | `config` | none | your settings schema: `key` / `label` / `secret` / `required` / `type` / `options` / `default` |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
-| `agent` | none | what you say for yourself where an AI reads how to work here: `when` / `commands` |
+| `agent` | none | how your plugin is driven, where an AI reads how to work here: `when` / `commands`. How much of it reaches the AI depends on the badge — see below |
 
 An `events` entry is either the event's name or an object narrowing where it fires.
 
@@ -349,8 +349,8 @@ an older one.
 ### Saying what you are for
 
 An AI working in a folder reads one document to learn how to work there: `amenbo agent --json`. A plugin
-the user has installed and enabled is part of what that document owes — and amenbo has no words of its own
-for what your plugin is for. So it relays yours, from an optional `agent` block:
+the user has installed and enabled is part of what that document owes, so yours is named in it — and an
+optional `agent` block is where you say how it is driven:
 
 ```yaml
 agent:
@@ -372,10 +372,35 @@ writing your own name into it, which is the one thing this shape keeps out.
 **A plugin that is all observation hooks names its occasion and stops there** — no `commands`. There is
 nothing for a reader to call, and saying *when this plugin matters* is still worth saying.
 
+#### What of it an AI actually reads
+
+**Your sentences are relayed to the AI only if your plugin is official.** What arrives at the entry point
+for a plugin that is not:
+
+| | Reaches the AI |
+| --- | --- |
+| `name`, `events` | yes — amenbo's own vocabulary, not your prose |
+| each `cmd` | yes, as the line to type. Its grammar is fixed, so no sentence fits in it |
+| `when`, each `does`, `desc` | **no** |
+
+Your `desc` is not lost, it is addressed elsewhere: `plugin list` shows it whoever wrote it, because a
+person reads that face. `when` and `does` reach nobody today unless the badge is yours.
+
+**Why the line is drawn by author rather than by content.** Whether a sentence describes your plugin or
+instructs the AI reading it is not something a machine can decide, and nothing you publish is read by a
+reviewer before it ships — a catalog is a shelf, not a review queue. The badge is granted by catalog
+curation and cannot be self-declared, so it is the one split a machine can make without ever being wrong
+about which side you are on. amenbo takes the safe side by giving the sentences no field to arrive in
+rather than by filtering them: loosening this later is easy, and taking back something already relayed is
+not.
+
+**Write the block anyway.** `when` is required the moment you write one, and `cmd` is what carries your
+plugin to the AI. If the rule is ever loosened, what you wrote is already in place.
+
 Two more things worth knowing:
 
-- **It is relayed in the language you wrote it in.** amenbo's own entry point carries its wording in more
-  than one; it holds no translation for yours.
+- **What is relayed is relayed in the language you wrote it in.** amenbo's own entry point carries its
+  wording in more than one; it holds no translation for yours.
 - **Only an enabled plugin is listed.** A plugin that is not enabled would be refused if it were called,
   so it is not offered.
 
