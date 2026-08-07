@@ -44,10 +44,16 @@ assets:
 # `cmd` holds this plugin's own command face and nothing more: amenbo puts `amenbo plugin run <name> ` in
 # front of it, from the name it read, so a reader gets a line they can type. A plugin whose whole surface
 # is observation hooks writes `when` alone and no `commands`.
+#
+# `steps` is where in amenbo's own working cycle a call is a tool, each step named by id (`<run>.<step>`,
+# read off `amenbo agent --json`). The line to type is hung there; the sentences above stay here. Omit it
+# and the call is a tool for no step in particular.
 agent:
   when: Starting work on a task that will produce commits, and wanting it isolated
   commands:
     - cmd: start <task-id>
       does: Cuts a worktree for the task outside the repository, and returns the line to cd into it
+      steps: [worktree.cut-per-task, worktree.run-the-line]
     - cmd: finish <task-id>
       does: Removes that worktree and its branch, once the work has been merged
+      steps: [worktree.fold-it]

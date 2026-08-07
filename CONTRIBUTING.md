@@ -75,7 +75,7 @@ single-`url` form stays valid and is not deprecated.
 | `min_amenbo` | string | none | Minimum amenbo version the plugin needs, as semver — below it, amenbo warns or refuses to enable/run it. |
 | `config` | list | none | The plugin's configuration schema: a flat list of fields amenbo renders as a form and injects at run time. |
 | `events` | list | none | The events your plugin's hook fires on. Absent means it observes nothing — a command-only plugin. |
-| `agent` | map | none | What the plugin says for itself where an AI reads how to work in a folder: `when` (the occasion, required once the block is written) and `commands` (`cmd` / `does`, one per call). Write your own command face only — amenbo prepends `amenbo plugin run <name> `. See [Writing a plugin](docs/writing-a-plugin.md#saying-what-you-are-for). |
+| `agent` | map | none | What the plugin says for itself where an AI reads how to work in a folder: `when` (the occasion, required once the block is written) and `commands` (`cmd` / `does` / `steps`, one per call). Write your own command face only — amenbo prepends `amenbo plugin run <name> `; `steps` names the steps of amenbo's own cycle a call is a tool for, by id. See [Writing a plugin](docs/writing-a-plugin.md#saying-what-you-are-for). |
 
 An `events` entry is either the event's name, or an object narrowing where it fires:
 
@@ -128,8 +128,10 @@ agent:
   commands:
     - cmd: start <task-id>
       does: Cuts a worktree for the task outside the repository, and returns the line to cd into it
+      steps: [worktree.cut-per-task, worktree.run-the-line]
     - cmd: finish <task-id>
       does: Removes that worktree and its branch, once the work has been merged
+      steps: [worktree.fold-it]
 ```
 
 A plugin that is one file on every platform it lists writes the single form in place of `assets`:

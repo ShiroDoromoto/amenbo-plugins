@@ -29,5 +29,7 @@ agent:
   commands:
     - cmd: start <task-id>
       does: Cuts a worktree for the task outside the repository, and returns the line to cd into it
+      steps: [worktree.cut-per-task, worktree.run-the-line]
     - cmd: finish <task-id>
       does: Removes that worktree and its branch, once the work has been merged
+      steps: [worktree.fold-it]

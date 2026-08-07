@@ -358,12 +358,14 @@ agent:
   commands:
     - cmd: <subcommand and arguments>
       does: what it does, and what it returns (one line)
+      steps: [<the ids of amenbo's own steps this call is a tool for>]
 ```
 
 | Field | Meaning |
 | --- | --- |
 | `when` | the occasion to reach for you. Required once you write the block — a block naming no occasion gives a reader nothing to act on |
 | `commands` | one entry per call your command face answers. Absent means none |
+| `steps` | on one call: where in amenbo's own working cycle it is a tool. Absent means nowhere in particular — see below |
 
 **Write only your own command face.** amenbo puts `amenbo plugin run <name> ` in front of it, from the
 name it just read, so the reader receives a line they can type. Writing the whole line yourself would be
@@ -371,6 +373,44 @@ writing your own name into it, which is the one thing this shape keeps out.
 
 **A plugin that is all observation hooks names its occasion and stops there** — no `commands`. There is
 nothing for a reader to call, and saying *when this plugin matters* is still worth saying.
+
+#### Where your call is a tool
+
+Most of `amenbo agent --json` is amenbo's own working practice, written as runs of steps, and each step
+carries an `id`. A step can say *cut a worktree per task* while naming no command, because amenbo's source
+holds no plugin's name — so an AI told to cut has no hand until it finds yours on its own.
+
+`steps` closes that. Name the step your call serves, and amenbo hangs the line to type there, under
+`tools`:
+
+```yaml
+commands:
+  - cmd: start <task-id>
+    does: Cuts a worktree for the task outside the repository, and returns the line to cd into it
+    steps: [worktree.cut-per-task, worktree.run-the-line]
+  - cmd: finish <task-id>
+    does: Removes that worktree and its branch, once the work has been merged
+    steps: [worktree.fold-it]
+```
+
+A ref is `<run>.<step>`, two names joined by one dot:
+
+- **the run** — `agentCycle` for the backbone, or a cycle's key otherwise (`cycles.worktree` is written
+  `worktree`);
+- **the step** — its `id` within that run.
+
+Read both off the document itself: `amenbo agent --json` shows every run and the `id` of every step in it.
+One call may name up to four.
+
+**Only the calling form travels.** Your `when` and each `does` stay in your own entry, where a reader meets
+them as yours; a step's body is amenbo's working practice, and amenbo answers for every word of it. That is
+why this one field is drawn the same for a third party as for an official plugin — a `cmd` is held to a
+grammar, so it is the one thing that can cross without carrying a sentence with it.
+
+**Naming a step that is not there is not an error.** The steps travel with amenbo while your manifest stays
+where it was installed, so one can be renamed or retired — and a whole cycle can be left out of the run a
+reader is handed, the way `worktree` is off a git checkout. A ref that resolves to nothing hangs nowhere,
+and takes nothing else with it.
 
 #### What of it an AI actually reads
 
@@ -380,7 +420,7 @@ for a plugin that is not:
 | | Reaches the AI |
 | --- | --- |
 | `name`, `events` | yes — amenbo's own vocabulary, not your prose |
-| each `cmd` | yes, as the line to type. Its grammar is fixed, so no sentence fits in it |
+| each `cmd`, and the `steps` it is hung on | yes, as the line to type. Its grammar is fixed, so no sentence fits in it |
 | `when`, each `does`, `desc` | **no** |
 
 Your `desc` is not lost, it is addressed elsewhere: `plugin list` shows it whoever wrote it, because a
