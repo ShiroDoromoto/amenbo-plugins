@@ -298,6 +298,9 @@ This is not a sandbox, and amenbo does not pretend otherwise: you have a shell, 
 The trust boundary is the user enabling you. What this door is for is that the content you need has a
 supported way in, one that keeps working.
 
+What you read here is the one record a hook named. Carrying the data itself off the device has doors of its
+own — [Carrying data outward](carrying-data-outward.md).
+
 ## The manifest
 
 One manifest is the unit of distribution. To be listed in the official catalog, open a pull request

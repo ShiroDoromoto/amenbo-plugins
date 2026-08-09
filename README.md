@@ -8,6 +8,7 @@ task & project manager where an AI and a human collaborate on one machine.
 | | English | 日本語 |
 |---|---|---|
 | Writing a plugin | [`docs/writing-a-plugin.md`](docs/writing-a-plugin.md) | [`docs/writing-a-plugin.ja.md`](docs/writing-a-plugin.ja.md) |
+| Carrying data outward | [`docs/carrying-data-outward.md`](docs/carrying-data-outward.md) | [`docs/carrying-data-outward.ja.md`](docs/carrying-data-outward.ja.md) |
 | Running a catalog | [`docs/running-a-catalog.md`](docs/running-a-catalog.md) | [`docs/running-a-catalog.ja.md`](docs/running-a-catalog.ja.md) |
 
 Each plugin is one manifest under [`plugins/`](plugins/): a small YAML file describing the plugin well
