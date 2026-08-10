@@ -4,8 +4,10 @@
 # workflow is what makes that file. For every reviewed manifest it validates the manifest with amenbo's
 # own validator, downloads each distributable it publishes — one for every OS, where the plugin is built
 # per platform — checks it against the declared digest, signs those exact bytes with the catalog key, and
-# publishes to GitHub Pages: the aggregated `catalog.json` everyone fetches, and a `plugins/<name>.json`
-# per plugin holding what an install needs, which is fetched only for the plugin being opened or installed.
+# publishes to GitHub Pages: the aggregated `catalog.json` everyone fetches, a `plugins/<name>.json` per
+# plugin holding what an install needs, which is fetched only for the plugin being opened or installed, and
+# a `catalog.<lang>.json` per language an author translated their listing into, which a reader fetches for
+# their own language alone.
 #
 # It runs on `main` only — never on a pull request. Two reasons: the private key stays out of any run a
 # submitter can influence, and a signature that says "these bytes went through this catalog's review" is
@@ -108,6 +110,7 @@ jobs:
           path: _site
 
   # Serve it: https://shirodoromoto.github.io/amenbo-plugins/catalog.json
+  #       and: https://shirodoromoto.github.io/amenbo-plugins/catalog.<lang>.json
   #       and: https://shirodoromoto.github.io/amenbo-plugins/plugins/<name>.json
   publish:
     needs: build

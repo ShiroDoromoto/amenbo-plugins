@@ -1,0 +1,18 @@
+desc: AI がやったことを Slack のチャンネルへ報告する
+config:
+  webhook_url:
+    label: Slack の Webhook URL
+  events:
+    label: 何を報告するか
+    options:
+      task.created: タスクが作成された
+      task.status_changed: タスクの状態が変わった
+      task.done: タスクが完了した
+      task.rejected: タスクを見送ると決めた
+      task.assigned: タスクの担当が決まった
+      task.moved: タスクが別のプロジェクトへ移った
+      task.deleted: タスクが削除された
+      decision.accepted: 決定が承認された
+      decision.rejected: 決定が却下された
+      comment.added: コメントが追加された
+      comment.removed: コメントが取り消された

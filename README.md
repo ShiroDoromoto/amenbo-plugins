@@ -33,6 +33,11 @@ amenbo has no server. Discovery is served entirely from static files and from Gi
   installed. A signature is the largest thing in a listing and the one thing nobody browsing needs.
 - Heavy signals (stars, download counts, README) are fetched **lazily** the same way, only for the one
   plugin a user opens — never for the whole catalog.
+- The lines a **person** reads — a plugin's `desc`, and the labels on its settings form — are published in
+  whatever languages its author wrote them in. The `desc` lines go into a `catalog.<lang>.json` beside the
+  listing, so a reader fetches their own language and not the other eighteen; the form labels ride inside
+  `plugins/<name>.json`, all languages at once, so an installed plugin's settings follow the reader's
+  language with no network at all.
 
 This keeps browsing fast and offline-friendly no matter how many plugins the catalog holds: what grows is
 the number of manifests, and the client already holds every listing after one fetch.
@@ -41,13 +46,17 @@ The catalog is served at:
 
 ```
 https://shirodoromoto.github.io/amenbo-plugins/catalog.json
+https://shirodoromoto.github.io/amenbo-plugins/catalog.<lang>.json
 https://shirodoromoto.github.io/amenbo-plugins/plugins/<name>.json
 ```
 
 Each entry carries a `detail_sum` — the digest of its detail document — so a client can tell that a plugin
 has a different build from the list fetch it already makes, without opening every detail to find out.
 
-Both are rebuilt by [`.github/workflows/catalog.yml`](.github/workflows/catalog.yml) on every push to
+A language nobody has translated a listing into has no document, and the 404 that fetching it gets is the
+answer rather than an error.
+
+All of them are rebuilt by [`.github/workflows/catalog.yml`](.github/workflows/catalog.yml) on every push to
 `main` and published to GitHub Pages — no server, just static files. Nothing is committed back to the
 repository: `plugins/` stays the reviewed truth, and everything served is derived from it every time.
 

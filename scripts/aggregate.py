@@ -35,6 +35,19 @@ carried without a change here, instead of being dropped from every install until
 thing this script still names by hand is the distributable, which it does not copy but rebuilds around a
 signature (see [DISTRIBUTABLE_KEYS]).
 
+An author writes their plugin's description in other languages beside the manifest — `plugins/<name>.ja.yaml`
+and its siblings — and amenbo reads them with it, splitting them the same two ways. The detail half needs
+nothing here: it rides inside `detail`, every language at once, because a detail document is fetched one
+plugin at a time and read offline afterwards. The list half is what this script lays out, as **one
+`catalog.<lang>.json` per language** beside `catalog.json` ([language_documents]) — a thin `name → desc`
+table, so a reader pays for their own language and not for the other eighteen. A language nobody translated
+the list half of gets no document at all, and the 404 a fetch then gets is the answer.
+
+The manifests are the `<name>.yaml` files alone: an overlay is read *with* its manifest, never as one of its
+own ([is_overlay]). Named on the command line it stands for the manifest it translates ([base_manifest]), so
+a pull request that only adds a translation is still checked against the plugin it belongs to — and its
+`detail_sum` moves, the translation being part of the detail document.
+
 Each entry also carries `detail_sum`, the digest of the detail document exactly as published. It is what
 lets a client notice a plugin has a different build from the one list fetch it already makes, now that the
 checksums themselves are a document away. It is computed here, over the bytes written, so it cannot be
@@ -118,15 +131,43 @@ def check_file_name(path: Path, manifest: dict) -> None:
         raise Rejected(f"file name does not match the manifest name ({path.name} vs name: {declared!r})")
 
 
-def check_manifest(amenbo: str, path: Path) -> tuple[dict, dict]:
-    """Run amenbo's validator over the manifest and, on success, return the two documents it split the
-    manifest into: `(entry, detail)`. Every problem it reports is re-raised instead.
+def is_overlay(path: Path) -> bool:
+    """Whether this file is a translation of a manifest rather than a manifest — `mail.ja.yaml`, not
+    `mail.yaml`.
+
+    A plugin's name is lower-case letters, digits and hyphens, so a dot left in the stem is the language
+    token and nothing else. amenbo reads an overlay along with the manifest it sits beside, so aggregating
+    one on its own would be validating a document that was never meant to stand up alone — every required
+    field of a manifest missing at once.
+    """
+    return "." in path.stem
+
+
+def base_manifest(path: Path) -> Path:
+    """The manifest a path belongs to: itself, or — for a translation — the manifest it translates.
+
+    Naming a translation on the command line means *check the plugin this belongs to*: it is the plugin
+    whose documents move, since a translation is published inside its detail document and so changes the
+    `detail_sum` in its listing. A pull request that adds only `mail.ja.yaml` is therefore checked, rather
+    than passing for having touched no manifest.
+    """
+    return path if not is_overlay(path) else path.with_name(path.stem.split(".", 1)[0] + path.suffix)
+
+
+def check_manifest(amenbo: str, path: Path) -> tuple[dict, dict, dict]:
+    """Run amenbo's validator over the manifest — and the translations beside it — and, on success, return
+    what it split them into: `(entry, entry_i18n, detail)`. Every problem it reports is re-raised instead.
 
     Publishing amenbo's own reading is what lets this script hold no list of fields to copy, and no idea of
     which half each belongs in: a field amenbo grows rides through untouched, and one amenbo does not know
     is not a field at all (its deserializer ignores unknown keys, the same forward-compatibility a client
     relies on). An amenbo too old to split the manifest is refused rather than guessed around — a document
     built from a guess is the silent drop this arrangement exists to end.
+
+    `entry_i18n` is the list half of the translations, one overlay per language; the detail half is already
+    inside `detail`. An amenbo old enough to split a manifest but not to read a translation answers without
+    the key, which reads as *nothing translated* — the plugin is still listed, in English, rather than held
+    back.
     """
     proc = subprocess.run(
         [amenbo, "--json", "plugin", "validate", str(path)],
@@ -150,7 +191,8 @@ def check_manifest(amenbo: str, path: Path) -> tuple[dict, dict]:
             "amenbo plugin validate reported ok but returned no entry/detail — the amenbo CLI is too old "
             "(it needs the build that splits a manifest into the two documents the catalog serves)"
         )
-    return entry, detail
+    entry_i18n = report.get("entry_i18n")
+    return entry, entry_i18n if isinstance(entry_i18n, dict) else {}, detail
 
 
 def check_official(manifest: dict) -> None:
@@ -355,9 +397,15 @@ def encode(document: dict) -> str:
 @dataclass
 class Published:
     """One plugin, as the catalog publishes it: its list entry, and the detail document the entry's
-    `detail_sum` names — carried together with the exact text that document is written as."""
+    `detail_sum` names — carried together with the exact text that document is written as.
+
+    `entry_i18n` is the list entry in the other languages its author wrote it in, keyed by language. It is
+    not part of either document: it is keyed by plugin name into the language documents once every plugin
+    has been through ([language_documents]).
+    """
 
     entry: dict
+    entry_i18n: dict
     detail: dict
     detail_text: str
 
@@ -369,9 +417,11 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
     The two documents are amenbo's own split of the manifest, with one thing rebuilt: [publish] replaces
     the detail's `url` / `checksum` / `assets` with the catalog's copy, signed over the exact bytes served
     ([DISTRIBUTABLE_KEYS]). Everything else rides through untouched, which is the point — the catalog holds
-    no second copy of amenbo's schema, and no second opinion about which document a field belongs in.
+    no second copy of amenbo's schema, and no second opinion about which document a field belongs in. The
+    translations ride through the same way: the detail half inside `detail`, so `detail_sum` is taken over
+    the bytes a reader will actually read, translations and all.
     """
-    entry, manifest_detail = check_manifest(args.amenbo, path)
+    entry, entry_i18n, manifest_detail = check_manifest(args.amenbo, path)
     check_file_name(path, entry)
     check_official(entry)
     entry.setdefault("official", False)
@@ -410,7 +460,26 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
     # Written here and nowhere else: whatever the manifest said about being recommended (amenbo does not
     # even read such a key) is replaced by what the curation list says.
     entry["featured"] = entry["name"] in args.featured_names
-    return Published(entry=entry, detail=detail, detail_text=detail_text)
+    return Published(entry=entry, entry_i18n=entry_i18n, detail=detail, detail_text=detail_text)
+
+
+def language_documents(published: list[Published]) -> dict[str, dict]:
+    """The language documents to publish beside `catalog.json`, keyed by language.
+
+    Each one is the whole catalog's list half in that language — `{"<plugin>": {"desc": "…"}}` — so a
+    reader fetches one document for the listing they are drawing, rather than one per plugin. What amenbo
+    handed back is keyed in as it stands: which fields the list half of a translation has is amenbo's
+    answer, exactly as it is for the base entry.
+
+    Only the languages somebody translated get a document. An empty one would be nineteen fetches that
+    answer nothing, where a 404 already says *not translated* (and says it for a plugin's own missing
+    fields too, via the fallback to the base line).
+    """
+    documents: dict[str, dict] = {}
+    for p in published:
+        for lang, overlay in p.entry_i18n.items():
+            documents.setdefault(lang, {})[p.entry["name"]] = overlay
+    return documents
 
 
 def report(lines: list[str]) -> None:
@@ -457,7 +526,14 @@ def main() -> int:
         )
         return 1
 
-    manifests = sorted(args.manifests) if args.manifests else sorted(args.plugins_dir.glob("*.yaml"))
+    # A translation is read with its manifest, never as one of its own: named on the command line it
+    # stands for the manifest it translates ([base_manifest]), and swept up off the directory it is
+    # skipped, the manifest beside it already accounting for it.
+    manifests = (
+        sorted({base_manifest(path) for path in args.manifests})
+        if args.manifests
+        else sorted(path for path in args.plugins_dir.glob("*.yaml") if not is_overlay(path))
+    )
     published: list[Published] = []
     rejections: list[str] = []
     for path in manifests:
@@ -477,6 +553,11 @@ def main() -> int:
         for p in published
     ]
     lines += [f"- **rejected** {r}" for r in rejections]
+    languages = language_documents(published)
+    lines += [
+        f"- translated listing: `{lang}` ({len(entries)} plugin(s))"
+        for lang, entries in sorted(languages.items())
+    ]
     # A curated name that matches no manifest is a typo that would otherwise fail silently — the plugin
     # simply never gets its badge. Only worth saying on a full run: the pull-request gate aggregates the
     # manifests one PR touched, where every *other* recommended plugin is legitimately absent.
@@ -502,13 +583,22 @@ def main() -> int:
     for p in published:
         (args.detail_dir / f"{p.entry['name']}.json").write_text(p.detail_text)
 
+    # The language documents go beside the listing, which is how a client resolves one: the same base URL,
+    # the language in the name. They are written before it for the same reason the details are — a listing
+    # is what sends a reader after them.
+    for lang, entries in sorted(languages.items()):
+        args.out.with_name(f"{args.out.stem}.{lang}{args.out.suffix}").write_text(encode(entries))
+
     catalog = {
         "catalog_v": CATALOG_V,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "plugins": [p.entry for p in published],
     }
     args.out.write_text(encode(catalog))
-    print(f"wrote {args.out} and {len(published)} detail document(s) under {args.detail_dir}")
+    print(
+        f"wrote {args.out}, {len(published)} detail document(s) under {args.detail_dir}, "
+        f"and {len(languages)} translated listing(s)"
+    )
     return 0
 
 

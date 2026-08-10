@@ -67,11 +67,20 @@ jobs:
       # surface against the entries already listed too, and validating the whole catalog is cheap.
       #
       # `plugin validate` reports every problem in a manifest rather than the first, and the loop keeps
-      # going after a failing one, so a single run tells a submitter everything they have to fix.
+      # going after a failing one, so a single run tells a submitter everything they have to fix. The
+      # translations beside a manifest (`plugins/<name>.<lang>.yaml`) are read as part of validating it, so
+      # they are not looped over themselves — an overlay handed to the validator as a manifest would be
+      # refused for missing every field a manifest requires.
       - name: Validate every manifest
         run: |
           shopt -s nullglob
-          manifests=(plugins/*.yaml)
+          manifests=()
+          for path in plugins/*.yaml; do
+            # A second dot is the language token of a translation, a plugin's name being lower-case
+            # letters, digits and hyphens.
+            case "${path#plugins/}" in *.*.yaml) continue ;; esac
+            manifests+=("$path")
+          done
           if [ ${#manifests[@]} -eq 0 ]; then
             echo "No manifests to validate."
             exit 0

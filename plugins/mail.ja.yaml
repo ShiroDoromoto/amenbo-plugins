@@ -1,0 +1,28 @@
+desc: AI がやったことをメールで報告する
+config:
+  smtp_host:
+    label: SMTP サーバー（Gmail なら smtp.gmail.com）
+  smtp_port:
+    label: ポート番号
+  smtp_user:
+    label: アカウント（Gmail なら自分のアドレス）
+  smtp_password:
+    label: パスワード（Gmail ならアプリパスワード）
+  from:
+    label: 差出人（未入力ならアカウントのアドレス）
+  to:
+    label: 宛先（未入力ならアカウントのアドレス・複数はカンマ区切り）
+  events:
+    label: 何を報告するか
+    options:
+      task.created: タスクが作成された
+      task.status_changed: タスクの状態が変わった
+      task.done: タスクが完了した
+      task.rejected: タスクを見送ると決めた
+      task.assigned: タスクの担当が決まった
+      task.moved: タスクが別のプロジェクトへ移った
+      task.deleted: タスクが削除された
+      decision.accepted: 決定が承認された
+      decision.rejected: 決定が却下された
+      comment.added: コメントが追加された
+      comment.removed: コメントが取り消された

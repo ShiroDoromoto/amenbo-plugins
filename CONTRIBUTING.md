@@ -3,6 +3,13 @@
 To list a plugin, open a pull request that adds **one** file: `plugins/<name>.yaml`. One manifest, one
 plugin, one file named for the plugin.
 
+The only thing that may come with it is your description in other languages, as
+`plugins/<name>.<lang>.yaml` — read as part of the manifest beside it, never as a manifest of its own. What
+goes in one is
+[Writing a plugin](docs/writing-a-plugin.md#writing-it-in-other-languages)
+([日本語](docs/writing-a-plugin.ja.md#他の言語で書く)); translations are welcome in a pull request of their
+own, later, and are the one change to a listing that touches no bytes anybody downloads.
+
 Listing is review, not endorsement: a merged PR means the manifest is well-formed and the plugin looked
 reasonable — it does **not** make the plugin *official*, nor *featured* (see the trust tiers in the
 [README](README.md#trust-tiers--official-is-not-the-same-as-listed)).
@@ -150,6 +157,7 @@ A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest
 ## Checklist before you open the PR
 
 - [ ] The file is `plugins/<name>.yaml`, and `<name>` matches the manifest's `name`.
+- [ ] Translating it too: each one is `plugins/<name>.<lang>.yaml`, and translates only fields the manifest actually has.
 - [ ] All required fields are present and `os` is non-empty.
 - [ ] You wrote **one** distributable form: either `url` + `checksum`, or `assets`.
 - [ ] Using `assets`: every OS in `os` is answered by at least one key (`<os>` or `<os>-<arch>`), and no key names an OS that is not in it.
@@ -182,8 +190,8 @@ again over every listed manifest, and then does what only it can:
 
 - **signs each of your assets with the catalog key** — one signature per set of bytes, stored beside the
   `checksum` it belongs to — and publishes to GitHub Pages, where every amenbo picks it up: your plugin's
-  line in the aggregated `catalog.json`, and the `plugins/<name>.json` an install reads the signature and
-  digests from;
+  line in the aggregated `catalog.json`, that line again in a `catalog.<lang>.json` for each language you
+  translated it into, and the `plugins/<name>.json` an install reads the signature and digests from;
 - **drops** an entry whose checks now fail — a `url` that has rotted since it was merged, say — with the
   reason in the workflow summary, rather than holding the whole catalog back.
 

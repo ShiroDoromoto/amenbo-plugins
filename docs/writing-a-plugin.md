@@ -447,6 +447,67 @@ Two more things worth knowing:
 - **Only an enabled plugin is listed.** A plugin that is not enabled would be refused if it were called,
   so it is not offered.
 
+### Writing it in other languages
+
+Two of the things you write are read by a **person**: your `desc`, and the labels on your settings form.
+Those amenbo shows in the reader's own language, when you have written one. Everything else stays in the
+language you wrote it in — `agent.when` and each `does` are read by an AI, and the CLI answers in English by
+contract, so neither has a translation to pick from.
+
+A translation is **a file beside your manifest**, named for its language:
+
+```
+plugins/mail.yaml       # the manifest. This one is English
+plugins/mail.ja.yaml    # Japanese
+plugins/mail.de.yaml    # German
+```
+
+Write only what you are translating. Everything you leave out falls back to the manifest, so a translation
+covering one field is a normal thing to publish, not a half-finished one.
+
+```yaml
+# plugins/mail.ja.yaml
+desc: AI がやったことをメールで報告する
+config:
+  smtp_host:
+    label: SMTP サーバー（Gmail なら smtp.gmail.com）
+  events:
+    label: 何を報告するか
+    options:
+      task.done: タスクが完了した
+```
+
+**`config` is keyed here, not listed.** In the manifest it is a list in the order your form is drawn in;
+here each field is looked up by its `key` and each option by its `value`. A translation carries no order of
+its own, and lining the two up by position is what would break every language at once the day you reorder
+the form.
+
+| Translatable | Not translatable |
+| --- | --- |
+| `desc` | `name`, `author`, `repo`, `category`, and the rest of the manifest |
+| a config field's `label` | a config field's `key`, `type`, `default` — and an option's `value`, which is what travels to your plugin |
+| a config option's `label` | `agent.when` and each `does` — an AI reads those, and they stay English |
+
+The languages are the 19 amenbo itself is read in: `en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`,
+`fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`, `pl`, `nl`, `uk`.
+
+Your translations are checked along with the manifest, by the same command — you name the manifest, and
+whatever is beside it is read with it:
+
+```sh
+amenbo plugin validate plugins/mail.yaml
+```
+
+Four things are refused, all of them yours to fix while the file is still in your hands: a language from
+outside that list, a field the manifest does not have, a `key` or option `value` it does not declare, and
+text past the cap its base field obeys. Nothing is quietly ignored — a label that never appears because it
+was filed under a typo is the failure this door exists to prevent.
+
+The catalog publishes the two halves the way they are read. The `desc` lines go into a
+`catalog.<lang>.json` beside the listing, so a browser fetches one language and not nineteen; the form
+labels ride inside your `plugins/<name>.json`, all languages at once, so a settings form follows the
+reader's language with no network at all once your plugin is installed. Neither is yours to assemble.
+
 ## What the asset may be
 
 Whatever `url` serves is recognised by its leading bytes, not by the extension:
