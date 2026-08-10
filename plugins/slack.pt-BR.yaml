@@ -1,0 +1,18 @@
+desc: Informar em um canal do Slack o que a sua IA fez
+config:
+  webhook_url:
+    label: URL do webhook do Slack
+  events:
+    label: O que informar
+    options:
+      task.created: Uma tarefa foi criada
+      task.status_changed: O status de uma tarefa mudou
+      task.done: Uma tarefa foi concluída
+      task.rejected: Uma tarefa foi recusada
+      task.assigned: Uma tarefa foi atribuída
+      task.moved: Uma tarefa foi movida para outro projeto
+      task.deleted: Uma tarefa foi excluída
+      decision.accepted: Uma decisão foi aceita
+      decision.rejected: Uma decisão foi recusada
+      comment.added: Um comentário foi adicionado
+      comment.removed: Um comentário foi retirado

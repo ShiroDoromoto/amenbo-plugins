@@ -1,0 +1,18 @@
+desc: Melaporkan apa yang dikerjakan AI Anda ke kanal Slack
+config:
+  webhook_url:
+    label: URL webhook Slack
+  events:
+    label: Apa yang dilaporkan
+    options:
+      task.created: Tugas dibuat
+      task.status_changed: Status tugas berubah
+      task.done: Tugas selesai
+      task.rejected: Tugas diputuskan tidak dikerjakan
+      task.assigned: Tugas ditugaskan
+      task.moved: Tugas dipindahkan ke proyek lain
+      task.deleted: Tugas dihapus
+      decision.accepted: Keputusan diterima
+      decision.rejected: Keputusan ditolak
+      comment.added: Komentar ditambahkan
+      comment.removed: Komentar ditarik

@@ -1,0 +1,18 @@
+desc: In einem Slack-Kanal melden, was deine KI getan hat
+config:
+  webhook_url:
+    label: Slack-Webhook-URL
+  events:
+    label: Was gemeldet wird
+    options:
+      task.created: Eine Aufgabe wurde erstellt
+      task.status_changed: Der Status einer Aufgabe hat sich geändert
+      task.done: Eine Aufgabe wurde erledigt
+      task.rejected: Eine Aufgabe wurde verworfen
+      task.assigned: Eine Aufgabe wurde zugewiesen
+      task.moved: Eine Aufgabe wurde in ein anderes Projekt verschoben
+      task.deleted: Eine Aufgabe wurde gelöscht
+      decision.accepted: Eine Entscheidung wurde angenommen
+      decision.rejected: Eine Entscheidung wurde abgelehnt
+      comment.added: Ein Kommentar wurde hinzugefügt
+      comment.removed: Ein Kommentar wurde zurückgenommen

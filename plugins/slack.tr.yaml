@@ -1,0 +1,18 @@
+desc: Yapay zekânızın yaptıklarını bir Slack kanalına bildirmek
+config:
+  webhook_url:
+    label: Slack webhook adresi
+  events:
+    label: Ne bildirilsin
+    options:
+      task.created: Bir iş oluşturuldu
+      task.status_changed: Bir işin durumu değişti
+      task.done: Bir iş bitirildi
+      task.rejected: Bir iş yapılmamaya karar verildi
+      task.assigned: Bir işin sorumlusu belirlendi
+      task.moved: Bir iş başka bir projeye taşındı
+      task.deleted: Bir iş silindi
+      decision.accepted: Bir karar kabul edildi
+      decision.rejected: Bir karar reddedildi
+      comment.added: Bir yorum eklendi
+      comment.removed: Bir yorum geri alındı

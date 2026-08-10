@@ -1,0 +1,18 @@
+desc: AI가 한 일을 Slack 채널로 보고하기
+config:
+  webhook_url:
+    label: Slack Webhook URL
+  events:
+    label: 무엇을 보고할지
+    options:
+      task.created: 작업이 만들어짐
+      task.status_changed: 작업의 상태가 바뀜
+      task.done: 작업이 완료됨
+      task.rejected: 작업을 하지 않기로 함
+      task.assigned: 작업의 담당이 정해짐
+      task.moved: 작업이 다른 프로젝트로 옮겨짐
+      task.deleted: 작업이 삭제됨
+      decision.accepted: 결정이 채택됨
+      decision.rejected: 결정이 기각됨
+      comment.added: 댓글이 달림
+      comment.removed: 댓글이 철회됨
