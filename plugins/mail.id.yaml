@@ -1,0 +1,28 @@
+desc: Melaporkan lewat email apa yang dikerjakan AI Anda
+config:
+  smtp_host:
+    label: "Server SMTP (Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Port
+  smtp_user:
+    label: "Akun (Gmail: alamat Anda)"
+  smtp_password:
+    label: "Kata sandi (Gmail: sandi aplikasi)"
+  from:
+    label: Pengirim (kosong berarti alamat akun)
+  to:
+    label: Penerima (kosong berarti alamat akun; beberapa dipisah koma)
+  events:
+    label: Apa yang dilaporkan
+    options:
+      task.created: Tugas dibuat
+      task.status_changed: Status tugas berubah
+      task.done: Tugas selesai
+      task.rejected: Tugas dibatalkan
+      task.assigned: Penanggung jawab tugas berubah
+      task.moved: Tugas pindah ke proyek lain
+      task.deleted: Tugas dihapus
+      decision.accepted: Keputusan diterima
+      decision.rejected: Keputusan ditolak
+      comment.added: Komentar ditambahkan
+      comment.removed: Komentar ditarik

@@ -1,0 +1,28 @@
+desc: आपकी AI ने जो किया, उसकी खबर ईमेल से देता है
+config:
+  smtp_host:
+    label: SMTP सर्वर (Gmail के लिए smtp.gmail.com)
+  smtp_port:
+    label: पोर्ट
+  smtp_user:
+    label: खाता (Gmail में आपका पता)
+  smtp_password:
+    label: पासवर्ड (Gmail में ऐप पासवर्ड)
+  from:
+    label: भेजने वाला (खाली छोड़ें तो खाते का पता)
+  to:
+    label: पाने वाला (खाली छोड़ें तो खाते का पता; कई हों तो कॉमा से अलग करें)
+  events:
+    label: किसकी खबर देनी है
+    options:
+      task.created: टास्क बनाया गया
+      task.status_changed: टास्क की स्थिति बदली
+      task.done: टास्क पूरा हुआ
+      task.rejected: टास्क छोड़ दिया गया
+      task.assigned: टास्क किसी और को सौंपा गया
+      task.moved: टास्क दूसरे प्रोजेक्ट में गया
+      task.deleted: टास्क मिटाया गया
+      decision.accepted: फ़ैसला स्वीकार हुआ
+      decision.rejected: फ़ैसला अस्वीकार हुआ
+      comment.added: टिप्पणी जोड़ी गई
+      comment.removed: टिप्पणी वापस ली गई

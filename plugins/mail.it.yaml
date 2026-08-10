@@ -1,0 +1,28 @@
+desc: Segnala per e-mail quello che ha fatto la tua IA
+config:
+  smtp_host:
+    label: "Server SMTP (Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Porta
+  smtp_user:
+    label: "Account (Gmail: il tuo indirizzo)"
+  smtp_password:
+    label: "Password (Gmail: una password per le app)"
+  from:
+    label: Mittente (se vuoto, l'account)
+  to:
+    label: Destinatario (se vuoto, l'account; più indirizzi separati da virgole)
+  events:
+    label: Che cosa segnalare
+    options:
+      task.created: Un'attività è stata creata
+      task.status_changed: Lo stato di un'attività è cambiato
+      task.done: Un'attività è stata completata
+      task.rejected: Un'attività è stata scartata
+      task.assigned: Un'attività è stata riassegnata
+      task.moved: Un'attività è passata a un altro progetto
+      task.deleted: Un'attività è stata eliminata
+      decision.accepted: Una decisione è stata accettata
+      decision.rejected: Una decisione è stata respinta
+      comment.added: È stato aggiunto un commento
+      comment.removed: È stato ritirato un commento

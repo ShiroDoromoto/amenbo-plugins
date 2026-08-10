@@ -1,0 +1,28 @@
+desc: Сообщает по почте, что сделал ваш ИИ
+config:
+  smtp_host:
+    label: "Сервер SMTP (для Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Порт
+  smtp_user:
+    label: "Учётная запись (для Gmail: ваш адрес)"
+  smtp_password:
+    label: "Пароль (для Gmail: пароль приложения)"
+  from:
+    label: Отправитель (если пусто — учётная запись)
+  to:
+    label: Получатель (если пусто — учётная запись; несколько через запятую)
+  events:
+    label: О чём сообщать
+    options:
+      task.created: Задача создана
+      task.status_changed: Статус задачи изменён
+      task.done: Задача завершена
+      task.rejected: Задача отклонена
+      task.assigned: У задачи сменился исполнитель
+      task.moved: Задача перенесена в другой проект
+      task.deleted: Задача удалена
+      decision.accepted: Решение принято
+      decision.rejected: Решение отклонено
+      comment.added: Добавлен комментарий
+      comment.removed: Комментарий отозван

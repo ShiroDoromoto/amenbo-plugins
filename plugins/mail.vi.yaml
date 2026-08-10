@@ -1,0 +1,28 @@
+desc: Báo qua email những gì AI của bạn đã làm
+config:
+  smtp_host:
+    label: "Máy chủ SMTP (Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Cổng
+  smtp_user:
+    label: "Tài khoản (Gmail: địa chỉ của bạn)"
+  smtp_password:
+    label: "Mật khẩu (Gmail: mật khẩu ứng dụng)"
+  from:
+    label: Người gửi (bỏ trống thì lấy địa chỉ tài khoản)
+  to:
+    label: Người nhận (bỏ trống thì lấy địa chỉ tài khoản; nhiều người cách nhau bằng dấu phẩy)
+  events:
+    label: Báo những gì
+    options:
+      task.created: Công việc được tạo
+      task.status_changed: Trạng thái công việc thay đổi
+      task.done: Công việc hoàn thành
+      task.rejected: Công việc bị bác
+      task.assigned: Người phụ trách công việc thay đổi
+      task.moved: Công việc chuyển sang dự án khác
+      task.deleted: Công việc bị xóa
+      decision.accepted: Quyết định được chấp nhận
+      decision.rejected: Quyết định bị bác bỏ
+      comment.added: Bình luận được thêm
+      comment.removed: Bình luận bị thu hồi

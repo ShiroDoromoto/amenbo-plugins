@@ -1,0 +1,28 @@
+desc: Meldet per E-Mail, was Ihre KI getan hat
+config:
+  smtp_host:
+    label: "SMTP-Server (Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Port
+  smtp_user:
+    label: "Konto (Gmail: Ihre Adresse)"
+  smtp_password:
+    label: "Passwort (Gmail: ein App-Passwort)"
+  from:
+    label: Absender (leer, dann das Konto)
+  to:
+    label: Empfänger (leer, dann das Konto; mehrere durch Komma getrennt)
+  events:
+    label: Was gemeldet wird
+    options:
+      task.created: Eine Aufgabe wurde erstellt
+      task.status_changed: Der Status einer Aufgabe hat sich geändert
+      task.done: Eine Aufgabe wurde abgeschlossen
+      task.rejected: Eine Aufgabe wurde verworfen
+      task.assigned: Eine Aufgabe wurde neu zugewiesen
+      task.moved: Eine Aufgabe kam in ein anderes Projekt
+      task.deleted: Eine Aufgabe wurde gelöscht
+      decision.accepted: Eine Entscheidung wurde angenommen
+      decision.rejected: Eine Entscheidung wurde abgelehnt
+      comment.added: Ein Kommentar wurde hinzugefügt
+      comment.removed: Ein Kommentar wurde zurückgenommen

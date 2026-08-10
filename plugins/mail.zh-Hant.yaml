@@ -1,0 +1,28 @@
+desc: 用郵件報告 AI 做了什麼
+config:
+  smtp_host:
+    label: SMTP 伺服器（Gmail 為 smtp.gmail.com）
+  smtp_port:
+    label: 連接埠
+  smtp_user:
+    label: 帳號（Gmail 為你的信箱地址）
+  smtp_password:
+    label: 密碼（Gmail 需應用程式密碼）
+  from:
+    label: 寄件者（留空則用該帳號）
+  to:
+    label: 收件者（留空則用該帳號，多個以逗號分隔）
+  events:
+    label: 報告哪些事
+    options:
+      task.created: 任務被建立
+      task.status_changed: 任務狀態變更
+      task.done: 任務完成
+      task.rejected: 任務被否決
+      task.assigned: 任務負責人變更
+      task.moved: 任務移到其他專案
+      task.deleted: 任務被刪除
+      decision.accepted: 決定被採納
+      decision.rejected: 決定被否決
+      comment.added: 評論被新增
+      comment.removed: 評論被撤回
