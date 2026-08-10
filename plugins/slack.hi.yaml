@@ -1,0 +1,18 @@
+desc: आपके AI ने जो किया, उसे Slack चैनल पर बताना
+config:
+  webhook_url:
+    label: Slack वेबहुक URL
+  events:
+    label: क्या बताया जाए
+    options:
+      task.created: कोई काम बनाया गया
+      task.status_changed: किसी काम की स्थिति बदली
+      task.done: कोई काम पूरा हुआ
+      task.rejected: कोई काम न करने का तय हुआ
+      task.assigned: कोई काम सौंपा गया
+      task.moved: कोई काम दूसरे प्रोजेक्ट में गया
+      task.deleted: कोई काम मिटाया गया
+      decision.accepted: कोई निर्णय स्वीकार हुआ
+      decision.rejected: कोई निर्णय अस्वीकार हुआ
+      comment.added: कोई टिप्पणी जुड़ी
+      comment.removed: कोई टिप्पणी वापस ली गई

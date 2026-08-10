@@ -1,0 +1,18 @@
+desc: 把 AI 做過的事報告到 Slack 頻道
+config:
+  webhook_url:
+    label: Slack Webhook 位址
+  events:
+    label: 報告哪些事
+    options:
+      task.created: 建立了任務
+      task.status_changed: 任務的狀態變了
+      task.done: 完成了任務
+      task.rejected: 決定不做某個任務
+      task.assigned: 指派了任務
+      task.moved: 任務移到了另一個專案
+      task.deleted: 刪除了任務
+      decision.accepted: 採納了決策
+      decision.rejected: 否決了決策
+      comment.added: 新增了留言
+      comment.removed: 撤回了留言

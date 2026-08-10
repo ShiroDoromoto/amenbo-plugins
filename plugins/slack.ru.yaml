@@ -1,0 +1,18 @@
+desc: Сообщать в канал Slack о том, что сделал ваш ИИ
+config:
+  webhook_url:
+    label: URL вебхука Slack
+  events:
+    label: О чём сообщать
+    options:
+      task.created: Задача создана
+      task.status_changed: Статус задачи изменился
+      task.done: Задача завершена
+      task.rejected: Задачу решили не делать
+      task.assigned: У задачи назначен ответственный
+      task.moved: Задача перемещена в другой проект
+      task.deleted: Задача удалена
+      decision.accepted: Решение принято
+      decision.rejected: Решение отклонено
+      comment.added: Добавлен комментарий
+      comment.removed: Комментарий отозван

@@ -1,0 +1,18 @@
+desc: Повідомляти в канал Slack про те, що зробив ваш ШІ
+config:
+  webhook_url:
+    label: URL вебхука Slack
+  events:
+    label: Про що повідомляти
+    options:
+      task.created: Завдання створено
+      task.status_changed: Статус завдання змінився
+      task.done: Завдання завершено
+      task.rejected: Завдання вирішили не робити
+      task.assigned: Для завдання призначено відповідального
+      task.moved: Завдання переміщено до іншого проєкту
+      task.deleted: Завдання видалено
+      decision.accepted: Рішення прийнято
+      decision.rejected: Рішення відхилено
+      comment.added: Додано коментар
+      comment.removed: Коментар відкликано

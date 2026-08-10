@@ -1,0 +1,18 @@
+desc: In een Slack-kanaal melden wat je AI heeft gedaan
+config:
+  webhook_url:
+    label: Slack-webhook-URL
+  events:
+    label: Wat er gemeld wordt
+    options:
+      task.created: Een taak is aangemaakt
+      task.status_changed: De status van een taak is gewijzigd
+      task.done: Een taak is afgerond
+      task.rejected: Een taak is afgewezen
+      task.assigned: Een taak is toegewezen
+      task.moved: Een taak is naar een ander project verplaatst
+      task.deleted: Een taak is verwijderd
+      decision.accepted: Een besluit is aangenomen
+      decision.rejected: Een besluit is afgewezen
+      comment.added: Een opmerking is toegevoegd
+      comment.removed: Een opmerking is ingetrokken

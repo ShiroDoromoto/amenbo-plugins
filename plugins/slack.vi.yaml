@@ -1,0 +1,18 @@
+desc: Báo lên kênh Slack những gì AI của bạn đã làm
+config:
+  webhook_url:
+    label: URL webhook của Slack
+  events:
+    label: Báo những gì
+    options:
+      task.created: Một việc được tạo
+      task.status_changed: Trạng thái của một việc thay đổi
+      task.done: Một việc hoàn thành
+      task.rejected: Quyết định không làm một việc
+      task.assigned: Một việc được giao
+      task.moved: Một việc chuyển sang dự án khác
+      task.deleted: Một việc bị xoá
+      decision.accepted: Một quyết định được chấp nhận
+      decision.rejected: Một quyết định bị bác
+      comment.added: Một bình luận được thêm
+      comment.removed: Một bình luận bị rút lại
