@@ -2,8 +2,9 @@
 
 [English](running-a-catalog.md) · 日本語
 
-amenbo のプラグインカタログは、**静的ファイルを3つ置くだけ**です。サーバは要りません。公開する気のない
-プラグインを社内に配る、というのがいちばん多い建て方です。
+amenbo のプラグインカタログは、**静的ファイルを3つ置くだけ**です。プラグインの説明文を複数の言語で
+書くなら、そこに言語ごとの小さな1本が加わります。サーバは要りません。公開する気のないプラグインを
+社内に配る、というのがいちばん多い建て方です。
 
 この文書は、その**カタログを建てる側**に向けたものです。プラグインそのものの書き方は
 [プラグインを作る](writing-a-plugin.ja.md)にあります。
@@ -31,18 +32,20 @@ https://plugins.example.com/catalog.json publishes a signing key:
 つまり登録はブックマークではなく、**信頼の根を1つ増やす行為**です。鍵を公開していないカタログも登録
 できますが、閲覧できるだけで、そこからは何も install できません。
 
-## 置く3つのファイル
+## 置くファイル
 
-同じディレクトリに並べます。amenbo は `catalog.json` の URL から、残りの2つを相対で導きます。
+同じディレクトリに並べます。amenbo は `catalog.json` の URL から、残りを相対で導きます。
 
 | ファイル | 中身 | 誰がいつ取るか |
 | --- | --- | --- |
 | `catalog.json` | 一覧の描画に要るものだけ | 全員が、閲覧のたびに1回（1時間キャッシュ） |
 | `plugins/<name>.json` | install に要るもの（署名・checksum・設定・イベント） | 開いた／入れる1件だけ |
 | `catalog-key.pub` | 署名鍵の公開半分 | 登録のとき1回 |
+| `catalog.<lang>.json` | 一覧の説明文の、その言語ぶん | 全員が、閲覧のたびに1回（1時間キャッシュ）。自分の言語1本だけ |
 
 一覧と詳細を分けているのは、**署名が一覧でいちばん大きい**からです。閲覧しているだけの人が、全プラグイン
-ぶんの署名を落とす必要はありません。
+ぶんの署名を落とす必要はありません。言語を別文書にしているのも同じ形の理由で、19言語を `catalog.json` に
+同梱すると、読者は自分が読めない18言語ぶんを毎回払うことになります。
 
 ## `catalog.json`
 
@@ -77,6 +80,8 @@ https://plugins.example.com/catalog.json publishes a signing key:
 **どの項目が一覧に行き、どれが詳細に行くかを、あなたが決める必要はありません。** `amenbo plugin validate`
 に `--json` を付けると、manifest を `entry` と `detail` の2つに割って返します。集約はそれをそのまま
 publish するだけです——この形なら、amenbo が後からフィールドを増やしても、あなたのスクリプトは直りません。
+訳された欄は、その元になった欄と同じ面へ乗ります。だから同じ呼び出しが `entry_i18n`——一覧側の、言語ごとの
+1件——も一緒に返します。
 
 3つだけ、**カタログの持ち物**があります。amenbo は空で返すので、埋めるのは集約の側です。
 
@@ -87,6 +92,31 @@ publish するだけです——この形なら、amenbo が後からフィー�
 | `featured` | そのカタログのおすすめ。使わないなら `false` のままで結構です |
 
 `official` は**公式カタログの印**です。自分のカタログのエントリには書かないでください。
+
+## `catalog.<lang>.json`
+
+`catalog.json` の隣に置く、言語ごとの1本です。中身は一覧の `desc` だけを、プラグイン名で引ける表に
+したものです。
+
+```json
+{
+  "helloctl": { "desc": "毎日やることを、ひとつのコマンドに" }
+}
+```
+
+- **名前は一覧のものと同じ**です。この表に居ないプラグインは誰も訳していないプラグインで、その行には
+  英語の説明文がそのまま出ます。落ちたことは、行にも読者にも断りません。
+- **誰かが訳した言語だけ publish します。** 空の文書を置いても、404 が既に言っていること以上は言えません。
+  **404 は正常な答え**で、「その言語の訳はまだ無い」と読みます。クライアント側でもあなたのログでも、
+  エラーではありません。どの言語を持っているかの索引も置きません。
+- **`catalog.json` は手つかず**です。`desc` は作者が書いた言語のまま残り、そこが全言語の落ち先になります。
+- 設定項目のラベルはここには入りません。あちらは `plugins/<name>.json` に全言語まとめて乗るので、install
+  済みのプラグインの設定画面は通信なしで読者の言語に追随します。作者が書く側は
+  [プラグインを作る](writing-a-plugin.ja.md#他の言語で書く)にあります。
+
+**置き場所そのものが、この仕組みが第三者カタログでも効く理由**です。amenbo は言語別文書の在り処を、詳細
+文書と同じ規則で導きます——利用者が登録した `catalog.json` と同じ基点の下で、名前に言語が入っているもの。
+公式カタログだけの特別扱いは1つもありません。
 
 ## `plugins/<name>.json`
 
@@ -126,8 +156,10 @@ minisign -G -p catalog-key.pub -s catalog.key
 
 ## 集約スクリプト
 
-`plugins/*.yaml` を読み、`_site/` に3つのファイルを書き出す最小の形です。依存は amenbo と minisign
-だけで、`amenbo plugin validate --json` が返した2つの文書をそのまま publish します。
+`plugins/*.yaml` を読み、`_site/` にファイルを書き出す最小の形です。依存は amenbo と minisign
+だけで、`amenbo plugin validate --json` が返したものをそのまま publish します。このリポジトリ自身の
+[`scripts/aggregate.py`](../scripts/aggregate.py) は、これが育ったものです（おすすめの一覧・署名の
+持ち越し・ジョブサマリ）。この形で足りなくなったら読んでみてください。
 
 ```python
 #!/usr/bin/env python3
@@ -148,10 +180,12 @@ CATALOG_V = 1
 
 
 def documents(amenbo, manifest):
-    """manifest を amenbo に読ませ、割られた2つの文書を受け取る。
+    """manifest を amenbo に読ませ、割られた文書を受け取る。
 
     どのフィールドがどちらの文書に行くかを決めるのは amenbo で、このスクリプトではない。
-    amenbo が後からフィールドを増やしても、ここは直さずに済む。
+    amenbo が後からフィールドを増やしても、ここは直さずに済む。manifest の隣にある訳も
+    一緒に読まれ、同じように割られて返る——`entry_i18n` が一覧側の言語ごとの1件で、詳細側は
+    すでに `detail` の中に入っている。
     """
     proc = subprocess.run(
         [amenbo, "--json", "plugin", "validate", str(manifest)],
@@ -161,7 +195,7 @@ def documents(amenbo, manifest):
     report = json.loads(proc.stdout or "{}")
     if not report.get("ok"):
         sys.exit(f"{manifest}: {proc.stdout.strip() or proc.stderr.strip()}")
-    return report["entry"], report["detail"]
+    return report["entry"], report.get("entry_i18n") or {}, report["detail"]
 
 
 def signed(distributable, label, key, password):
@@ -200,8 +234,14 @@ def main():
 
     (args.out / "plugins").mkdir(parents=True, exist_ok=True)
     entries = []
+    # 一覧の説明文を、言語ごとにプラグイン名で引ける表へ集める。書き出すのは全件を通した後。
+    languages = {}
     for manifest in sorted(args.plugins_dir.glob("*.yaml")):
-        entry, detail = documents(args.amenbo, manifest)
+        # 訳は manifest ではない。`mail.ja.yaml` は `mail.yaml` と一緒に読まれる。
+        # プラグイン名にドットは入らないので、stem に残るドットが言語を指す。
+        if "." in manifest.stem:
+            continue
+        entry, entry_i18n, detail = documents(args.amenbo, manifest)
         # 公式バッジは amenbo チームのカタログのもの。ここで付けられるものではない。
         entry["official"] = False
         if detail.get("assets"):
@@ -215,6 +255,8 @@ def main():
         (args.out / "plugins" / f"{entry['name']}.json").write_text(text)
         # 書き出した詳細文書の digest。利用者の amenbo が「別のビルドだ」と気づく唯一の材料。
         entry["detail_sum"] = "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest()
+        for lang, line in entry_i18n.items():
+            languages.setdefault(lang, {})[entry["name"]] = line
         entries.append(entry)
         print(f"ok {entry['name']}")
 
@@ -224,7 +266,11 @@ def main():
         "plugins": entries,
     }
     (args.out / "catalog.json").write_text(encode(catalog))
+    # 誰かが訳した言語だけ。中身の無い文書は、404 が既に答えていること以上を答えない。
+    for lang, lines in sorted(languages.items()):
+        (args.out / f"catalog.{lang}.json").write_text(encode(lines))
     print(f"wrote {args.out}/catalog.json with {len(entries)} plugin(s)")
+    print(f"wrote {len(languages)} translated listing(s)")
 
 
 if __name__ == "__main__":

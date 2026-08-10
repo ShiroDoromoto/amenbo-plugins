@@ -2,9 +2,9 @@
 
 English · [日本語](running-a-catalog.ja.md)
 
-An amenbo plugin catalog is **three static files**. There is no server to run. The most common reason to
-stand one up is a closed shelf: plugins you have no intention of publishing, handed to people inside your
-own company.
+An amenbo plugin catalog is **three static files** — plus one small one per language, once your plugins are
+described in more than one. There is no server to run. The most common reason to stand one up is a closed
+shelf: plugins you have no intention of publishing, handed to people inside your own company.
 
 This document is for whoever is **running the catalog**. Writing the plugins themselves is
 [Writing a plugin](writing-a-plugin.md).
@@ -33,18 +33,21 @@ https://plugins.example.com/catalog.json publishes a signing key:
 So registering you is not a bookmark — it adds **one more root of trust**. A catalog that publishes no key
 can still be registered, but it can only be browsed: nothing on it installs.
 
-## The three files
+## The files
 
-They sit in one directory. amenbo derives the other two from the URL of `catalog.json`.
+They sit in one directory. amenbo derives every one of them from the URL of `catalog.json`.
 
 | File | What is in it | Who fetches it, and when |
 | --- | --- | --- |
 | `catalog.json` | only what a list has to draw | everyone, once per browse (cached for an hour) |
 | `plugins/<name>.json` | what an install needs: signature, checksum, settings, events | only the one plugin someone opens or installs |
 | `catalog-key.pub` | the public half of your signing key | once, at registration |
+| `catalog.<lang>.json` | the listing's descriptions in one language | everyone, once per browse (cached for an hour) — their own language and no other |
 
 The listing and the detail are separate because **the signature is the largest thing in a listing**.
-Nobody who is only browsing should have to download every plugin's.
+Nobody who is only browsing should have to download every plugin's. The language documents are separate
+from the listing for the same shape of reason: nineteen languages inside `catalog.json` would charge every
+reader for the eighteen they cannot read.
 
 ## `catalog.json`
 
@@ -78,7 +81,9 @@ The envelope, and one entry per plugin.
 
 **Which fields belong in the listing and which in the detail is not yours to decide.** `amenbo plugin
 validate --json` hands the manifest back already split into `entry` and `detail`, and aggregation just
-publishes the two. That way a field amenbo adds later rides through without a change on your side.
+publishes the two. That way a field amenbo adds later rides through without a change on your side. A
+translated field follows the base field it translates, so the same call answers with `entry_i18n` beside
+them — the listing half, one entry per language.
 
 Three values are the **catalog's own**. amenbo returns them empty, and aggregation fills them in.
 
@@ -89,6 +94,33 @@ Three values are the **catalog's own**. amenbo returns them empty, and aggregati
 | `featured` | your recommendation. Leave it `false` if you have no use for it |
 
 `official` is **the amenbo team's badge**. Do not set it on your entries.
+
+## `catalog.<lang>.json`
+
+One document per language, beside `catalog.json` — the listing's `desc` lines, and nothing else, keyed by
+plugin name.
+
+```json
+{
+  "helloctl": { "desc": "毎日やることを、ひとつのコマンドに" }
+}
+```
+
+- **The names are the ones in your listing.** A plugin missing from the document is a plugin nobody
+  translated, and its English line is what its row draws. Neither the row nor the reader is told that it
+  fell back.
+- **Only publish a language somebody translated something into.** An empty document says nothing the 404
+  does not already say. **A 404 is a normal answer** here — it reads as *not translated yet*, and it is not
+  an error on the client or in your logs. There is no index of which languages you have, either.
+- **`catalog.json` is untouched.** Its `desc` stays the language your authors wrote it in, which is where
+  every language falls back to.
+- The form labels are not here. They ride inside `plugins/<name>.json`, every language at once, so an
+  installed plugin's settings follow the reader with no network — see
+  [Writing a plugin](writing-a-plugin.md#writing-it-in-other-languages) for what an author writes.
+
+The **placement is what makes this work for you at all**. amenbo resolves a language document the same way
+it resolves a detail document: the same base URL as the `catalog.json` a user registered, with the language
+in the name. Nothing about it is special-cased for the official catalog.
 
 ## `plugins/<name>.json`
 
@@ -128,8 +160,10 @@ minisign -G -p catalog-key.pub -s catalog.key
 
 ## The aggregation script
 
-The smallest thing that reads `plugins/*.yaml` and writes the three files into `_site/`. Its only
-dependencies are amenbo and minisign, and it publishes what `amenbo plugin validate --json` returned.
+The smallest thing that reads `plugins/*.yaml` and writes the files into `_site/`. Its only dependencies
+are amenbo and minisign, and it publishes what `amenbo plugin validate --json` returned. This repository's
+own [`scripts/aggregate.py`](../scripts/aggregate.py) is the same script grown up — a curation list, a
+carried-over signature, a job summary — and it is worth reading once you outgrow this one.
 
 ```python
 #!/usr/bin/env python3
@@ -150,10 +184,12 @@ CATALOG_V = 1
 
 
 def documents(amenbo, manifest):
-    """Hand the manifest to amenbo and take back the two documents it splits into.
+    """Hand the manifest to amenbo and take back the documents it splits into.
 
     Which field belongs in which document is amenbo's answer, never this script's, so a
-    field amenbo grows later rides through without a change here.
+    field amenbo grows later rides through without a change here. The translations beside
+    the manifest are read with it and come back split the same way: `entry_i18n` is the
+    list half, one entry per language, and the detail half is already inside `detail`.
     """
     proc = subprocess.run(
         [amenbo, "--json", "plugin", "validate", str(manifest)],
@@ -163,7 +199,7 @@ def documents(amenbo, manifest):
     report = json.loads(proc.stdout or "{}")
     if not report.get("ok"):
         sys.exit(f"{manifest}: {proc.stdout.strip() or proc.stderr.strip()}")
-    return report["entry"], report["detail"]
+    return report["entry"], report.get("entry_i18n") or {}, report["detail"]
 
 
 def signed(distributable, label, key, password):
@@ -203,8 +239,15 @@ def main():
 
     (args.out / "plugins").mkdir(parents=True, exist_ok=True)
     entries = []
+    # The listing's desc lines per language, keyed by plugin name — written out at the end,
+    # once every plugin has contributed whatever languages its author wrote.
+    languages = {}
     for manifest in sorted(args.plugins_dir.glob("*.yaml")):
-        entry, detail = documents(args.amenbo, manifest)
+        # A translation is not a manifest: `mail.ja.yaml` is read with `mail.yaml`, not on its
+        # own. A plugin's name holds no dot, so a dot left in the stem is the language.
+        if "." in manifest.stem:
+            continue
+        entry, entry_i18n, detail = documents(args.amenbo, manifest)
         # The official badge belongs to the amenbo team's own catalog. Yours grants none.
         entry["official"] = False
         if detail.get("assets"):
@@ -218,6 +261,8 @@ def main():
         (args.out / "plugins" / f"{entry['name']}.json").write_text(text)
         # The digest of the detail document as written: what tells a client this build moved.
         entry["detail_sum"] = "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest()
+        for lang, line in entry_i18n.items():
+            languages.setdefault(lang, {})[entry["name"]] = line
         entries.append(entry)
         print(f"ok {entry['name']}")
 
@@ -227,7 +272,12 @@ def main():
         "plugins": entries,
     }
     (args.out / "catalog.json").write_text(encode(catalog))
+    # Only the languages somebody translated into. An empty document would answer nothing that
+    # the 404 does not already answer.
+    for lang, lines in sorted(languages.items()):
+        (args.out / f"catalog.{lang}.json").write_text(encode(lines))
     print(f"wrote {args.out}/catalog.json with {len(entries)} plugin(s)")
+    print(f"wrote {len(languages)} translated listing(s)")
 
 
 if __name__ == "__main__":
