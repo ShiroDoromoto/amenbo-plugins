@@ -1,0 +1,28 @@
+desc: Повідомляє поштою, що зробив ваш ШІ
+config:
+  smtp_host:
+    label: "Сервер SMTP (для Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Порт
+  smtp_user:
+    label: "Обліковий запис (для Gmail: ваша адреса)"
+  smtp_password:
+    label: "Пароль (для Gmail: пароль застосунку)"
+  from:
+    label: Відправник (якщо порожньо — обліковий запис)
+  to:
+    label: Одержувач (якщо порожньо — обліковий запис; кілька через кому)
+  events:
+    label: Про що повідомляти
+    options:
+      task.created: Задачу створено
+      task.status_changed: Статус задачі змінено
+      task.done: Задачу завершено
+      task.rejected: Задачу відхилено
+      task.assigned: Виконавця задачі змінено
+      task.moved: Задачу перенесено до іншого проєкту
+      task.deleted: Задачу видалено
+      decision.accepted: Рішення ухвалено
+      decision.rejected: Рішення відхилено
+      comment.added: Додано коментар
+      comment.removed: Коментар відкликано

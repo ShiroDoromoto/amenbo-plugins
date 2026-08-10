@@ -1,0 +1,28 @@
+desc: AI가 한 일을 메일로 알립니다
+config:
+  smtp_host:
+    label: SMTP 서버(Gmail은 smtp.gmail.com)
+  smtp_port:
+    label: 포트
+  smtp_user:
+    label: 계정(Gmail은 본인 주소)
+  smtp_password:
+    label: 비밀번호(Gmail은 앱 비밀번호)
+  from:
+    label: 보내는 사람(비우면 계정 주소)
+  to:
+    label: 받는 사람(비우면 계정 주소, 여럿은 쉼표로 구분)
+  events:
+    label: 무엇을 알릴지
+    options:
+      task.created: 작업이 생성됨
+      task.status_changed: 작업 상태가 바뀜
+      task.done: 작업이 완료됨
+      task.rejected: 작업이 기각됨
+      task.assigned: 작업 담당이 바뀜
+      task.moved: 작업이 다른 프로젝트로 이동됨
+      task.deleted: 작업이 삭제됨
+      decision.accepted: 결정이 채택됨
+      decision.rejected: 결정이 기각됨
+      comment.added: 댓글이 추가됨
+      comment.removed: 댓글이 철회됨

@@ -1,0 +1,28 @@
+desc: รายงานสิ่งที่ AI ของคุณทำผ่านอีเมล
+config:
+  smtp_host:
+    label: เซิร์ฟเวอร์ SMTP (Gmail คือ smtp.gmail.com)
+  smtp_port:
+    label: พอร์ต
+  smtp_user:
+    label: บัญชี (Gmail คืออีเมลของคุณ)
+  smtp_password:
+    label: รหัสผ่าน (Gmail ต้องใช้รหัสผ่านแอป)
+  from:
+    label: ผู้ส่ง (เว้นว่างจะใช้อีเมลของบัญชี)
+  to:
+    label: ผู้รับ (เว้นว่างจะใช้อีเมลของบัญชี หลายคนคั่นด้วยจุลภาค)
+  events:
+    label: จะรายงานอะไรบ้าง
+    options:
+      task.created: งานถูกสร้าง
+      task.status_changed: สถานะของงานเปลี่ยน
+      task.done: งานเสร็จแล้ว
+      task.rejected: งานถูกตีตก
+      task.assigned: ผู้รับผิดชอบงานเปลี่ยน
+      task.moved: งานย้ายไปโปรเจกต์อื่น
+      task.deleted: งานถูกลบ
+      decision.accepted: การตัดสินใจถูกยอมรับ
+      decision.rejected: การตัดสินใจถูกปฏิเสธ
+      comment.added: ความเห็นถูกเพิ่ม
+      comment.removed: ความเห็นถูกถอน

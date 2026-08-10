@@ -1,0 +1,28 @@
+desc: Zgłasza e-mailem, co zrobiła twoja AI
+config:
+  smtp_host:
+    label: "Serwer SMTP (dla Gmaila: smtp.gmail.com)"
+  smtp_port:
+    label: Port
+  smtp_user:
+    label: "Konto (w Gmailu: twój adres)"
+  smtp_password:
+    label: "Hasło (w Gmailu: hasło do aplikacji)"
+  from:
+    label: Nadawca (puste — adres konta)
+  to:
+    label: Odbiorca (puste — adres konta; kilku po przecinku)
+  events:
+    label: Co zgłaszać
+    options:
+      task.created: Utworzono zadanie
+      task.status_changed: Zmienił się status zadania
+      task.done: Ukończono zadanie
+      task.rejected: Odrzucono zadanie
+      task.assigned: Zmieniono przypisanie zadania
+      task.moved: Zadanie trafiło do innego projektu
+      task.deleted: Usunięto zadanie
+      decision.accepted: Przyjęto decyzję
+      decision.rejected: Odrzucono decyzję
+      comment.added: Dodano komentarz
+      comment.removed: Wycofano komentarz

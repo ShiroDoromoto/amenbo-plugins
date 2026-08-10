@@ -1,0 +1,28 @@
+desc: Yapay zekânızın yaptıklarını e-postayla bildirir
+config:
+  smtp_host:
+    label: "SMTP sunucusu (Gmail için: smtp.gmail.com)"
+  smtp_port:
+    label: Port
+  smtp_user:
+    label: "Hesap (Gmail'de: kendi adresiniz)"
+  smtp_password:
+    label: "Parola (Gmail'de: uygulama parolası)"
+  from:
+    label: Gönderen (boş bırakılırsa hesabın adresi)
+  to:
+    label: Alıcı (boş bırakılırsa hesabın adresi; birden fazlası virgülle ayrılır)
+  events:
+    label: Neler bildirilsin
+    options:
+      task.created: Bir görev oluşturuldu
+      task.status_changed: Bir görevin durumu değişti
+      task.done: Bir görev bitirildi
+      task.rejected: Bir görevden vazgeçildi
+      task.assigned: Bir görevin ataması değişti
+      task.moved: Bir görev başka projeye taşındı
+      task.deleted: Bir görev silindi
+      decision.accepted: Bir karar kabul edildi
+      decision.rejected: Bir karar reddedildi
+      comment.added: Bir yorum eklendi
+      comment.removed: Bir yorum geri alındı

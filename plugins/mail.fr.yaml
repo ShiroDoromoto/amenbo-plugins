@@ -1,0 +1,28 @@
+desc: Signale par e-mail ce que votre IA a fait
+config:
+  smtp_host:
+    label: "Serveur SMTP (Gmail : smtp.gmail.com)"
+  smtp_port:
+    label: Port
+  smtp_user:
+    label: "Compte (Gmail : votre adresse)"
+  smtp_password:
+    label: "Mot de passe (Gmail : un mot de passe d'application)"
+  from:
+    label: Expéditeur (vide, ce sera le compte)
+  to:
+    label: Destinataire (vide, ce sera le compte ; plusieurs séparés par des virgules)
+  events:
+    label: Ce qu'il faut signaler
+    options:
+      task.created: Une tâche a été créée
+      task.status_changed: Le statut d'une tâche a changé
+      task.done: Une tâche a été terminée
+      task.rejected: Une tâche a été écartée
+      task.assigned: Une tâche a été réattribuée
+      task.moved: Une tâche est passée à un autre projet
+      task.deleted: Une tâche a été supprimée
+      decision.accepted: Une décision a été acceptée
+      decision.rejected: Une décision a été rejetée
+      comment.added: Un commentaire a été ajouté
+      comment.removed: Un commentaire a été retiré

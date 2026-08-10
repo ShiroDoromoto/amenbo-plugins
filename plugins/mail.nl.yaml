@@ -1,0 +1,28 @@
+desc: Meldt per e-mail wat je AI heeft gedaan
+config:
+  smtp_host:
+    label: "SMTP-server (Gmail: smtp.gmail.com)"
+  smtp_port:
+    label: Poort
+  smtp_user:
+    label: "Account (Gmail: je eigen adres)"
+  smtp_password:
+    label: "Wachtwoord (Gmail: een app-wachtwoord)"
+  from:
+    label: Afzender (leeg is het adres van het account)
+  to:
+    label: Ontvanger (leeg is het adres van het account; meerdere gescheiden door komma's)
+  events:
+    label: Wat er gemeld wordt
+    options:
+      task.created: Een taak is aangemaakt
+      task.status_changed: De status van een taak is gewijzigd
+      task.done: Een taak is afgerond
+      task.rejected: Een taak is vervallen
+      task.assigned: Een taak is opnieuw toegewezen
+      task.moved: Een taak is naar een ander project verplaatst
+      task.deleted: Een taak is verwijderd
+      decision.accepted: Een besluit is aangenomen
+      decision.rejected: Een besluit is afgewezen
+      comment.added: Een reactie is toegevoegd
+      comment.removed: Een reactie is ingetrokken

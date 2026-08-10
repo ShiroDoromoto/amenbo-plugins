@@ -1,0 +1,28 @@
+desc: 用邮件报告 AI 做了什么
+config:
+  smtp_host:
+    label: SMTP 服务器（Gmail 为 smtp.gmail.com）
+  smtp_port:
+    label: 端口
+  smtp_user:
+    label: 账号（Gmail 为你的邮箱地址）
+  smtp_password:
+    label: 密码（Gmail 需应用专用密码）
+  from:
+    label: 发件人（留空则用该账号）
+  to:
+    label: 收件人（留空则用该账号，多个用逗号分隔）
+  events:
+    label: 报告哪些事
+    options:
+      task.created: 任务被创建
+      task.status_changed: 任务状态变更
+      task.done: 任务完成
+      task.rejected: 任务被否决
+      task.assigned: 任务负责人变更
+      task.moved: 任务移到其他项目
+      task.deleted: 任务被删除
+      decision.accepted: 决定被采纳
+      decision.rejected: 决定被否决
+      comment.added: 评论被添加
+      comment.removed: 评论被撤回
