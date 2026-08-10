@@ -154,6 +154,44 @@ checksum: sha256:000000000000000000000000000000000000000000000000000000000000000
 
 A ready-to-edit copy of this example lives at [`manifest.example.yaml`](manifest.example.yaml).
 
+### The same plugin, in another language
+
+A translation is a second file **beside** the manifest, named for its language — `plugins/<name>.ja.yaml`,
+`plugins/<name>.de.yaml` — holding only the fields you are translating. Everything you leave out falls back
+to the manifest, so a file covering one field is a normal thing to publish rather than a half-finished one.
+
+```yaml
+# plugins/mail.ja.yaml
+desc: AI がやったことをメールで報告する
+config:
+  smtp_host:
+    label: SMTP サーバー（Gmail なら smtp.gmail.com）
+  events:
+    label: 何を報告するか
+    options:
+      task.done: タスクが完了した
+```
+
+What has a translation to pick from is what a **person** reads: `desc`, and the `label` on a config field or
+on one of its options. `config` is keyed here rather than listed — each field by its `key`, each option by
+its `value` — because a translation carries no order of its own, and lining the two up by position is what
+would break every language at once the day you reorder the form. Everything else stays as you wrote it,
+`agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo itself is read in
+(`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`,
+`pl`, `nl`, `uk`).
+
+Name the manifest and everything beside it is read with it, so one command checks both:
+
+```sh
+amenbo plugin validate plugins/mail.yaml
+```
+
+Four things are refused there rather than quietly ignored: a language from outside that list, a field the
+manifest does not have, a `key` or option `value` it does not declare, and text past the cap its base field
+obeys. The full rule, and what this catalog then does with each half, is in
+[Writing a plugin](docs/writing-a-plugin.md#writing-it-in-other-languages)
+([日本語](docs/writing-a-plugin.ja.md#他の言語で書く)).
+
 ## Checklist before you open the PR
 
 - [ ] The file is `plugins/<name>.yaml`, and `<name>` matches the manifest's `name`.

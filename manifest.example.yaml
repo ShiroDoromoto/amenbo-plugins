@@ -57,3 +57,40 @@ agent:
     - cmd: finish <task-id>
       does: Removes that worktree and its branch, once the work has been merged
       steps: [worktree.fold-it]
+
+# --- Writing this in another language ---------------------------------------------------------------
+#
+# A translation is a file *beside* this one, named for its language — never a section inside it:
+#
+#   plugins/worktree.yaml       # the manifest. This one is English
+#   plugins/worktree.ja.yaml    # Japanese
+#   plugins/worktree.de.yaml    # German
+#
+# Write only the fields you are translating. Everything you leave out falls back to what is written here,
+# so a file covering one field is a normal thing to publish. Two of the fields above are read by a person
+# and so have a translation to pick from: `desc`, and the labels on your settings form. This manifest asks
+# for no settings, which makes its whole translation one line:
+#
+#   # plugins/worktree.ja.yaml
+#   desc: タスクごとに git worktree を切り分ける
+#
+# A plugin that does declare `config` translates the labels on it — and keyed, not listed: each field by
+# its `key`, each option by its `value`. Those two are what travel to the plugin, so they stay as they are,
+# and looking a translation up by them is what survives the day you reorder the form:
+#
+#   # plugins/your-plugin.ja.yaml
+#   desc: AI がやったことをメールで報告する
+#   config:
+#     smtp_host:
+#       label: SMTP サーバー（Gmail なら smtp.gmail.com）
+#     events:
+#       label: 何を報告するか
+#       options:
+#         task.done: タスクが完了した
+#
+# Not translatable: everything else here, `agent.when` and each `does` included — an AI reads those, and
+# they stay in one language. The languages are the 19 amenbo itself is read in: en, ja, zh-Hans, zh-Hant,
+# ko, es, pt-BR, fr, de, it, ru, hi, id, vi, th, tr, pl, nl, uk.
+#
+# `amenbo plugin validate plugins/<name>.yaml` reads whatever is beside the manifest along with it, so one
+# command checks both. The full rule is in docs/writing-a-plugin.md#writing-it-in-other-languages.
