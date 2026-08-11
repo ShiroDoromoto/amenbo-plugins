@@ -33,3 +33,23 @@ agent:
     - cmd: finish <task-id>
       does: Removes that worktree and its branch, once the work has been merged
       steps: [worktree.fold-it]
+about: |
+  Each task gets a checkout of its own: `start` cuts a git worktree for it on a fresh branch `task/<id>`, and `finish` takes both away once the work has been merged.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    on branch task/<id>
+  ```
+
+  The checkout lives **outside** the repository, so it is a pure development environment — nothing in it is bound to amenbo, and nothing about it can be mistaken for part of the project. Several implementation sessions can then run at once without colliding: one task, one checkout, one branch.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # iex (…) in PowerShell
+  # …work, commit, merge…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` returns that `cd` line itself, so the shell you are standing in is the one that enters the worktree. `finish` is run from the main repository, and refuses while the checkout is dirty or the branch holds commits the base does not; `--force` overrides both. Without `--base` they answer with the branch the repository is standing on, so there is nothing to fill in first.
+
+  Reserving a task makes the plugin write one suggestion to stderr, and nothing more: whether *this* task wants a checkout of its own is a judgement, and it stays with whoever reads the suggestion. The backlog stays with amenbo as well — this plugin touches git and nothing else.
+
+  Needs git 2.31 or newer.
