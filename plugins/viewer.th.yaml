@@ -1,0 +1,8 @@
+desc: อ่านรายการงานของคุณบนมือถือ จากที่ที่เป็นของคุณเอง
+config:
+  worker_url:
+    label: URL ของ Cloudflare Worker ของคุณเอง (setup เติมให้)
+  auth_token:
+    label: โทเคนที่ Worker ใช้อนุญาตการเขียน (setup เติมให้)
+  encryption_key:
+    label: กุญแจที่ใช้เข้ารหัสระเบียน (setup เติมให้)

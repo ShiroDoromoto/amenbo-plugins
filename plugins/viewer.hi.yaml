@@ -1,0 +1,8 @@
+desc: अपने काम की सूची अपने फ़ोन पर पढ़ें, अपनी ही जगह से
+config:
+  worker_url:
+    label: आपके अपने Cloudflare Worker का URL (setup भर देता है)
+  auth_token:
+    label: जिस टोकन से Worker लिखने देता है (setup भर देता है)
+  encryption_key:
+    label: जिस कुंजी से रिकॉर्ड एन्क्रिप्ट होते हैं (setup भर देता है)

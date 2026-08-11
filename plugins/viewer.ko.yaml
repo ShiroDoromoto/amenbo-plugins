@@ -1,0 +1,8 @@
+desc: 할 일 목록을 내 저장소에서 휴대폰으로 읽는다
+config:
+  worker_url:
+    label: 내 Cloudflare Worker의 URL(setup이 채운다)
+  auth_token:
+    label: Worker가 쓰기를 받아들이는 토큰(setup이 채운다)
+  encryption_key:
+    label: 기록을 암호화하는 키(setup이 채운다)

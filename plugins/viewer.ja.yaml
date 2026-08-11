@@ -1,0 +1,8 @@
+desc: バックログを、自前の置き場からスマートフォンで読む
+config:
+  worker_url:
+    label: 自分の Cloudflare Worker の URL（setup が入れる）
+  auth_token:
+    label: Worker が書き込みを受け入れるトークン（setup が入れる）
+  encryption_key:
+    label: 記録を暗号化する鍵（setup が入れる）

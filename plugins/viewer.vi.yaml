@@ -1,0 +1,8 @@
+desc: Đọc danh sách việc của bạn trên điện thoại, từ nơi thuộc về bạn
+config:
+  worker_url:
+    label: URL Cloudflare Worker của chính bạn (setup điền vào)
+  auth_token:
+    label: Token để Worker cho phép ghi (setup điền vào)
+  encryption_key:
+    label: Khóa dùng để mã hóa bản ghi (setup điền vào)

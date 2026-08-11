@@ -1,0 +1,8 @@
+desc: Leia sua lista de tarefas no celular, de um lugar que é seu
+config:
+  worker_url:
+    label: URL do seu próprio Cloudflare Worker (preenchida pelo setup)
+  auth_token:
+    label: Token com que o Worker aceita gravações (preenchido pelo setup)
+  encryption_key:
+    label: Chave com que os registros são criptografados (preenchida pelo setup)

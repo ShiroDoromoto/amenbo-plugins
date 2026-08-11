@@ -1,0 +1,8 @@
+desc: 在手機上讀你的待辦，資料存在你自己的地方
+config:
+  worker_url:
+    label: 你自己的 Cloudflare Worker 的 URL（由 setup 填入）
+  auth_token:
+    label: Worker 放行寫入所用的權杖（由 setup 填入）
+  encryption_key:
+    label: 加密紀錄所用的金鑰（由 setup 填入）

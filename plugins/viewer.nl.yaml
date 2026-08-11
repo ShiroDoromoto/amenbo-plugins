@@ -1,0 +1,8 @@
+desc: Lees je takenlijst op je telefoon, vanaf een plek die van jou is
+config:
+  worker_url:
+    label: URL van je eigen Cloudflare Worker (vult setup in)
+  auth_token:
+    label: Token waarmee de Worker schrijfacties toelaat (vult setup in)
+  encryption_key:
+    label: Sleutel waarmee de records versleuteld worden (vult setup in)
