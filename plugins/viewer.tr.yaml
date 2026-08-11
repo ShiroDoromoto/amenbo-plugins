@@ -1,0 +1,8 @@
+desc: Görev listenizi telefonunuzdan, size ait bir yerden okuyun
+config:
+  worker_url:
+    label: Kendi Cloudflare Worker'ınızın URL'si (setup doldurur)
+  auth_token:
+    label: Worker'ın yazmaya izin verdiği belirteç (setup doldurur)
+  encryption_key:
+    label: Kayıtların şifrelendiği anahtar (setup doldurur)

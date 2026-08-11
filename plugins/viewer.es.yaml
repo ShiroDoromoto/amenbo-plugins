@@ -1,0 +1,8 @@
+desc: Lee tu lista de tareas en el móvil, desde un sitio que es tuyo
+config:
+  worker_url:
+    label: URL de tu propio Cloudflare Worker (la rellena setup)
+  auth_token:
+    label: Token con el que el Worker admite escrituras (lo rellena setup)
+  encryption_key:
+    label: Clave con la que se cifran los registros (la rellena setup)

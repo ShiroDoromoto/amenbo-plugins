@@ -1,0 +1,8 @@
+desc: Baca daftar tugas Anda di ponsel, dari tempat milik Anda sendiri
+config:
+  worker_url:
+    label: URL Cloudflare Worker Anda sendiri (diisi oleh setup)
+  auth_token:
+    label: Token yang dipakai Worker untuk menerima tulisan (diisi oleh setup)
+  encryption_key:
+    label: Kunci untuk mengenkripsi catatan (diisi oleh setup)

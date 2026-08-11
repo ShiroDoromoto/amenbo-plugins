@@ -1,0 +1,8 @@
+desc: Читайте свій список задач на телефоні — з місця, яке належить вам
+config:
+  worker_url:
+    label: URL вашого власного Cloudflare Worker (заповнює setup)
+  auth_token:
+    label: Токен, з яким Worker пропускає запис (заповнює setup)
+  encryption_key:
+    label: Ключ, яким шифруються записи (заповнює setup)

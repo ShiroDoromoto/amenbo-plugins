@@ -1,0 +1,8 @@
+desc: Lesen Sie Ihre Aufgabenliste auf dem Handy, von einem Ort, der Ihnen gehört
+config:
+  worker_url:
+    label: URL Ihres eigenen Cloudflare Workers (trägt setup ein)
+  auth_token:
+    label: Token, mit dem der Worker Schreibzugriffe zulässt (trägt setup ein)
+  encryption_key:
+    label: Schlüssel, mit dem die Einträge verschlüsselt werden (trägt setup ein)
