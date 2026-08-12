@@ -1,4 +1,12 @@
 desc: Melaporkan apa yang dikerjakan AI Anda ke kanal Slack
+about: |
+  Setiap tugas yang diselesaikan AI-mu, setiap tugas yang diputuskan untuk tidak dikerjakan, setiap keputusan yang diterima: barisnya sampai di kanal Slack. Apa yang terjadi selagi kamu jauh dari proyek, di ruang yang memang sudah kamu baca.
+
+  - **Yang dilaporkan hanya tulisan AI.** Yang kamu tulis sendiri sudah kamu alami; di kanal tersisa pekerjaan yang berjalan tanpa kamu.
+  - **Kanal itu setelannya.** `webhook_url` milik proyek tempat ia ditulis, jadi nilai itulah kanal yang dilapori proyek tersebut. Dua proyek dengan dua webhook melapor ke dua kanal; tiap pesan menyebut proyeknya, jadi mengarahkan keduanya ke satu kanal pun tetap terbaca.
+  - **Peristiwa mana, kamu yang pilih.** Sebelas untuk dicentang, dari tugas dibuat sampai komentar ditarik. Bawaannya empat: tugas dibuat, statusnya berubah, selesai, atau dibatalkan.
+
+  Slack cukup memberi satu URL Incoming Webhook, dan itu disimpan sebagai setelan rahasia — ia tidak keluar dari amenbo lewat ekspor, log, maupun pembacaan ulang. Pesan ditulis dalam bahasa yang kamu pakai membaca amenbo, dan memanggil AI-mu dengan nama yang kamu berikan.
 config:
   webhook_url:
     label: URL webhook Slack

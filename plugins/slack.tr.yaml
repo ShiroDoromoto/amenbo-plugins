@@ -1,4 +1,12 @@
 desc: Yapay zekânızın yaptıklarını bir Slack kanalına bildirmek
+about: |
+  Yapay zekânın bitirdiği her iş, yapmamaya karar verdiği her iş, kabul ettiği her karar — satır bir Slack kanalına düşer. Projeden uzaktayken neler olduğunu, zaten baktığın yerde okursun.
+
+  - **Yalnızca yapay zekânın yazdıkları bildirilir.** Kendi yazdığın şeyin başındaydın zaten; kanalda sensiz ilerleyen iş kalır.
+  - **Kanal, ayarın kendisidir.** `webhook_url` yazıldığı projeye aittir, yani bu değer o projenin bildirdiği kanalın *ta kendisidir*. İki projeye iki webhook koyarsan iki kanala bildirilir; her mesaj hangi projeden geldiğini söylediği için ikisini tek kanala yöneltmek de okunur.
+  - **Hangi olaylar, senin seçimin.** Bir işin oluşturulmasından bir yorumun geri alınmasına kadar işaretlenecek on bir tane. Varsayılan olarak dördü: iş oluşturuldu, durumu değişti, bitti, elendi.
+
+  Slack'in vermesi gereken tek şey bir Incoming Webhook adresi ve o da gizli ayar olarak tutulur — dışa aktarmaya da, günlüğe de, geri okumaya da çıkmaz. Mesajlar amenbo'yu okuduğun dilde yazılır ve yapay zekâna verdiğin adla seslenir.
 config:
   webhook_url:
     label: Slack webhook adresi

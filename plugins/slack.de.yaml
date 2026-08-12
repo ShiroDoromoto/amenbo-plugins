@@ -1,4 +1,12 @@
 desc: In einem Slack-Kanal melden, was deine KI getan hat
+about: |
+  Jede Aufgabe, die deine KI erledigt, jede, die sie verwirft, jede Entscheidung, die sie annimmt — die Zeile landet in einem Slack-Kanal. Was passiert ist, während du vom Projekt weg warst, in dem Raum, den du ohnehin liest.
+
+  - **Gemeldet wird nur, was die KI schreibt.** Was du selbst geschrieben hast, hast du miterlebt; im Kanal bleibt die Arbeit, die ohne dich passiert ist.
+  - **Der Kanal ist die Einstellung.** `webhook_url` gehört dem Projekt, in dem sie gesetzt wurde, also *ist* dieser Wert der Kanal, in den das Projekt meldet. Zwei Projekte mit zwei Webhooks melden in zwei Kanäle; jede Nachricht nennt ihr Projekt, sodass sich auch ein gemeinsamer Kanal lesen lässt.
+  - **Welche Ereignisse, entscheidest du.** Elf zum Ankreuzen, vom Erstellen einer Aufgabe bis zum Zurücknehmen eines Kommentars. Voreingestellt sind die vier, die sagen, dass eine Aufgabe erstellt, verschoben, erledigt oder verworfen wurde.
+
+  Slack muss nur eine einzige Incoming-Webhook-URL herausgeben, und sie wird als geheime Einstellung gehalten — sie verlässt amenbo weder in einen Export noch in ein Log oder eine Rücklese. Die Nachrichten stehen in der Sprache, in der du amenbo liest, und nennen deine KI bei dem Namen, den du ihr gegeben hast.
 config:
   webhook_url:
     label: Slack-Webhook-URL

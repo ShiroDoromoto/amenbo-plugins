@@ -26,6 +26,15 @@ assets:
   windows-arm64:
     url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v4/slack-v4-windows-arm64.tar.gz
     checksum: sha256:b4c3e99007998bd05cffc1d99400a7a91cbd8732a37399dd44f1cd3af02bd6cc
+about: |
+  Every task your AI finishes, every one it decides against, every decision it settles — the line arrives in a Slack channel. What happened while you were away from the project, in the room you already watch.
+
+  - **Only your AI's writes are posted.** A write you made yourself is one you were there for, so the channel carries the work that happened without you rather than an echo of your own.
+  - **The channel is the setting.** `webhook_url` belongs to the project it was written in, so that value *is* the channel that project reports to. Point two projects at two webhooks and they report to two channels; every message names its project, so pointing both at one channel reads too.
+  - **Which events, you choose.** Eleven to tick, from a task being created to a comment being taken back. The default is the four that say a task was created, moved, finished, or dropped.
+
+  All Slack has to hand over is one Incoming Webhook URL, and it is held as a secret setting — it never leaves amenbo into an export, a log, or a read-back. Messages are written in the language you read amenbo in, and call your AI by the name you gave it.
+
 official: true
 payload_v: 1
 min_amenbo: 3.1.0
