@@ -40,7 +40,7 @@ They sit in one directory. amenbo derives every one of them from the URL of `cat
 | File | What is in it | Who fetches it, and when |
 | --- | --- | --- |
 | `catalog.json` | only what a list has to draw | everyone, once per browse (cached for an hour) |
-| `plugins/<name>.json` | what an install needs: signature, checksum, settings, events | only the one plugin someone opens or installs |
+| `plugins/<name>.json` | what an install needs: signature, checksum, settings, events — and the long description a detail view draws | only the one plugin someone opens or installs |
 | `catalog-key.pub` | the public half of your signing key | once, at registration |
 | `catalog.<lang>.json` | the listing's descriptions in one language | everyone, once per browse (cached for an hour) — their own language and no other |
 
@@ -114,9 +114,10 @@ plugin name.
   an error on the client or in your logs. There is no index of which languages you have, either.
 - **`catalog.json` is untouched.** Its `desc` stays the language your authors wrote it in, which is where
   every language falls back to.
-- The form labels are not here. They ride inside `plugins/<name>.json`, every language at once, so an
-  installed plugin's settings follow the reader with no network — see
-  [Writing a plugin](writing-a-plugin.md#writing-it-in-other-languages) for what an author writes.
+- The form labels are not here, and neither is a plugin's long description. Both ride inside
+  `plugins/<name>.json`, every language at once, so an installed plugin's settings follow the reader with
+  no network — see [Writing a plugin](writing-a-plugin.md#writing-it-in-other-languages) for what an
+  author writes.
 
 The **placement is what makes this work for you at all**. amenbo resolves a language document the same way
 it resolves a detail document: the same base URL as the `catalog.json` a user registered, with the language

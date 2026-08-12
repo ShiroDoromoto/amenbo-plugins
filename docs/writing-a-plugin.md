@@ -329,6 +329,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 
 | Field | Default | Meaning |
 | --- | --- | --- |
+| `about` | none | a long description for your plugin's detail view, as Markdown. Without one, that view falls back to the README in your `repo`. How to write it, and in how many languages, is below |
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
 | `payload_v` | `1` | the payload contract version you read |
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
@@ -449,10 +450,32 @@ Two more things worth knowing:
 
 ### Writing it in other languages
 
-Two of the things you write are read by a **person**: your `desc`, and the labels on your settings form.
-Those amenbo shows in the reader's own language, when you have written one. Everything else stays in the
-language you wrote it in — `agent.when` and each `does` are read by an AI, and the CLI answers in English by
-contract, so neither has a translation to pick from.
+Three of the things you write are read by a **person**: your `desc`, your `about`, and the labels on your
+settings form. Those amenbo shows in the reader's own language, when you have written one. Everything else
+stays in the language you wrote it in — `agent.when` and each `does` are read by an AI, and the CLI answers
+in English by contract, so neither has a translation to pick from.
+
+**`about` is Markdown, and a YAML block scalar is what carries it.** `desc` is the one line a list draws;
+`about` is the paragraphs on your plugin's detail view, and it is written the same way in the manifest and
+in every translation of it:
+
+```yaml
+# plugins/mail.yaml
+desc: Report what your AI did by email
+about: |
+  Every task your AI finishes reaches you as a mail — what it was, and how it ended.
+
+  Bring any SMTP server you already have. For Gmail, an app password is all it takes.
+```
+
+Two rules hold it, and the manifest's copy and each translation obey both the same way:
+
+- **2048 bytes of UTF-8, per language.** That is around a thousand Japanese characters, or two thousand
+  English ones. It is a description and not your README: say what installing this does for the reader, and
+  leave the rest to the repository.
+- **Every link and image is an absolute `https://` URL.** A relative path is refused, and so is `http://`.
+  What renders your `about` is amenbo, out of a document the catalog serves — there is no page under which
+  `./README.md` would mean anything.
 
 A translation is **a file beside your manifest**, named for its language:
 
@@ -468,6 +491,10 @@ covering one field is a normal thing to publish, not a half-finished one.
 ```yaml
 # plugins/mail.ja.yaml
 desc: AI がやったことをメールで報告する
+about: |
+  AI がタスクを終えるたびに、何をどう終えたかがメールで届きます。
+
+  SMTP サーバーは手持ちのもので構いません。Gmail ならアプリパスワードだけで足ります。
 config:
   smtp_host:
     label: SMTP サーバー（Gmail なら smtp.gmail.com）
@@ -484,7 +511,7 @@ the form.
 
 | Translatable | Not translatable |
 | --- | --- |
-| `desc` | `name`, `author`, `repo`, `category`, and the rest of the manifest |
+| `desc`, `about` | `name`, `author`, `repo`, `category`, and the rest of the manifest |
 | a config field's `label` | a config field's `key`, `type`, `default` — and an option's `value`, which is what travels to your plugin |
 | a config option's `label` | `agent.when` and each `does` — an AI reads those, and they stay English |
 
@@ -504,9 +531,12 @@ text past the cap its base field obeys. Nothing is quietly ignored — a label t
 was filed under a typo is the failure this door exists to prevent.
 
 The catalog publishes the two halves the way they are read. The `desc` lines go into a
-`catalog.<lang>.json` beside the listing, so a browser fetches one language and not nineteen; the form
-labels ride inside your `plugins/<name>.json`, all languages at once, so a settings form follows the
-reader's language with no network at all once your plugin is installed. Neither is yours to assemble.
+`catalog.<lang>.json` beside the listing, so a browser fetches one language and not nineteen; your `about`
+and the form labels ride inside your `plugins/<name>.json` — the document fetched only for the plugin
+someone opens or installs — all languages at once, so a detail view follows the reader's language, and a
+settings form goes on doing so with no network at all once your plugin is installed. A long description in
+nineteen languages has no business in a listing nobody has opened yet, which is why `about` is in the half
+it is. Neither half is yours to assemble.
 
 ## What the asset may be
 
