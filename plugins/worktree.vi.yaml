@@ -16,6 +16,6 @@ about: |
 
   `start` trả về đúng dòng `cd` ấy, nên chính shell bạn đang đứng là cái bước vào worktree. `finish` chạy từ kho chính, và từ chối chừng nào bản checkout còn bẩn hoặc nhánh còn giữ commit mà nhánh gốc không có; `--force` vượt qua cả hai. Không đưa `--base` thì cả hai lấy nhánh mà kho đang đứng, nên chẳng phải điền gì trước.
 
-  Đặt chỗ một việc khiến plugin ghi một dòng gợi ý ra stderr, chỉ vậy: việc *này* có cần checkout riêng hay không là một phán đoán, và nó ở lại với người đọc gợi ý. Backlog cũng ở lại với amenbo — plugin này chạm vào git và không gì khác.
+  Đặt chỗ một việc khiến plugin ghi một dòng gợi ý ra stderr, chỉ vậy: việc *này* có cần checkout riêng hay không là một phán đoán, và nó ở lại với người đọc gợi ý. Backlog cũng ở lại với amenbo — plugin này đọc một việc chỉ để xem nó được làm ở đâu, và không ghi gì ngoài git.
 
   Cần git 2.31 trở lên.

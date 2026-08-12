@@ -16,6 +16,6 @@ about: |
 
   `start` restituisce proprio quella riga `cd`, così la shell in cui ti trovi è quella che entra nel worktree. `finish` si esegue dal repository principale e si rifiuta finché il checkout è sporco o il ramo tiene commit che la base non ha; `--force` scavalca entrambi. Senza `--base` rispondono con il ramo su cui sta il repository, quindi non c'è nulla da compilare prima.
 
-  Prenotare un'attività fa scrivere al plugin un solo suggerimento su stderr, e nient'altro: se *questa* attività voglia un checkout proprio è un giudizio, e resta a chi legge il suggerimento. Anche il backlog resta ad amenbo — questo plugin tocca git e nient'altro.
+  Prenotare un'attività fa scrivere al plugin un solo suggerimento su stderr, e nient'altro: se *questa* attività voglia un checkout proprio è un giudizio, e resta a chi legge il suggerimento. Anche il backlog resta ad amenbo — questo plugin legge un'attività per vedere dove viene lavorata, e non scrive nulla se non git.
 
   Richiede git 2.31 o superiore.

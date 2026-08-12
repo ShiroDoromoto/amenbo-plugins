@@ -16,6 +16,6 @@ about: |
 
   `start` devuelve esa misma línea `cd`, de modo que la shell en la que estás es la que entra en el worktree. `finish` se ejecuta desde el repositorio principal y se niega mientras el checkout esté sucio o la rama tenga commits que la base no tiene; `--force` fuerza ambos casos. Sin `--base`, las dos responden con la rama en la que está el repositorio, así que no hay nada que rellenar antes.
 
-  Reservar una tarea hace que el plugin escriba una sugerencia en stderr, y nada más: si *esta* tarea quiere un checkout propio es un juicio, y se queda con quien lee la sugerencia. El backlog también se queda con amenbo: este plugin toca git y nada más.
+  Reservar una tarea hace que el plugin escriba una sugerencia en stderr, y nada más: si *esta* tarea quiere un checkout propio es un juicio, y se queda con quien lee la sugerencia. El backlog también se queda con amenbo: este plugin lee una tarea para ver dónde se trabaja, y no escribe más que git.
 
   Necesita git 2.31 o superior.

@@ -16,6 +16,6 @@ about: |
 
   `start` renvoie cette ligne `cd` elle-même : le shell où vous vous tenez est celui qui entre dans le worktree. `finish` se lance depuis le dépôt principal et refuse tant que la copie est sale ou que la branche porte des commits absents de la base ; `--force` passe outre. Sans `--base`, les deux répondent avec la branche sur laquelle se tient le dépôt : rien à renseigner d'avance.
 
-  Réserver une tâche fait écrire au plugin une seule suggestion sur stderr, rien de plus : savoir si *cette* tâche veut une copie à elle est un jugement, et il reste à qui lit la suggestion. Le backlog reste lui aussi à amenbo — ce plugin touche git et rien d'autre.
+  Réserver une tâche fait écrire au plugin une seule suggestion sur stderr, rien de plus : savoir si *cette* tâche veut une copie à elle est un jugement, et il reste à qui lit la suggestion. Le backlog reste lui aussi à amenbo — ce plugin lit une tâche pour voir où elle est travaillée, et n'écrit rien d'autre que git.
 
   Nécessite git 2.31 ou plus récent.
