@@ -1,0 +1,77 @@
+name: viewer
+desc: Read your backlog on your phone, from a place you own
+author: Amenbo
+repo: ShiroDoromoto/amenbo-plugin-viewer
+os:
+  - macos
+  - windows
+  - linux
+category: integration
+scope: machine
+# Every url and checksum below is a placeholder until the release tag is cut.
+assets:
+  macos-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-macos-arm64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  macos-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-macos-x64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  linux-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-linux-x64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  linux-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-linux-arm64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  windows-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-windows-x64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  windows-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-windows-arm64.tar.gz
+    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+payload_v: 1
+about: |
+  Your backlog reaches your phone, and the Amenbo Viewer app reads it there — the tasks, the state each one is in, and the decisions behind them — while you are away from the PC.
+
+  Nothing is hosted for you. The place is one you own: an app-private iCloud folder on a Mac, or a Cloudflare Worker and database that `setup` stands up in your own Cloudflare account. Records travel one way, and only as they move.
+
+  On the Cloudflare route they travel sealed. `qr` pairs a phone off the network — the camera reads the endpoint, the token and the key. `phones` says which phones may read, and `revoke` cuts one of them off.
+
+  Enabling it carries every project on this machine: a phone is one device, not one project.
+config:
+  - key: worker_url
+    label: Your Cloudflare Worker's URL (filled in by setup)
+    required: false
+  - key: auth_token
+    label: Token the Worker lets writes in with (filled in by setup)
+    secret: true
+    required: false
+  - key: encryption_key
+    label: Key the records are encrypted with (filled in by setup)
+    secret: true
+    required: false
+events:
+  - task.created
+  - task.status_changed
+  - task.done
+  - task.rejected
+  - task.assigned
+  - task.moved
+  - task.deleted
+  - decision.accepted
+  - decision.rejected
+  - comment.added
+  - comment.removed
+  - store.changed
+agent:
+  when: Setting up the phone viewer, pairing a phone with it, or carrying by hand what has not reached one yet
+  commands:
+    - cmd: setup
+      does: Stands up the Worker and its database in the user's own Cloudflare account, and generates the token and key. Asks for a Cloudflare API token on the terminal, or reads CLOUDFLARE_API_TOKEN
+    - cmd: push
+      does: Carries by hand what has not reached the phone yet, encrypting a record at a time, over every route that is configured. The hook does this per write, so this is for what was left behind
+    - cmd: phones
+      does: Lists the phones that may read and when each was paired. Reads nothing over the network — the store compares hashes and does not answer what it holds
+    - cmd: revoke
+      does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument
+    - cmd: qr
+      does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label names it (one in use is refused); --terminal draws it here"

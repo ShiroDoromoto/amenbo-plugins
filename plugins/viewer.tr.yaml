@@ -1,4 +1,12 @@
 desc: Görev listenizi telefonunuzdan, size ait bir yerden okuyun
+about: |
+  Bilgisayarınızdan uzaktayken görev listeniz telefonunuza ulaşır ve Amenbo Viewer uygulaması onu orada okur — görevleri, her birinin hangi durumda olduğunu ve arkalarındaki kararları.
+
+  Sizin için hiçbir şey barındırılmaz. Yer sizindir: Mac'te uygulamaya özel bir iCloud klasörü, değilse `setup`'ın kendi Cloudflare hesabınızda ayağa kaldırdığı bir Cloudflare Worker ve veritabanı. Kayıtlar tek yöne, yalnızca değiştikleri kadar gider.
+
+  Cloudflare yolunda mühürlü giderler. `qr` bir telefonu ağa çıkmadan eşleştirir — kamera adresi, belirteci ve anahtarı okur. `phones` hangi telefonların okuyabildiğini söyler, `revoke` ise birini keser.
+
+  Etkinleştirdiğinizde bu makinedeki her projeyi taşır: telefon bir cihazdır, bir proje değil.
 config:
   worker_url:
     label: Kendi Cloudflare Worker'ınızın URL'si (setup doldurur)

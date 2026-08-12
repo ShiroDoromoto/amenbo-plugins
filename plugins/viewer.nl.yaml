@@ -1,4 +1,12 @@
 desc: Lees je takenlijst op je telefoon, vanaf een plek die van jou is
+about: |
+  Je takenlijst komt op je telefoon aan, en de app Amenbo Viewer leest hem daar — de taken, de stand van elk ervan en de beslissingen erachter — terwijl je weg bent van de computer.
+
+  Er wordt niets voor je gehost. De plek is van jou: een app-eigen iCloud-map op een Mac, of een Cloudflare Worker met database die `setup` in je eigen Cloudflare-account neerzet. Records reizen één kant op, en alleen voor zover ze bewegen.
+
+  Over de route van Cloudflare reizen ze verzegeld. `qr` koppelt een telefoon buiten het netwerk om — de camera leest het adres, het token en de sleutel. `phones` zegt welke telefoons mogen lezen, en `revoke` snijdt er één af.
+
+  Aanzetten draagt elk project op deze machine mee: een telefoon is één apparaat, niet één project.
 config:
   worker_url:
     label: URL van je eigen Cloudflare Worker (vult setup in)

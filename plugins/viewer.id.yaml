@@ -1,4 +1,12 @@
 desc: Baca daftar tugas Anda di ponsel, dari tempat milik Anda sendiri
+about: |
+  Daftar tugas Anda sampai ke ponsel, dan aplikasi Amenbo Viewer membacanya di sana — tugasnya, keadaan tiap tugas saat ini, dan keputusan di baliknya — selagi Anda jauh dari PC.
+
+  Tidak ada yang dihosting untuk Anda. Tempatnya milik Anda sendiri: folder iCloud khusus aplikasi di Mac, atau Cloudflare Worker beserta basis datanya yang didirikan `setup` di akun Cloudflare Anda sendiri. Catatan berjalan satu arah, dan hanya sebanyak yang berubah.
+
+  Lewat jalur Cloudflare catatan berjalan tersegel. `qr` memasangkan ponsel tanpa melalui jaringan — kamera membaca alamat, token, dan kuncinya. `phones` menyebut ponsel mana saja yang boleh membaca, dan `revoke` memutus salah satunya.
+
+  Begitu diaktifkan, yang dibawa adalah seluruh proyek di mesin ini: ponsel adalah satu perangkat, bukan satu proyek.
 config:
   worker_url:
     label: URL Cloudflare Worker Anda sendiri (diisi oleh setup)

@@ -1,4 +1,12 @@
 desc: Czytaj swoją listę zadań na telefonie, z miejsca, które należy do ciebie
+about: |
+  Twoja lista zadań trafia na telefon, a aplikacja Amenbo Viewer czyta ją tam — zadania, stan każdego z nich i decyzje, które za nimi stoją — kiedy jesteś z dala od komputera.
+
+  Nikt niczego dla ciebie nie hostuje. Miejsce należy do ciebie: prywatny dla aplikacji folder iCloud na Macu albo Cloudflare Worker wraz z bazą danych, którego `setup` stawia na twoim własnym koncie Cloudflare. Wpisy jadą w jedną stronę i tylko w takiej ilości, w jakiej się zmieniły.
+
+  Trasą Cloudflare jadą zapieczętowane. `qr` paruje telefon bez wychodzenia do sieci — aparat odczytuje adres, token i klucz. `phones` mówi, które telefony mogą czytać, a `revoke` odcina jeden z nich.
+
+  Po włączeniu niesie każdy projekt z tej maszyny: telefon to jedno urządzenie, a nie jeden projekt.
 config:
   worker_url:
     label: Adres URL twojego własnego Cloudflare Workera (wypełnia setup)

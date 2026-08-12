@@ -1,4 +1,12 @@
 desc: 在手機上讀你的待辦，資料存在你自己的地方
+about: |
+  離開電腦時，待辦也會送到手機上，用 Amenbo Viewer 就能讀——有哪些任務、每一件現在處於什麼狀態，以及當初為什麼這麼定。
+
+  沒有誰替你代管。地方是你自己的：在 mac 上是 App 專屬的 iCloud 資料夾，否則就是 `setup` 在你自己的 Cloudflare 帳戶裡立起來的 Worker 和資料庫。紀錄單向送出，只送動過的那些。
+
+  走 Cloudflare 這條路時，紀錄是封好的。`qr` 不經過網路就能配對手機——相機讀走位址、權杖和金鑰。`phones` 列出哪些手機可讀，`revoke` 單獨切斷其中一台。
+
+  一旦啟用，送出的是這台電腦上的全部專案——手機是一台裝置，不是一個專案。
 config:
   worker_url:
     label: 你自己的 Cloudflare Worker 的 URL（由 setup 填入）

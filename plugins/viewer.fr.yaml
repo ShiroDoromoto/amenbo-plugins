@@ -1,4 +1,12 @@
 desc: Lisez votre liste de tâches sur votre téléphone, depuis un endroit qui vous appartient
+about: |
+  Votre liste de tâches arrive sur votre téléphone et l'app Amenbo Viewer l'y lit — les tâches, l'état de chacune et les décisions qui les motivent — pendant que vous êtes loin de l'ordinateur.
+
+  Rien n'est hébergé pour vous. L'endroit est le vôtre : un dossier iCloud privé de l'app sur un Mac, ou un Worker Cloudflare et sa base de données que `setup` met en place dans votre propre compte Cloudflare. Les enregistrements circulent dans un seul sens, et seulement à mesure qu'ils bougent.
+
+  Sur la route Cloudflare, ils circulent scellés. `qr` appaire un téléphone hors réseau — l'appareil photo lit l'adresse, le jeton et la clé. `phones` dit quels téléphones peuvent lire, et `revoke` en coupe un.
+
+  L'activer emporte tous les projets de cette machine : un téléphone est un appareil, pas un projet.
 config:
   worker_url:
     label: URL de votre propre Cloudflare Worker (renseignée par setup)

@@ -1,4 +1,12 @@
 desc: Lee tu lista de tareas en el móvil, desde un sitio que es tuyo
+about: |
+  Tu lista de tareas llega al móvil y la app Amenbo Viewer la lee allí — las tareas, el estado en el que está cada una y las decisiones que hay detrás — mientras estás lejos del ordenador.
+
+  Nadie te aloja nada. El sitio es tuyo: una carpeta de iCloud privada de la app en un Mac, o un Worker de Cloudflare con su base de datos que `setup` levanta en tu propia cuenta de Cloudflare. Los registros viajan en un solo sentido, y solo según se mueven.
+
+  Por la ruta de Cloudflare viajan sellados. `qr` empareja un móvil sin pasar por la red — la cámara lee la dirección, el token y la clave. `phones` dice qué móviles pueden leer, y `revoke` corta uno de ellos.
+
+  Al activarlo se lleva todo proyecto de este ordenador: un móvil es un dispositivo, no un proyecto.
 config:
   worker_url:
     label: URL de tu propio Cloudflare Worker (la rellena setup)

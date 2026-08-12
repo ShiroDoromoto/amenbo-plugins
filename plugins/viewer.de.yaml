@@ -1,4 +1,12 @@
 desc: Lesen Sie Ihre Aufgabenliste auf dem Handy, von einem Ort, der Ihnen gehört
+about: |
+  Ihre Aufgabenliste erreicht Ihr Handy, und die App Amenbo Viewer liest sie dort — die Aufgaben, den Stand jeder einzelnen und die Entscheidungen dahinter — während Sie vom Rechner weg sind.
+
+  Nichts wird für Sie gehostet. Der Ort gehört Ihnen: ein app-eigener iCloud-Ordner auf einem Mac, oder ein Cloudflare Worker samt Datenbank, den `setup` in Ihrem eigenen Cloudflare-Konto aufstellt. Einträge reisen in eine Richtung, und nur so, wie sie sich bewegen.
+
+  Auf dem Cloudflare-Weg reisen sie versiegelt. `qr` koppelt ein Handy ohne Netz — die Kamera liest Adresse, Token und Schlüssel. `phones` sagt, welche Handys lesen dürfen, und `revoke` trennt eines davon ab.
+
+  Eingeschaltet trägt es jedes Projekt dieses Rechners: ein Handy ist ein Gerät, kein Projekt.
 config:
   worker_url:
     label: URL Ihres eigenen Cloudflare Workers (trägt setup ein)
