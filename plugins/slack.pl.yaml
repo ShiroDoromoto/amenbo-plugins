@@ -1,4 +1,12 @@
 desc: Zgłaszać na kanale Slack to, co zrobiła Twoja SI
+about: |
+  Każde zadanie, które twoja SI ukończy, każde, którego postanowi nie robić, każda przyjęta decyzja — wiersz trafia na kanał Slacka. To, co działo się, gdy nie było cię przy projekcie, czytasz tam, gdzie i tak zaglądasz.
+
+  - **Publikowane jest tylko to, co pisze SI.** Przy tym, co napisałeś sam, byłeś obecny; na kanale zostaje praca wykonana bez ciebie.
+  - **Kanał to właśnie to ustawienie.** `webhook_url` należy do projektu, w którym został zapisany, więc ta wartość *jest* kanałem, na który ten projekt raportuje. Dwa projekty z dwoma webhookami raportują na dwa kanały; każda wiadomość nazywa swój projekt, więc wspólny kanał też się czyta.
+  - **Które zdarzenia — wybierasz ty.** Jedenaście do zaznaczenia, od utworzenia zadania po wycofanie komentarza. Domyślnie cztery: zadanie utworzone, zmieniony status, ukończone, odrzucone.
+
+  Slack musi wydać tylko jeden adres Incoming Webhook, a ten jest trzymany jako tajne ustawienie — nie opuszcza amenbo ani w eksporcie, ani w dzienniku, ani przy odczycie zwrotnym. Wiadomości są pisane w języku, w którym czytasz amenbo, i nazywają twoją SI imieniem, które jej nadałeś.
 config:
   webhook_url:
     label: Adres URL webhooka Slacka

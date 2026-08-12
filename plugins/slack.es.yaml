@@ -1,4 +1,12 @@
 desc: Informar en un canal de Slack lo que hizo tu IA
+about: |
+  Cada tarea que tu IA termina, cada una que decide no hacer, cada decisión que acepta: la línea llega a un canal de Slack. Lo que pasó mientras estabas lejos del proyecto, en la sala que ya miras.
+
+  - **Solo se publica lo que escribe la IA.** Lo que escribiste tú ya lo viviste; en el canal queda el trabajo que ocurrió sin ti.
+  - **El canal es el ajuste.** `webhook_url` pertenece al proyecto donde se escribió, así que ese valor *es* el canal al que ese proyecto informa. Dos proyectos con dos webhooks informan a dos canales; cada mensaje dice de qué proyecto viene, así que apuntar ambos al mismo canal también se lee.
+  - **Qué eventos, lo eliges tú.** Once para marcar, desde crear una tarea hasta retirar un comentario. Por defecto, los cuatro que dicen que una tarea se creó, cambió de estado, se terminó o se descartó.
+
+  Slack solo tiene que darte una URL de Incoming Webhook, y se guarda como ajuste secreto: no sale de amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta. Los mensajes se escriben en el idioma en que lees amenbo y llaman a tu IA por el nombre que le pusiste.
 config:
   webhook_url:
     label: URL del webhook de Slack
