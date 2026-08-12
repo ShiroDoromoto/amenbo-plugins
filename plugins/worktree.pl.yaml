@@ -1,1 +1,21 @@
 desc: Izoluje każde zadanie we własnym git worktree
+about: |
+  Każde zadanie dostaje własny checkout: `start` wycina dla niego git worktree na świeżej gałęzi `task/<id>`, a `finish` zabiera oba, gdy praca zostanie scalona.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    na gałęzi task/<id>
+  ```
+
+  Checkout leży **poza** repozytorium, więc jest czystym środowiskiem pracy — nic w nim nie jest związane z amenbo i nic nie da się wziąć za część projektu. Kilka sesji biegnie wtedy naraz bez kolizji: jedno zadanie, jeden checkout, jedna gałąź.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # w PowerShellu: iex (…)
+  # …praca, commit, scalenie…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` zwraca dokładnie tę linię `cd`, więc do worktree wchodzi ta powłoka, w której stoisz. `finish` uruchamiasz z głównego repozytorium; odmawia, dopóki checkout jest brudny albo gałąź trzyma commity, których nie ma w bazie — `--force` przechodzi nad jednym i drugim. Bez `--base` obie odpowiadają gałęzią, na której stoi repozytorium, więc nie trzeba niczego wypełniać wcześniej.
+
+  Rezerwacja zadania każe wtyczce napisać jedną podpowiedź na stderr i nic ponadto: czy *to* zadanie chce własnego checkoutu, jest oceną i zostaje przy tym, kto podpowiedź czyta. Backlog też zostaje przy amenbo — ta wtyczka dotyka gita i niczego więcej.
+
+  Wymaga gita 2.31 lub nowszego.

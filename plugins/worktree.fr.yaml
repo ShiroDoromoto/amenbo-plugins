@@ -1,1 +1,21 @@
 desc: Isole chaque tâche dans son propre git worktree
+about: |
+  Chaque tâche reçoit sa propre copie de travail : `start` lui taille un git worktree sur la branche neuve `task/<id>`, et `finish` retire les deux une fois le travail fusionné.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    sur la branche task/<id>
+  ```
+
+  La copie vit **hors** du dépôt : c'est donc un environnement de développement pur — rien n'y est lié à amenbo, et rien ne peut être pris pour une partie du projet. Plusieurs sessions tournent alors en même temps sans se heurter : une tâche, une copie, une branche.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # iex (…) en PowerShell
+  # …travailler, committer, fusionner…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` renvoie cette ligne `cd` elle-même : le shell où vous vous tenez est celui qui entre dans le worktree. `finish` se lance depuis le dépôt principal et refuse tant que la copie est sale ou que la branche porte des commits absents de la base ; `--force` passe outre. Sans `--base`, les deux répondent avec la branche sur laquelle se tient le dépôt : rien à renseigner d'avance.
+
+  Réserver une tâche fait écrire au plugin une seule suggestion sur stderr, rien de plus : savoir si *cette* tâche veut une copie à elle est un jugement, et il reste à qui lit la suggestion. Le backlog reste lui aussi à amenbo — ce plugin touche git et rien d'autre.
+
+  Nécessite git 2.31 ou plus récent.

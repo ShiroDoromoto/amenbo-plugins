@@ -1,1 +1,21 @@
 desc: Aísla cada tarea en su propio git worktree
+about: |
+  Cada tarea recibe su propio checkout: `start` le corta un git worktree en la rama nueva `task/<id>`, y `finish` retira ambos una vez que el trabajo se ha fusionado.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    en la rama task/<id>
+  ```
+
+  El checkout vive **fuera** del repositorio, así que es un entorno de desarrollo puro: nada en él está atado a amenbo, y nada suyo puede confundirse con parte del proyecto. Así varias sesiones corren a la vez sin chocar: una tarea, un checkout, una rama.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # iex (…) en PowerShell
+  # …trabajar, hacer commit, fusionar…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` devuelve esa misma línea `cd`, de modo que la shell en la que estás es la que entra en el worktree. `finish` se ejecuta desde el repositorio principal y se niega mientras el checkout esté sucio o la rama tenga commits que la base no tiene; `--force` fuerza ambos casos. Sin `--base`, las dos responden con la rama en la que está el repositorio, así que no hay nada que rellenar antes.
+
+  Reservar una tarea hace que el plugin escriba una sugerencia en stderr, y nada más: si *esta* tarea quiere un checkout propio es un juicio, y se queda con quien lee la sugerencia. El backlog también se queda con amenbo: este plugin toca git y nada más.
+
+  Necesita git 2.31 o superior.

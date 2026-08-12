@@ -1,1 +1,21 @@
 desc: Trennt jede Aufgabe in einen eigenen git worktree
+about: |
+  Jede Aufgabe bekommt ihren eigenen Checkout: `start` schneidet dafür einen git worktree auf dem frischen Branch `task/<id>`, und `finish` räumt beides weg, sobald die Arbeit gemergt ist.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    auf Branch task/<id>
+  ```
+
+  Der Checkout liegt **außerhalb** des Repositories und ist damit eine reine Entwicklungsumgebung — nichts darin ist an amenbo gebunden, und nichts daran lässt sich für einen Teil des Projekts halten. So laufen mehrere Sitzungen gleichzeitig, ohne zu kollidieren: eine Aufgabe, ein Checkout, ein Branch.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # in PowerShell: iex (…)
+  # …arbeiten, committen, mergen…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` gibt genau diese `cd`-Zeile zurück, sodass die Shell, in der Sie stehen, selbst in den worktree wechselt. `finish` läuft im Haupt-Repository und verweigert sich, solange der Checkout schmutzig ist oder der Branch Commits hält, die die Basis nicht hat; `--force` übergeht beides. Ohne `--base` antworten beide mit dem Branch, auf dem das Repository steht — vorher ist nichts einzutragen.
+
+  Eine reservierte Aufgabe lässt das Plugin einen einzigen Vorschlag auf stderr schreiben, mehr nicht: ob *diese* Aufgabe einen eigenen Checkout will, ist eine Ermessensfrage und bleibt bei dem, der den Vorschlag liest. Das Backlog bleibt ebenso bei amenbo — dieses Plugin fasst git an und sonst nichts.
+
+  Braucht git 2.31 oder neuer.
