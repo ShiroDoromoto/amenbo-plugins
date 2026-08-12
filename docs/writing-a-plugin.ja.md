@@ -318,6 +318,7 @@ amenbo task list --filter "done:false" --json
 
 | フィールド | 既定 | 意味 |
 | --- | --- | --- |
+| `about` | なし | プラグインの詳細画面に出る長い説明文。Markdown で書きます。書かなければ、その画面には `repo` の README が出ます。書き方と、いくつの言語で書けるかは後述 |
 | `official` | `false` | 公式バッジ。カタログのキュレーションが決めるもので、自己申告はできません |
 | `payload_v` | `1` | 読むペイロード規約のバージョン |
 | `min_amenbo` | なし | 必要な amenbo の下限バージョン（semver） |
@@ -436,9 +437,28 @@ AI まで運ぶものです。将来この規則が緩んだとき、書いて�
 
 ### 他の言語で書く
 
-あなたが書くもののうち、**人が読む**のは2つです——`desc` と、設定欄のラベル。この2つは、訳があれば読み手の
-言語で出ます。ほかは書いた言語のまま残ります。`agent.when` と各 `does` を読むのは AI であり、CLI の出力は
-英語で固定なので、どちらも選ぶ訳を持ちません。
+あなたが書くもののうち、**人が読む**のは3つです——`desc`、`about`、設定欄のラベル。この3つは、訳があれば
+読み手の言語で出ます。ほかは書いた言語のまま残ります。`agent.when` と各 `does` を読むのは AI であり、CLI の
+出力は英語で固定なので、どちらも選ぶ訳を持ちません。
+
+**`about` は Markdown で、YAML のブロックスカラーが中身を運びます。** `desc` が一覧に並ぶ1行なのに対して、
+`about` は詳細画面に出る本文です。manifest でも、その訳でも、書き方は変わりません。
+
+```yaml
+# plugins/mail.yaml
+desc: Report what your AI did by email
+about: |
+  Every task your AI finishes reaches you as a mail — what it was, and how it ended.
+
+  Bring any SMTP server you already have. For Gmail, an app password is all it takes.
+```
+
+決まりは2つあり、manifest 側の1本にも、各言語の訳にも、同じようにかかります。
+
+- **1言語につき UTF-8 で 2048 バイト。** 日本語ならおよそ1000字、英語なら2000字ほどです。README ではなく
+  説明文なので、install すると読み手に何が起きるかだけを書き、残りはリポジトリに任せてください。
+- **リンクと画像は絶対 `https://` URL だけ。** 相対パスも `http://` も弾かれます。`about` を描くのは
+  amenbo で、中身はカタログが配る文書から来ます。`./README.md` が指す先になるページは、どこにもありません。
 
 訳は **manifest の隣に置くファイル**で、ファイル名が言語を表します。
 
@@ -454,6 +474,10 @@ plugins/mail.de.yaml    # ドイツ語
 ```yaml
 # plugins/mail.ja.yaml
 desc: AI がやったことをメールで報告する
+about: |
+  AI がタスクを終えるたびに、何をどう終えたかがメールで届きます。
+
+  SMTP サーバーは手持ちのもので構いません。Gmail ならアプリパスワードだけで足ります。
 config:
   smtp_host:
     label: SMTP サーバー（Gmail なら smtp.gmail.com）
@@ -469,7 +493,7 @@ config:
 
 | 訳せるもの | 訳せないもの |
 | --- | --- |
-| `desc` | `name`・`author`・`repo`・`category` など manifest の残り |
+| `desc`・`about` | `name`・`author`・`repo`・`category` など manifest の残り |
 | 設定欄の `label` | 設定欄の `key`・`type`・`default`、および選択肢の `value`（プラグインに渡る値そのもの） |
 | 選択肢の `label` | `agent.when` と各 `does`（読むのは AI なので英語のまま） |
 
@@ -488,8 +512,11 @@ amenbo plugin validate plugins/mail.yaml
 それです。
 
 カタログは、この2つを読まれ方どおりに配ります。`desc` は一覧の隣に置く `catalog.<lang>.json` に入るので、
-一覧を見る人は自分の言語1本だけを取ります。設定欄のラベルは `plugins/<name>.json` の中に全言語まとめて
-入るので、install したあとは通信なしで言語の切り替えに追随します。どちらも作者が組み立てるものではありません。
+一覧を見る人は自分の言語1本だけを取ります。`about` と設定欄のラベルは `plugins/<name>.json` の中に全言語
+まとめて入ります。この文書を取るのは、そのプラグインを開いた人か install する人だけです。だから詳細画面は
+読み手の言語に追随し、設定欄は install したあと通信なしで追随し続けます。まだ誰も開いていない一覧に、
+19言語ぶんの長い説明文を積む理由はありません——`about` が詳細側に入るのはそのためです。どちらも作者が
+組み立てるものではありません。
 
 ## 配布物の形
 

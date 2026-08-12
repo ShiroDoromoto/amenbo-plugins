@@ -31,13 +31,14 @@ amenbo has no server. Discovery is served entirely from static files and from Gi
 - What an install needs — the signature, the digests, the settings and events a plugin declares — is a
   second document per plugin, `plugins/<name>.json`, fetched **only** for the one plugin being opened or
   installed. A signature is the largest thing in a listing and the one thing nobody browsing needs.
-- Heavy signals (stars, download counts, README) are fetched **lazily** the same way, only for the one
-  plugin a user opens — never for the whole catalog.
-- The lines a **person** reads — a plugin's `desc`, and the labels on its settings form — are published in
-  whatever languages its author wrote them in. The `desc` lines go into a `catalog.<lang>.json` beside the
-  listing, so a reader fetches their own language and not the other eighteen; the form labels ride inside
-  `plugins/<name>.json`, all languages at once, so an installed plugin's settings follow the reader's
-  language with no network at all.
+- Heavy signals (stars, download counts, and the README of a plugin that wrote no `about` of its own) are
+  fetched **lazily** the same way, only for the one plugin a user opens — never for the whole catalog.
+- The lines a **person** reads — a plugin's `desc`, its `about`, and the labels on its settings form — are
+  published in whatever languages its author wrote them in. The `desc` lines go into a `catalog.<lang>.json`
+  beside the listing, so a reader fetches their own language and not the other eighteen; the `about` and the
+  form labels ride inside `plugins/<name>.json`, all languages at once, so an opened plugin's description
+  comes out of the document that was already fetched to open it, and an installed plugin's settings follow
+  the reader's language with no network at all.
 
 This keeps browsing fast and offline-friendly no matter how many plugins the catalog holds: what grows is
 the number of manifests, and the client already holds every listing after one fetch.

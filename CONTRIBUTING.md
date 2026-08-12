@@ -32,7 +32,7 @@ manifest may omit them.
 | `name` | string | The plugin's identity in the catalog and its file name under `plugins/`. Cannot be the reserved name `registry`. |
 | `desc` | string | One-line description, shown in the list view. |
 | `author` | string | Who wrote the plugin. Display text — it does **not** grant the official badge. |
-| `repo` | string | Source repository as `owner/name`. A detail view reads stars and README from it, lazily. |
+| `repo` | string | Source repository as `owner/name`. A detail view reads stars from it lazily, and its README too when the manifest writes no `about`. |
 | `os` | list | Operating systems the plugin runs on: any of `macos`, `windows`, `linux`. Must be non-empty. |
 | `category` | string | A label for filtering (e.g. `workflow`). A free label — the catalog curates the vocabulary. |
 
@@ -77,6 +77,7 @@ single-`url` form stays valid and is not deprecated.
 
 | Field | Type | Default | Meaning |
 |---|---|---|---|
+| `about` | string | none | The long description shown on the plugin's detail view, as Markdown — a YAML block scalar is what carries it. Capped at 2048 UTF-8 bytes per language, and every link and image in it must be an absolute `https://` URL. Without one, that view shows the README from `repo` instead. See [Writing a plugin](docs/writing-a-plugin.md#writing-it-in-other-languages). |
 | `official` | bool | `false` | The official badge (author is the amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
 | `min_amenbo` | string | none | Minimum amenbo version the plugin needs, as semver — below it, amenbo warns or refuses to enable/run it. |
@@ -129,6 +130,11 @@ assets:
   linux-arm64:
     url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v1/worktree-v1-linux-arm64.tar.gz
     checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+about: |
+  Cuts a git worktree per task, outside the repository, so two sessions never share one checkout.
+
+  `start` hands back the line that takes you into it. `finish` removes the worktree and its branch,
+  once the work has been merged.
 # official: true   # set by catalog curation, not by submitters
 agent:
   when: Starting work on a task that will produce commits, and wanting it isolated
@@ -163,6 +169,10 @@ to the manifest, so a file covering one field is a normal thing to publish rathe
 ```yaml
 # plugins/mail.ja.yaml
 desc: AI がやったことをメールで報告する
+about: |
+  AI がタスクを終えるたびに、何をどう終えたかがメールで届きます。
+
+  SMTP サーバーは手持ちのもので構いません。Gmail ならアプリパスワードだけで足ります。
 config:
   smtp_host:
     label: SMTP サーバー（Gmail なら smtp.gmail.com）
@@ -172,10 +182,10 @@ config:
       task.done: タスクが完了した
 ```
 
-What has a translation to pick from is what a **person** reads: `desc`, and the `label` on a config field or
-on one of its options. `config` is keyed here rather than listed — each field by its `key`, each option by
-its `value` — because a translation carries no order of its own, and lining the two up by position is what
-would break every language at once the day you reorder the form. Everything else stays as you wrote it,
+What has a translation to pick from is what a **person** reads: `desc`, `about`, and the `label` on a config
+field or on one of its options. `config` is keyed here rather than listed — each field by its `key`, each
+option by its `value` — because a translation carries no order of its own, and lining the two up by position
+is what would break every language at once the day you reorder the form. Everything else stays as you wrote it,
 `agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo itself is read in
 (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`,
 `pl`, `nl`, `uk`).

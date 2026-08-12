@@ -33,6 +33,16 @@ assets:
 # url: https://github.com/you/your-plugin/releases/download/v1/your-plugin-v1.tar.gz
 # checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
 
+# The long description shown on this plugin's detail view — Markdown, carried by a YAML block scalar.
+# Optional: write none and the view shows the README from `repo` instead. It is capped at 2048 UTF-8
+# bytes per language, and every link and image in it must be an absolute https:// URL, so keep it to what
+# installing this does for the reader and leave the rest to the repository.
+about: |
+  Cuts a git worktree per task, outside the repository, so two sessions never share one checkout.
+
+  `start` hands back the line that takes you into it. `finish` removes the worktree and its branch,
+  once the work has been merged.
+
 # official: true   # set by catalog curation, not by submitters
 # payload_v: 1     # the payload contract version the plugin reads (default: 1)
 # min_amenbo: 1.8.0  # minimum amenbo version the plugin needs (default: none)
@@ -67,12 +77,16 @@ agent:
 #   plugins/worktree.de.yaml    # German
 #
 # Write only the fields you are translating. Everything you leave out falls back to what is written here,
-# so a file covering one field is a normal thing to publish. Two of the fields above are read by a person
-# and so have a translation to pick from: `desc`, and the labels on your settings form. This manifest asks
-# for no settings, which makes its whole translation one line:
+# so a file covering one field is a normal thing to publish. Three of the fields above are read by a person
+# and so have a translation to pick from: `desc`, `about`, and the labels on your settings form. This
+# manifest asks for no settings, which leaves its translation the two of them:
 #
 #   # plugins/worktree.ja.yaml
 #   desc: タスクごとに git worktree を切り分ける
+#   about: |
+#     タスクごとに git worktree をリポジトリの外へ切るので、2つのセッションが1つの作業ツリーを奪い合いません。
+#
+#     `start` はそこへ入る一行を返します。`finish` は、作業がマージされたあとに worktree とブランチを畳みます。
 #
 # A plugin that does declare `config` translates the labels on it — and keyed, not listed: each field by
 # its `key`, each option by its `value`. Those two are what travel to the plugin, so they stay as they are,
