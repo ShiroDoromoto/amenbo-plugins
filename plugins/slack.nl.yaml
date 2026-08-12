@@ -1,4 +1,12 @@
 desc: In een Slack-kanaal melden wat je AI heeft gedaan
+about: |
+  Elke taak die je AI afrondt, elke taak die het niet gaat doen, elk besluit dat het aanneemt: de regel komt in een Slack-kanaal binnen. Wat er gebeurde terwijl je weg was bij het project, in de ruimte die je toch al leest.
+
+  - **Alleen wat de AI schrijft, wordt gemeld.** Wat je zelf schreef, was je bij; in het kanaal blijft het werk dat zonder jou gebeurde.
+  - **Het kanaal is de instelling.** `webhook_url` hoort bij het project waarin die is gezet, dus die waarde *is* het kanaal waaraan dat project meldt. Twee projecten met twee webhooks melden aan twee kanalen; elk bericht noemt zijn project, dus samen op één kanaal leest ook.
+  - **Welke gebeurtenissen, kies je zelf.** Elf om aan te vinken, van een taak die is aangemaakt tot een opmerking die is teruggenomen. Standaard de vier die zeggen dat een taak is aangemaakt, van status veranderde, is afgerond of is verworpen.
+
+  Slack hoeft maar één Incoming Webhook-URL af te geven, en die wordt als geheime instelling bewaard — hij verlaat amenbo niet in een export, een log of een teruglezing. Berichten staan in de taal waarin je amenbo leest en noemen je AI bij de naam die je hem gaf.
 config:
   webhook_url:
     label: Slack-webhook-URL
