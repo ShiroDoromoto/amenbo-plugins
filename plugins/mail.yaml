@@ -26,6 +26,21 @@ assets:
   windows-arm64:
     url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-windows-arm64.tar.gz
     checksum: sha256:aac36d6b6471d531d20ed4786c7ad94772bedf836eeb6f6229b933e311f9703c
+about: |
+  Report by email what your AI did in a project while you were away from it.
+
+  Only the AI's writes are reported: a change you made yourself is one you were there for.
+  Which events are worth a mail is yours to tick, from the eleven amenbo fires.
+
+  A burst of them arrives as one message instead of a dozen, and every message a project
+  sends joins the same thread. Where it goes is that project's own setting, so two projects
+  can report to two mailboxes.
+
+  Bring any SMTP server you already have. Nothing sits in between, and the plugin holds no
+  address of its own — the mail leaves through your own account.
+
+  Using Gmail? You will need an app password:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 official: true
 payload_v: 1
 min_amenbo: 3.1.0

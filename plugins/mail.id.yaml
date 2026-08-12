@@ -1,4 +1,20 @@
 desc: Melaporkan lewat email apa yang dikerjakan AI Anda
+about: |
+  Terima lewat email apa yang dikerjakan AI di sebuah proyek selagi Anda tidak di sana.
+
+  Yang dilaporkan hanya tulisan AI: perubahan yang Anda buat sendiri sudah Anda saksikan.
+  Peristiwa mana yang layak dikirimkan, Anda sendiri yang memilih, dari sebelas yang
+  dikeluarkan amenbo.
+
+  Peristiwa yang beruntun datang sebagai satu pesan, bukan selusin, dan semua pesan dari satu
+  proyek berkumpul di utas yang sama. Ke mana perginya adalah setelan proyek itu sendiri, jadi
+  dua proyek bisa melapor ke dua kotak surat.
+
+  Server SMTP apa pun yang sudah Anda punya sudah cukup. Tidak ada layanan di tengah, dan
+  plugin ini tidak menyimpan alamat apa pun: email keluar lewat akun Anda sendiri.
+
+  Memakai Gmail? Anda perlu sandi aplikasi:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: "Server SMTP (Gmail: smtp.gmail.com)"

@@ -1,4 +1,19 @@
 desc: Báo qua email những gì AI của bạn đã làm
+about: |
+  Nhận qua email những gì AI đã làm trong một dự án lúc bạn không ở đó.
+
+  Chỉ những gì AI ghi mới được báo: thay đổi do chính bạn làm thì bạn đã có mặt rồi. Sự kiện
+  nào đáng gửi một email là do bạn chọn, trong mười một sự kiện amenbo phát ra.
+
+  Một loạt sự kiện đến trong một thư duy nhất thay vì cả chục thư, và mọi thư của cùng một
+  dự án đều nằm chung một chuỗi hội thoại. Gửi đi đâu là thiết lập của riêng dự án đó, nên
+  hai dự án có thể báo về hai hộp thư khác nhau.
+
+  Máy chủ SMTP nào bạn đang có cũng dùng được. Không có dịch vụ nào chen vào giữa, và bản
+  thân plugin không giữ địa chỉ nào: thư đi ra từ tài khoản của chính bạn.
+
+  Dùng Gmail? Bạn sẽ cần một mật khẩu ứng dụng:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: "Máy chủ SMTP (Gmail: smtp.gmail.com)"

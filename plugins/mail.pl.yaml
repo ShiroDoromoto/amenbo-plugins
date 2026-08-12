@@ -1,4 +1,19 @@
 desc: Zgłasza e-mailem, co zrobiła twoja AI
+about: |
+  Dostajesz e-mailem to, co twoja AI zrobiła w projekcie, gdy cię przy nim nie było.
+
+  Zgłaszane jest tylko to, co zapisała AI: własna zmiana dzieje się na twoich oczach. Które
+  zdarzenia są warte e-maila, wybierasz ty — z jedenastu, które wysyła amenbo.
+
+  Seria zdarzeń przychodzi jako jedna wiadomość, a nie kilkanaście, a wszystkie wiadomości
+  jednego projektu trafiają do tego samego wątku. Dokąd idą, to ustawienie samego projektu,
+  więc dwa projekty mogą zgłaszać do dwóch skrzynek.
+
+  Wystarczy dowolny serwer SMTP, który już masz. Po drodze nie ma żadnej usługi, a sama
+  wtyczka nie przechowuje żadnego adresu: poczta wychodzi z twojego konta.
+
+  Używasz Gmaila? Będzie potrzebne hasło do aplikacji:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: "Serwer SMTP (dla Gmaila: smtp.gmail.com)"

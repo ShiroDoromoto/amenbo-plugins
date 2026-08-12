@@ -1,4 +1,17 @@
 desc: 用郵件報告 AI 做了什麼
+about: |
+  你不在的時候，AI 在專案裡做了什麼，都用郵件告訴你。
+
+  只報告 AI 寫下的變更：你自己做的變更，你當時就在場。哪些事件值得寄一封信，由你從 amenbo 發出的
+  11 種裡勾選。
+
+  接連發生的事件會合成一封信，而不是十幾封；同一個專案寄出的信會歸到同一個對話。寄到哪裡是這個專案
+  自己的設定，所以兩個專案可以報告到兩個信箱。
+
+  用你現有的任何 SMTP 伺服器即可。中間沒有別的服務，外掛自身也不存放任何位址，信件從你自己的帳號寄出。
+
+  使用 Gmail 時，需要先產生應用程式密碼：
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: SMTP 伺服器（Gmail 為 smtp.gmail.com）

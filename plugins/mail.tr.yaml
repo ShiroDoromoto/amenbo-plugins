@@ -1,4 +1,20 @@
 desc: Yapay zekânızın yaptıklarını e-postayla bildirir
+about: |
+  Siz projeden uzaktayken yapay zekânın orada ne yaptığını e-postayla alırsınız.
+
+  Yalnızca yapay zekânın yazdıkları bildirilir: kendi yaptığınız bir değişiklikte zaten
+  oradaydınız. Hangi olayların bir e-postaya değdiğini, amenbo'nun ürettiği on bir olay
+  arasından siz seçersiniz.
+
+  Arka arkaya gelen olaylar bir düzine ileti yerine tek iletiyle ulaşır ve bir projenin
+  gönderdiği iletiler aynı konu dizisinde toplanır. Nereye gideceği projenin kendi ayarıdır;
+  yani iki proje iki ayrı posta kutusuna bildirebilir.
+
+  Elinizde hâlihazırda olan hangi SMTP sunucusu varsa yeter. Araya giren bir hizmet yoktur ve
+  eklentinin kendisi hiçbir adres tutmaz: e-posta sizin hesabınızdan çıkar.
+
+  Gmail mi kullanıyorsunuz? Bir uygulama parolası gerekecek:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: "SMTP sunucusu (Gmail için: smtp.gmail.com)"
