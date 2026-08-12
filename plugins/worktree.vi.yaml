@@ -1,1 +1,21 @@
 desc: Tách riêng từng việc vào git worktree của nó
+about: |
+  Mỗi việc có một bản checkout riêng: `start` cắt cho nó một git worktree trên nhánh mới `task/<id>`, còn `finish` dọn cả hai đi khi công việc đã được gộp.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    nhánh task/<id>
+  ```
+
+  Bản checkout nằm **ngoài** kho, nên đó là một môi trường phát triển thuần túy — không gì trong đó buộc vào amenbo, và không gì có thể bị nhầm là một phần của dự án. Nhiều phiên làm việc nhờ vậy chạy cùng lúc mà không va nhau: một việc, một checkout, một nhánh.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # PowerShell thì iex (…)
+  # …làm, commit, gộp…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` trả về đúng dòng `cd` ấy, nên chính shell bạn đang đứng là cái bước vào worktree. `finish` chạy từ kho chính, và từ chối chừng nào bản checkout còn bẩn hoặc nhánh còn giữ commit mà nhánh gốc không có; `--force` vượt qua cả hai. Không đưa `--base` thì cả hai lấy nhánh mà kho đang đứng, nên chẳng phải điền gì trước.
+
+  Đặt chỗ một việc khiến plugin ghi một dòng gợi ý ra stderr, chỉ vậy: việc *này* có cần checkout riêng hay không là một phán đoán, và nó ở lại với người đọc gợi ý. Backlog cũng ở lại với amenbo — plugin này chạm vào git và không gì khác.
+
+  Cần git 2.31 trở lên.

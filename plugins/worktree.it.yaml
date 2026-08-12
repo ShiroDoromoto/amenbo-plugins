@@ -1,1 +1,21 @@
 desc: Isola ogni attività nel proprio git worktree
+about: |
+  Ogni attività ottiene un checkout tutto suo: `start` le ritaglia un git worktree sul ramo nuovo `task/<id>`, e `finish` toglie entrambi una volta che il lavoro è stato unito.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    sul ramo task/<id>
+  ```
+
+  Il checkout vive **fuori** dal repository, quindi è un ambiente di sviluppo puro: niente al suo interno è legato ad amenbo, e niente di esso può essere scambiato per parte del progetto. Così più sessioni procedono insieme senza scontrarsi: un'attività, un checkout, un ramo.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # iex (…) in PowerShell
+  # …lavorare, fare commit, unire…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` restituisce proprio quella riga `cd`, così la shell in cui ti trovi è quella che entra nel worktree. `finish` si esegue dal repository principale e si rifiuta finché il checkout è sporco o il ramo tiene commit che la base non ha; `--force` scavalca entrambi. Senza `--base` rispondono con il ramo su cui sta il repository, quindi non c'è nulla da compilare prima.
+
+  Prenotare un'attività fa scrivere al plugin un solo suggerimento su stderr, e nient'altro: se *questa* attività voglia un checkout proprio è un giudizio, e resta a chi legge il suggerimento. Anche il backlog resta ad amenbo — questo plugin tocca git e nient'altro.
+
+  Richiede git 2.31 o superiore.

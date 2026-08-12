@@ -1,1 +1,21 @@
 desc: Isoleert elke taak in een eigen git worktree
+about: |
+  Elke taak krijgt een eigen checkout: `start` snijdt er een git worktree voor uit op de verse branch `task/<id>`, en `finish` haalt beide weg zodra het werk is gemerged.
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    op branch task/<id>
+  ```
+
+  De checkout ligt **buiten** de repository en is daarmee een zuivere ontwikkelomgeving — niets erin is aan amenbo gebonden, en niets eraan kan voor een deel van het project worden aangezien. Zo lopen meerdere sessies tegelijk zonder te botsen: één taak, één checkout, één branch.
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # in PowerShell: iex (…)
+  # …werken, committen, mergen…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` geeft precies die `cd`-regel terug, dus de shell waarin je staat is degene die de worktree binnengaat. `finish` draai je vanuit de hoofdrepository; hij weigert zolang de checkout vuil is of de branch commits houdt die de basis niet heeft — `--force` gaat daar overheen. Zonder `--base` antwoorden ze allebei met de branch waarop de repository staat, dus er valt vooraf niets in te vullen.
+
+  Een taak reserveren laat de plugin één suggestie naar stderr schrijven, meer niet: of *deze* taak een eigen checkout wil is een afweging, en die blijft bij wie de suggestie leest. De backlog blijft eveneens bij amenbo — deze plugin raakt git aan en verder niets.
+
+  Vereist git 2.31 of nieuwer.

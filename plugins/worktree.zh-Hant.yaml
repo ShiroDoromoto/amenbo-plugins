@@ -1,1 +1,21 @@
 desc: 把每個任務隔離到各自的 git worktree
+about: |
+  每個任務都有自己的檢出：`start` 在新分支 `task/<id>` 上為它切出一個 git worktree，`finish` 則在工作合併之後把兩者一併撤走。
+
+  ```
+  <repo>/../<repo-name>-worktrees/<id>/    分支 task/<id>
+  ```
+
+  檢出放在儲存庫**之外**，因此是一個純粹的開發環境——裡面沒有任何東西綁定到 amenbo，也沒有任何東西會被誤認成專案的一部分。多個實作工作階段於是可以同時進行而互不碰撞：一個任務，一份檢出，一條分支。
+
+  ```sh
+  eval "$(amenbo plugin run worktree start 123)"   # PowerShell 用 iex (…)
+  # …做事、提交、合併…
+  amenbo plugin run worktree finish 123
+  ```
+
+  `start` 回傳的就是那一行 `cd`，所以走進 worktree 的正是你此刻所站的 shell。`finish` 在主儲存庫裡執行；只要檢出還髒著，或分支還揣著基準分支沒有的提交，它就拒絕——`--force` 可以越過這兩道。不給 `--base` 時，兩者都以儲存庫當前所在的分支為準，事先沒有什麼要填。
+
+  預約一個任務只會讓外掛往 stderr 寫一行建議，僅此而已：*這個*任務要不要一份自己的檢出是判斷，判斷留給讀到建議的人。待辦同樣留在 amenbo 手裡——這個外掛只碰 git。
+
+  需要 git 2.31 或更新版本。
