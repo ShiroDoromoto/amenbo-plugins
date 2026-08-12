@@ -1,4 +1,20 @@
 desc: Meldet per E-Mail, was Ihre KI getan hat
+about: |
+  Sie bekommen per E-Mail, was Ihre KI in einem Projekt getan hat, während Sie weg waren.
+
+  Gemeldet wird nur, was die KI geschrieben hat: bei einer Änderung von Ihnen waren Sie ja
+  dabei. Welche Ereignisse eine E-Mail wert sind, wählen Sie selbst aus den elf, die amenbo
+  auslöst.
+
+  Ein Schwall davon kommt als eine Nachricht statt als ein Dutzend, und alle Nachrichten eines
+  Projekts landen im selben Thread. Wohin sie gehen, ist eine Einstellung des Projekts selbst –
+  zwei Projekte können also an zwei Postfächer melden.
+
+  Jeder SMTP-Server, den Sie schon haben, genügt. Dazwischen liegt kein Dienst, und das Plugin
+  hält selbst keine Adresse: Die E-Mail wird über Ihr eigenes Konto verschickt.
+
+  Sie nutzen Gmail? Dann brauchen Sie ein App-Passwort:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: "SMTP-Server (Gmail: smtp.gmail.com)"

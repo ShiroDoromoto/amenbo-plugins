@@ -1,4 +1,17 @@
 desc: 用邮件报告 AI 做了什么
+about: |
+  你不在的时候，AI 在项目里做了什么，都用邮件告诉你。
+
+  只报告 AI 写下的改动：你自己做的改动，你当时就在场。哪些事件值得发一封邮件，由你从 amenbo 触发的
+  11 种里勾选。
+
+  接连发生的事件会合成一封邮件，而不是十几封；同一个项目发出的邮件会归到同一个会话。发往哪里是这个项目
+  自己的设置，所以两个项目可以报告到两个邮箱。
+
+  用你现有的任何 SMTP 服务器即可。中间没有别的服务，插件自身也不存放任何地址，邮件从你自己的账号发出。
+
+  使用 Gmail 时，需要先生成应用专用密码：
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: SMTP 服务器（Gmail 为 smtp.gmail.com）

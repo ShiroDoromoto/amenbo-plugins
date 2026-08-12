@@ -1,4 +1,20 @@
 desc: Informa por e-mail o que a sua IA fez
+about: |
+  Receba por e-mail o que a sua IA fez em um projeto enquanto você estava longe dele.
+
+  Só é informado o que a IA escreveu: uma mudança feita por você é uma mudança que você
+  acompanhou. Quais eventos merecem um e-mail é você quem escolhe, entre os onze que o
+  amenbo dispara.
+
+  Uma rajada de eventos chega em uma única mensagem, e não em uma dúzia, e todas as mensagens
+  de um projeto ficam na mesma conversa. Para onde elas vão é um ajuste do próprio projeto,
+  então dois projetos podem informar a duas caixas de entrada.
+
+  Use qualquer servidor SMTP que você já tenha. Não há serviço nenhum no meio e o plugin não
+  guarda endereço algum: o e-mail sai pela sua própria conta.
+
+  Usa o Gmail? Você vai precisar de uma senha de app:
+  https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
     label: "Servidor SMTP (Gmail: smtp.gmail.com)"
