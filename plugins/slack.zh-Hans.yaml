@@ -10,8 +10,14 @@ about: |
 config:
   webhook_url:
     label: Slack Webhook 地址
+    help: |-
+      这个地址由 Slack 生成，不是 amenbo，而它就是频道：webhook 选错频道，其他都设置对了也会发到错的房间。
+      在 api.slack.com/apps 里，为需要知道这个项目的工作区创建一个应用，打开 Incoming Webhooks，为要发消息的频道添加一条，再复制返回的地址。
+      它作为机密设置保存——不会随导出、日志或回读离开 amenbo。
   events:
     label: 报告哪些事
+    help: |-
+      一个都不勾也是一种回答，并会被照办：插件仍然启用，但什么都不报。清空则恢复默认的四项。
     options:
       task.created: 创建了任务
       task.status_changed: 任务的状态变了
