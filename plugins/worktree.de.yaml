@@ -16,6 +16,6 @@ about: |
 
   `start` gibt genau diese `cd`-Zeile zurück, sodass die Shell, in der Sie stehen, selbst in den worktree wechselt. `finish` läuft im Haupt-Repository und verweigert sich, solange der Checkout schmutzig ist oder der Branch Commits hält, die die Basis nicht hat; `--force` übergeht beides. Ohne `--base` antworten beide mit dem Branch, auf dem das Repository steht — vorher ist nichts einzutragen.
 
-  Eine reservierte Aufgabe lässt das Plugin einen einzigen Vorschlag auf stderr schreiben, mehr nicht: ob *diese* Aufgabe einen eigenen Checkout will, ist eine Ermessensfrage und bleibt bei dem, der den Vorschlag liest. Das Backlog bleibt ebenso bei amenbo — dieses Plugin fasst git an und sonst nichts.
+  Eine reservierte Aufgabe lässt das Plugin einen einzigen Vorschlag auf stderr schreiben, mehr nicht: ob *diese* Aufgabe einen eigenen Checkout will, ist eine Ermessensfrage und bleibt bei dem, der den Vorschlag liest. Das Backlog bleibt ebenso bei amenbo — dieses Plugin liest eine Aufgabe, um zu sehen, wo sie bearbeitet wird, und schreibt nichts als git.
 
   Braucht git 2.31 oder neuer.
