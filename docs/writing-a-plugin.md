@@ -589,9 +589,8 @@ Two more things worth knowing:
 Three of the things you write are read by a **person**: your `desc`, your `about`, and the words on your
 settings form — every label, beside a box or on a button, and the `help` and `placeholder` that go with one.
 Those amenbo shows in the reader's own language, when you have written one. Everything else stays in the
-language you wrote it in —
-`agent.when` and each `does` are read by an AI, and the CLI answers in English by contract, so neither has
-a translation to pick from.
+language you wrote it in — `agent.when` and each `does` are read by an AI, and the CLI answers in English by
+contract, so neither has a translation to pick from.
 
 **`about` is Markdown, and a YAML block scalar is what carries it.** `desc` is the one line a list draws;
 `about` is the paragraphs on your plugin's detail view, and it is written the same way in the manifest and

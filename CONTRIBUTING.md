@@ -191,9 +191,8 @@ asks for. Those are keyed here rather than listed — each field by its `key`, e
 button by the `cmd` it raises — because a translation carries no order of its own, and lining the two up by
 position is what would break every language at once the day you reorder the form. Everything else stays as
 you wrote it, `agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo
-itself is read in
-(`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`,
-`pl`, `nl`, `uk`).
+itself is read in (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`,
+`vi`, `th`, `tr`, `pl`, `nl`, `uk`).
 
 Name the manifest and everything beside it is read with it, so one command checks both:
 
