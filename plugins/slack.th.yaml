@@ -30,3 +30,7 @@ config:
       decision.rejected: การตัดสินใจถูกตีตก
       comment.added: มีการเพิ่มความเห็น
       comment.removed: มีการถอนความเห็น
+settings:
+  actions:
+    config test:
+      label: ทดสอบการส่ง

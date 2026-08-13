@@ -30,3 +30,7 @@ config:
       decision.rejected: Een besluit is afgewezen
       comment.added: Een opmerking is toegevoegd
       comment.removed: Een opmerking is ingetrokken
+settings:
+  actions:
+    config test:
+      label: Testbericht sturen

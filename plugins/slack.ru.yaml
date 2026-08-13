@@ -30,3 +30,7 @@ config:
       decision.rejected: Решение отклонено
       comment.added: Добавлен комментарий
       comment.removed: Комментарий отозван
+settings:
+  actions:
+    config test:
+      label: Отправить тест

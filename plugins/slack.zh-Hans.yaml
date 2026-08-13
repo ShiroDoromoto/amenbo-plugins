@@ -30,3 +30,7 @@ config:
       decision.rejected: 否决了决策
       comment.added: 添加了评论
       comment.removed: 撤回了评论
+settings:
+  actions:
+    config test:
+      label: 发送测试消息

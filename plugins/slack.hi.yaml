@@ -30,3 +30,7 @@ config:
       decision.rejected: कोई निर्णय अस्वीकार हुआ
       comment.added: कोई टिप्पणी जुड़ी
       comment.removed: कोई टिप्पणी वापस ली गई
+settings:
+  actions:
+    config test:
+      label: टेस्ट भेजें

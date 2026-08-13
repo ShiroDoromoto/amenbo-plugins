@@ -30,3 +30,7 @@ config:
       decision.rejected: Một quyết định bị bác
       comment.added: Một bình luận được thêm
       comment.removed: Một bình luận bị rút lại
+settings:
+  actions:
+    config test:
+      label: Gửi tin nhắn thử

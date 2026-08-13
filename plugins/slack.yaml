@@ -77,6 +77,11 @@ config:
         label: A comment was added
       - value: comment.removed
         label: A comment was taken back
+settings:
+  check: config check
+  actions:
+    - cmd: config test
+      label: Send a test message
 events:
   - task.created
   - task.status_changed

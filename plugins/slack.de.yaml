@@ -30,3 +30,7 @@ config:
       decision.rejected: Eine Entscheidung wurde abgelehnt
       comment.added: Ein Kommentar wurde hinzugefügt
       comment.removed: Ein Kommentar wurde zurückgenommen
+settings:
+  actions:
+    config test:
+      label: Testnachricht senden

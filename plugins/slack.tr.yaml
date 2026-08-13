@@ -30,3 +30,7 @@ config:
       decision.rejected: Bir karar reddedildi
       comment.added: Bir yorum eklendi
       comment.removed: Bir yorum geri alındı
+settings:
+  actions:
+    config test:
+      label: Test mesajı gönder
