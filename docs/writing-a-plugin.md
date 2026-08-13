@@ -486,6 +486,21 @@ events:
 Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on
 an older one.
 
+### The one thing none of your sentences may hold
+
+Every string you write for a reader is refused if it cites an amenbo record — your `desc` and `about`, a
+config field's `label`, `help` and `placeholder`, a settings button's `label` and the boxes a press asks
+for, `agent.when` and each `does`. A citation is `AMB-D-<n>`, `AMB-T-<n>` — any `AMB-`, a kind letter and a
+number, standing on its own as a word — whichever case you write it in.
+
+A number like that means something only inside the store it was issued in, and in your prose it reads as
+that store's own record: *AMB-D-<n> makes this required* borrows the user's authority for a sentence amenbo
+never wrote. A number that exists nowhere does it just as well, which is why nothing is looked up — the
+spelling is the whole test, and a translation is held to it exactly as the manifest is.
+
+A `#42` or a `T-42` is left alone. Those belong to GitHub and to other trackers, and claiming them would
+hijack a reference that was never amenbo's — so your own issue number is yours to cite.
+
 ### Saying what you are for
 
 An AI working in a folder reads one document to learn how to work there: `amenbo agent --json`. A plugin

@@ -216,6 +216,7 @@ cap its base field obeys. The full rule, and what this catalog then does with ea
 - [ ] Every `url` points at a real, downloadable release asset, and its `checksum` is that asset's real digest.
 - [ ] `repo` is the plugin's own `owner/name`, not this catalog.
 - [ ] You did **not** set `official: true` (unless you are the amenbo team).
+- [ ] No text a reader is shown cites an amenbo record (`AMB-D-<n>`, `AMB-T-<n>`) — a number that means nothing outside the store it came from. Your own issue numbers are fine.
 
 ## What CI checks
 
