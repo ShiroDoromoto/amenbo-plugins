@@ -252,6 +252,52 @@ config:
 保存するための語で、amenbo が解決してから渡すので、プラグインが `none` を受け取ることはありません。
 候補の値としても使えません。
 
+### ラベル1行に収まらないことを書く
+
+`label` は1行です。何のための値なのか、何を書けばいいのかを添えたい欄には、それを持つキーが2つあります。
+もう1つは「この値は利用者が打つものではない」という宣言です。
+
+```yaml
+config:
+  - key: webhook_url
+    label: Webhook URL
+    help: |
+      Slack アプリの Incoming Webhooks から作ります。
+      チャンネル1つにつき1本です。
+    placeholder: https://hooks.slack.com/services/T000/B000
+    secret: true
+  - key: worker_url
+    label: Worker URL
+    help: setup が書き込みます。打つものはありません。
+    readonly: true
+```
+
+| キー | 何を書くか | 上限 |
+| --- | --- | --- |
+| `help` | その欄が何のためのものか。入力欄の下に出ます。改行は文字として通ります | 1言語につき UTF-8 で 1KB |
+| `placeholder` | 入力例。欄が空のあいだ、中に薄く出ます | 1言語につき 80 バイト |
+| `readonly` | 値を書くのはプラグイン自身で、利用者ではない | — |
+
+**どちらの文も平文で、平文のまま描かれます。** Markdown もリンクも描きません。ここは利用者が秘密を打ち込む
+画面で、作者が選んだ飛び先を出す場所ではないからです。制御文字も validator が弾きます（`help` は本文なので
+改行だけは通ります）——`plugin config get` はこれを端末に出すので、エスケープ列が混ざれば amenbo が書いた行を
+上書きできてしまいます。2つとも設定スキーマ全体のバイト上限にも算入されるので、欄の多いフォームはその分を
+ここで使うことになります。
+
+**`placeholder` は `default` ではありません。** `default` はプラグインが実際に受け取る値なので、そこに書いた
+入力例は、欄に触れずに有効化した利用者が本当に送る先になります。ここに書いた例は、読まれるだけです。
+
+**`readonly` が縛るのは画面で、書き込みではありません。** フォームは入力欄も消去ボタンも出さずに値だけ見せ、
+`amenbo plugin config set` はこれまでどおり書けます。プラグイン自身の値が届く道がそこだからです（値を作る
+`setup` が、同じコマンドで書き戻します）。「生成される値とは何か」から2つの規則が出て、validator がどちらも
+持っています——`default` は書けません（誰かが生成する前から答えがある値は、生成された値ではありません）。
+`type: multi` にも書けません（候補を差し出す相手の利用者がいません）。`required` とは直交していて、両方書けば
+`setup` が走るまで有効化は閉じたままになります。
+
+**どちらの文も AI には届きません。** 出るのは人が読む面だけで——フォームは両方を描き、`plugin config get` は
+`help` と、どの欄が読み取り専用かを出します——`amenbo agent --json` には載りません。作者の散文は、AI が読む面に
+着けば指示として効いてしまうからです。
+
 ### 値が使えるかどうかを言う
 
 `required` が見るのは「欄に何か入っているか」だけです。入っているものが実在する webhook なのか、user と
@@ -403,7 +449,7 @@ amenbo task list --filter "done:false" --json
 | `official` | `false` | 公式バッジ。カタログのキュレーションが決めるもので、自己申告はできません |
 | `payload_v` | `1` | 読むペイロード規約のバージョン |
 | `min_amenbo` | なし | 必要な amenbo の下限バージョン（semver） |
-| `config` | なし | 設定項目のスキーマ。`key` / `label` / `secret` / `required` / `type` / `options` / `default` |
+| `config` | なし | 設定項目のスキーマ。`key` / `label` / `help` / `placeholder` / `secret` / `required` / `readonly` / `type` / `options` / `default` |
 | `settings` | なし | 設定画面が起こす呼び出し。有効化のときに走る `check` と、利用者が押す `actions`（前述） |
 | `events` | なし | フックが反応するイベント。無ければコマンド専用のプラグインです |
 | `agent` | なし | AI が「ここでの働き方」を読む場所で、どう動かすかを書くもの。`when` / `commands`。どこまで AI に届くかはバッジ次第です（後述） |
@@ -519,8 +565,9 @@ AI まで運ぶものです。将来この規則が緩んだとき、書いて�
 
 ### 他の言語で書く
 
-あなたが書くもののうち、**人が読む**のは3つです——`desc`、`about`、設定画面のラベル（欄に添えるものと、
-ボタンに載るもの）。この3つは、訳があれば読み手の言語で出ます。ほかは書いた言語のまま残ります。
+あなたが書くもののうち、**人が読む**のは3つです——`desc`、`about`、設定画面の文字（欄やボタンのラベルと、
+それに添える `help`・`placeholder`）。この3つは、訳があれば読み手の言語で出ます。ほかは書いた言語のまま
+残ります。
 `agent.when` と各 `does` を読むのは AI であり、CLI の出力は英語で固定なので、どちらも選ぶ訳を持ちません。
 
 **`about` は Markdown で、YAML のブロックスカラーが中身を運びます。** `desc` が一覧に並ぶ1行なのに対して、
@@ -562,7 +609,9 @@ about: |
   SMTP サーバーは手持ちのもので構いません。Gmail ならアプリパスワードだけで足ります。
 config:
   smtp_host:
-    label: SMTP サーバー（Gmail なら smtp.gmail.com）
+    label: SMTP サーバー
+    help: Gmail なら smtp.gmail.com です。
+    placeholder: smtp.gmail.com
   events:
     label: 何を報告するか
     options:
@@ -583,7 +632,7 @@ settings:
 | 訳せるもの | 訳せないもの |
 | --- | --- |
 | `desc`・`about` | `name`・`author`・`repo`・`category` など manifest の残り |
-| 設定欄の `label` | 設定欄の `key`・`type`・`default`、および選択肢の `value`（プラグインに渡る値そのもの） |
+| 設定欄の `label`・`help`・`placeholder` | 設定欄の `key`・`type`・`default`・`readonly`、および選択肢の `value`（プラグインに渡る値そのもの） |
 | 選択肢の `label` | `agent.when` と各 `does`（読むのは AI なので英語のまま） |
 | ボタンの `label` と、そこで訊く欄の `label` | `settings.check` と action の `cmd`（呼び出しであって読ませる文字列ではないので、訳を書く場所がありません） |
 

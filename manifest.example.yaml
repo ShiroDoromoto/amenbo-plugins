@@ -88,15 +88,18 @@ agent:
 #
 #     `start` はそこへ入る一行を返します。`finish` は、作業がマージされたあとに worktree とブランチを畳みます。
 #
-# A plugin that does declare `config` translates the labels on it — and keyed, not listed: each field by
-# its `key`, each option by its `value`. Those two are what travel to the plugin, so they stay as they are,
-# and looking a translation up by them is what survives the day you reorder the form:
+# A plugin that does declare `config` translates the words on it — each field's `label`, and the `help` and
+# `placeholder` beside it — and keyed, not listed: each field by its `key`, each option by its `value`.
+# Those two are what travel to the plugin, so they stay as they are, and looking a translation up by them is
+# what survives the day you reorder the form:
 #
 #   # plugins/your-plugin.ja.yaml
 #   desc: AI がやったことをメールで報告する
 #   config:
 #     smtp_host:
-#       label: SMTP サーバー（Gmail なら smtp.gmail.com）
+#       label: SMTP サーバー
+#       help: Gmail なら smtp.gmail.com です。
+#       placeholder: smtp.gmail.com
 #     events:
 #       label: 何を報告するか
 #       options:

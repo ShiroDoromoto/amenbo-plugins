@@ -176,19 +176,22 @@ about: |
   SMTP サーバーは手持ちのもので構いません。Gmail ならアプリパスワードだけで足ります。
 config:
   smtp_host:
-    label: SMTP サーバー（Gmail なら smtp.gmail.com）
+    label: SMTP サーバー
+    help: Gmail なら smtp.gmail.com です。
+    placeholder: smtp.gmail.com
   events:
     label: 何を報告するか
     options:
       task.done: タスクが完了した
 ```
 
-What has a translation to pick from is what a **person** reads: `desc`, `about`, and the `label` on a config
-field, on one of its options, or on a settings button and what it asks for. Those are keyed here rather than
-listed — each field by its `key`, each option by its `value`, each button by the `cmd` it raises — because a
-translation carries no order of its own, and lining the two up by position is what would break every language
-at once the day you reorder the form. Everything else stays as you wrote it,
-`agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo itself is read in
+What has a translation to pick from is what a **person** reads: `desc`, `about`, a config field's `help` and
+`placeholder`, and the `label` on a config field, on one of its options, or on a settings button and what it
+asks for. Those are keyed here rather than listed — each field by its `key`, each option by its `value`, each
+button by the `cmd` it raises — because a translation carries no order of its own, and lining the two up by
+position is what would break every language at once the day you reorder the form. Everything else stays as
+you wrote it, `agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo
+itself is read in
 (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`,
 `pl`, `nl`, `uk`).
 

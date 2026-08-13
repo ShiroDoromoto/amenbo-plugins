@@ -262,6 +262,53 @@ The last row is why `none` is reserved: amenbo stores that deliberate empty answ
 stays distinguishable from *not answered yet*, and resolves it away before you see it. You never read
 `none`, and you cannot offer it.
 
+### Saying more than a label can
+
+A `label` is one line, and some fields need more: what the value is for, and an example of what to type. Two
+keys carry that, and a third says the value is not the user's to type at all.
+
+```yaml
+config:
+  - key: webhook_url
+    label: Webhook URL
+    help: |
+      Create one under Incoming Webhooks in your Slack app.
+      One URL per channel.
+    placeholder: https://hooks.slack.com/services/T000/B000
+    secret: true
+  - key: worker_url
+    label: Worker URL
+    help: setup writes this. There is nothing to type.
+    readonly: true
+```
+
+| Key | What it is | Cap |
+| --- | --- | --- |
+| `help` | what the field is for, drawn under the box. A newline is text here | 1KB of UTF-8, per language |
+| `placeholder` | one example, shown greyed inside the box while it is empty | 80 bytes, per language |
+| `readonly` | the value is written by your plugin, not typed by the user | — |
+
+**Both texts are plain, and drawn plain.** No Markdown and no link: this is the screen a user types a secret
+into, and a destination you chose does not belong on it. The validator refuses a control character in either
+— a newline aside in `help`, which is a body rather than a line — because `plugin config get` prints these
+to a terminal, where an escape sequence can write over what amenbo said. Both also count toward the byte cap
+the schema as a whole obeys, so a form of many fields spends its budget on them.
+
+**A `placeholder` is not a `default`.** A default is a value your plugin really receives, so an example
+written there is one a user who enables without touching the field actually sends to. An example written
+here is only ever read.
+
+**`readonly` binds the screen, not the write.** The form shows the value with no input and no clear button,
+while `amenbo plugin config set` still writes — that is the road your own value arrives by, a `setup` that
+generates it writing back with the same command. Two rules follow from what a generated value is, and the
+validator holds both: such a field may not declare a `default` (a value with an answer before anyone
+generates one is not generated), and may not be `type: multi` (there is no user to offer the candidates to).
+It is orthogonal to `required`, and declaring both keeps `enable` shut until your `setup` has run.
+
+**Neither text reaches an AI.** They are shown to a person and nowhere else — the settings form draws both,
+`plugin config get` prints the `help` and says which fields are readonly, and `amenbo agent --json` carries
+none of it. Author prose landing where an AI reads is read as instruction.
+
 ### Saying whether the values are usable
 
 `required` asks whether a box holds *something*. Whether what it holds is a webhook that exists, a password
@@ -421,7 +468,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
 | `payload_v` | `1` | the payload contract version you read |
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
-| `config` | none | your settings schema: `key` / `label` / `secret` / `required` / `type` / `options` / `default` |
+| `config` | none | your settings schema: `key` / `label` / `help` / `placeholder` / `secret` / `required` / `readonly` / `type` / `options` / `default` |
 | `settings` | none | the calls the settings form raises: `check`, run when the plugin is enabled, and `actions`, the buttons a user presses. Written above |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
 | `agent` | none | how your plugin is driven, where an AI reads how to work here: `when` / `commands`. How much of it reaches the AI depends on the badge — see below |
@@ -539,9 +586,10 @@ Two more things worth knowing:
 
 ### Writing it in other languages
 
-Three of the things you write are read by a **person**: your `desc`, your `about`, and the labels on your
-settings form — the ones beside the boxes, and the ones on the buttons. Those amenbo shows in the reader's
-own language, when you have written one. Everything else stays in the language you wrote it in —
+Three of the things you write are read by a **person**: your `desc`, your `about`, and the words on your
+settings form — every label, beside a box or on a button, and the `help` and `placeholder` that go with one.
+Those amenbo shows in the reader's own language, when you have written one. Everything else stays in the
+language you wrote it in —
 `agent.when` and each `does` are read by an AI, and the CLI answers in English by contract, so neither has
 a translation to pick from.
 
@@ -587,7 +635,9 @@ about: |
   SMTP サーバーは手持ちのもので構いません。Gmail ならアプリパスワードだけで足ります。
 config:
   smtp_host:
-    label: SMTP サーバー（Gmail なら smtp.gmail.com）
+    label: SMTP サーバー
+    help: Gmail なら smtp.gmail.com です。
+    placeholder: smtp.gmail.com
   events:
     label: 何を報告するか
     options:
@@ -609,7 +659,7 @@ reorder the form.
 | Translatable | Not translatable |
 | --- | --- |
 | `desc`, `about` | `name`, `author`, `repo`, `category`, and the rest of the manifest |
-| a config field's `label` | a config field's `key`, `type`, `default` — and an option's `value`, which is what travels to your plugin |
+| a config field's `label`, `help` and `placeholder` | a config field's `key`, `type`, `default`, `readonly` — and an option's `value`, which is what travels to your plugin |
 | a config option's `label` | `agent.when` and each `does` — an AI reads those, and they stay English |
 | an action's `label`, and the `label` on what it asks for | `settings.check` and an action's `cmd` — calls, not text anyone is shown, so there is no key to write them in another language |
 
