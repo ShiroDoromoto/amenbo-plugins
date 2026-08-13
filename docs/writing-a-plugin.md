@@ -262,6 +262,94 @@ The last row is why `none` is reserved: amenbo stores that deliberate empty answ
 stays distinguishable from *not answered yet*, and resolves it away before you see it. You never read
 `none`, and you cannot offer it.
 
+### Saying whether the values are usable
+
+`required` asks whether a box holds *something*. Whether what it holds is a webhook that exists, a password
+that goes with its user, or two fields that contradict each other, nobody but you can say — so name one
+call for it and amenbo raises it:
+
+```yaml
+settings:
+  check: config check          # your own command face, written as `agent.commands` writes one
+```
+
+It runs at the two moments the answer can still be acted on: **when the plugin is enabled**, and **after a
+save while it is enabled**. Write the verdict on stdout:
+
+```json
+{ "v": 1, "ok": false, "fields": { "smtp_password": "there is a space in it" }, "message": "…" }
+```
+
+| Key | What it says |
+| --- | --- |
+| `ok` | whether the values are usable. The gate turns on this alone |
+| `message` | one sentence about the settings as a whole. Optional |
+| `fields` | one sentence per setting, keyed by the setting's own key. A key you did not declare is dropped, and the rest of the verdict stands |
+
+**A check that does not say yes leaves the plugin disabled — and so does one that says nothing.** Failing
+to start, exiting non-zero, overrunning **two seconds**, or writing something that is not a verdict all
+count as *not checked*, never as *checked and fine*: a sentence past **200 bytes** or carrying a control
+character makes the whole answer unreadable, which is a silence like any other. Enabling on the strength of
+a plugin that crashed is the one reading this door exists to prevent.
+
+**A check never undoes anything.** The save it follows is not stopped, and a plugin already enabled is
+never switched off behind the user's back. There, what the verdict is for is the sentence on the screen.
+
+**Your sentences are the settings form's.** `message` and each line under `fields` are drawn there and
+nowhere else — the refusal the CLI prints names the keys your check spoke about and none of your text, and
+`amenbo agent --json` carries no `settings` at all. For anything longer than a line, the execution log is
+where your `stderr` is read (`amenbo plugin log <name>`).
+
+### What a user may press
+
+A settings form is boxes and a save button until you say otherwise. `actions` puts calls you already answer
+on it as buttons — a connectivity test, a `setup` whose result is written back with `amenbo plugin config
+set`:
+
+```yaml
+settings:
+  actions:                              # four at most
+    - cmd: config test
+      label: Send a test message        # 40 bytes at most — a button is short
+      ask:                              # handed to this one run, and kept nowhere
+        - key: otp
+          label: One-time code
+          secret: true
+```
+
+A `cmd` here is your own command face under the same grammar `agent.commands` holds — a subcommand and its
+arguments, never a sentence — and no two actions may raise the same one. **A press runs on an enabled
+plugin**, through the road every other run takes: the same injected settings, the same read-back door, the
+same execution log. The check at the moment of enabling is the one call that runs before the gate, because
+the hand pressing *enable* is the consent.
+
+**Nothing reads what an action returns.** Its exit code says whether it worked, the one line it wrote to
+`stderr` is what the screen shows, and nothing is undone by a press that fails. Nor is it held to the
+check's two seconds — a `setup` that stands something up is allowed to take as long as it takes.
+
+An `ask` is a config field's opposite: a value amenbo never has. It reaches your process as
+`AMENBO_ASK_<KEY>` — the key upper-cased, anything that is not a letter or a digit mapped to `_` — for that
+one run, and is gone when it exits.
+
+| An ask carries | An ask must not carry |
+| --- | --- |
+| `key`, `label`, `secret` | `default`, `required` — **refused**, not quietly dropped |
+
+Those two are what an author carries over when they copy a config field, and both belong to a value with a
+life after the press: a `default` is a stored answer to a question that is asked every time, and `required`
+gates enabling, which no press is on either side of. A field carrying one is asking for something that
+would never happen.
+
+- **Three per press**, each key a lowercase identifier like a config key's, since it becomes an environment
+  variable's stem all the same.
+- **The key may not be one your `config` stores.** One name cannot mean both a value that is kept and a
+  value that is never written down — which is also why the two arrive under prefixes of their own.
+- **`secret` decides masking and nothing else.** Where the value is stored is not a question here.
+- **A box left blank is handed over empty.** Every declared key becomes a variable, so read one per key.
+
+**All of this is the settings form's.** The CLI calls you the way it always has, with `amenbo plugin run` —
+which takes arguments a form cannot, and is not limited to what the manifest named in advance.
+
 ## Reading a record back
 
 A payload carries an id and a kind — never the record itself. So to do anything with `id: 42`, you read it,
@@ -334,6 +422,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `payload_v` | `1` | the payload contract version you read |
 | `min_amenbo` | none | the minimum amenbo version you need, as semver |
 | `config` | none | your settings schema: `key` / `label` / `secret` / `required` / `type` / `options` / `default` |
+| `settings` | none | the calls the settings form raises: `check`, run when the plugin is enabled, and `actions`, the buttons a user presses. Written above |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
 | `agent` | none | how your plugin is driven, where an AI reads how to work here: `when` / `commands`. How much of it reaches the AI depends on the badge — see below |
 
@@ -451,9 +540,10 @@ Two more things worth knowing:
 ### Writing it in other languages
 
 Three of the things you write are read by a **person**: your `desc`, your `about`, and the labels on your
-settings form. Those amenbo shows in the reader's own language, when you have written one. Everything else
-stays in the language you wrote it in — `agent.when` and each `does` are read by an AI, and the CLI answers
-in English by contract, so neither has a translation to pick from.
+settings form — the ones beside the boxes, and the ones on the buttons. Those amenbo shows in the reader's
+own language, when you have written one. Everything else stays in the language you wrote it in —
+`agent.when` and each `does` are read by an AI, and the CLI answers in English by contract, so neither has
+a translation to pick from.
 
 **`about` is Markdown, and a YAML block scalar is what carries it.** `desc` is the one line a list draws;
 `about` is the paragraphs on your plugin's detail view, and it is written the same way in the manifest and
@@ -502,18 +592,26 @@ config:
     label: 何を報告するか
     options:
       task.done: タスクが完了した
+settings:
+  actions:
+    config test:                      # the base action's `cmd` is the key
+      label: テスト送信
+      ask:
+        otp: ワンタイムコード          # the base ask's `key` is the key
 ```
 
-**`config` is keyed here, not listed.** In the manifest it is a list in the order your form is drawn in;
-here each field is looked up by its `key` and each option by its `value`. A translation carries no order of
-its own, and lining the two up by position is what would break every language at once the day you reorder
-the form.
+**`config` and `settings.actions` are keyed here, not listed.** In the manifest each is a list in the order
+your form is drawn in; here a field is looked up by its `key`, an option by its `value`, a button by the
+`cmd` it raises, and a box a press asks for by the `key` it is handed over under. A translation carries no
+order of its own, and lining the two up by position is what would break every language at once the day you
+reorder the form.
 
 | Translatable | Not translatable |
 | --- | --- |
 | `desc`, `about` | `name`, `author`, `repo`, `category`, and the rest of the manifest |
 | a config field's `label` | a config field's `key`, `type`, `default` — and an option's `value`, which is what travels to your plugin |
 | a config option's `label` | `agent.when` and each `does` — an AI reads those, and they stay English |
+| an action's `label`, and the `label` on what it asks for | `settings.check` and an action's `cmd` — calls, not text anyone is shown, so there is no key to write them in another language |
 
 The languages are the 19 amenbo itself is read in: `en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`,
 `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`, `pl`, `nl`, `uk`.
@@ -526,9 +624,9 @@ amenbo plugin validate plugins/mail.yaml
 ```
 
 Four things are refused, all of them yours to fix while the file is still in your hands: a language from
-outside that list, a field the manifest does not have, a `key` or option `value` it does not declare, and
-text past the cap its base field obeys. Nothing is quietly ignored — a label that never appears because it
-was filed under a typo is the failure this door exists to prevent.
+outside that list, a field the manifest does not have, a `key`, an option `value` or an action `cmd` it
+does not declare, and text past the cap its base field obeys. Nothing is quietly ignored — a label that
+never appears because it was filed under a typo is the failure this door exists to prevent.
 
 The catalog publishes the two halves the way they are read. The `desc` lines go into a
 `catalog.<lang>.json` beside the listing, so a browser fetches one language and not nineteen; your `about`
@@ -589,7 +687,7 @@ Enabling also checks compatibility:
   means the two sides do not share a contract;
 - the running amenbo must be at or above `min_amenbo`.
 
-A `required` setting still empty refuses the enable.
+A `required` setting still empty refuses the enable, and so does your own `check` when it does not say yes.
 
 ## Check it before you ship it
 

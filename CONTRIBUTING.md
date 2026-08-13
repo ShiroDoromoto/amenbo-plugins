@@ -82,6 +82,7 @@ single-`url` form stays valid and is not deprecated.
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
 | `min_amenbo` | string | none | Minimum amenbo version the plugin needs, as semver — below it, amenbo warns or refuses to enable/run it. |
 | `config` | list | none | The plugin's configuration schema: a flat list of fields amenbo renders as a form and injects at run time. |
+| `settings` | map | none | The calls that form raises: `check` (one call, run when the plugin is enabled — a verdict that is not a yes leaves it disabled) and `actions` (up to four buttons a user presses, each able to `ask` for input that is handed to that run and stored nowhere). See [Writing a plugin](docs/writing-a-plugin.md#saying-whether-the-values-are-usable). |
 | `events` | list | none | The events your plugin's hook fires on. Absent means it observes nothing — a command-only plugin. |
 | `agent` | map | none | What the plugin says for itself where an AI reads how to work in a folder: `when` (the occasion, required once the block is written) and `commands` (`cmd` / `does` / `steps`, one per call). Write your own command face only — amenbo prepends `amenbo plugin run <name> `; `steps` names the steps of amenbo's own cycle a call is a tool for, by id. See [Writing a plugin](docs/writing-a-plugin.md#saying-what-you-are-for). |
 
@@ -183,9 +184,10 @@ config:
 ```
 
 What has a translation to pick from is what a **person** reads: `desc`, `about`, and the `label` on a config
-field or on one of its options. `config` is keyed here rather than listed — each field by its `key`, each
-option by its `value` — because a translation carries no order of its own, and lining the two up by position
-is what would break every language at once the day you reorder the form. Everything else stays as you wrote it,
+field, on one of its options, or on a settings button and what it asks for. Those are keyed here rather than
+listed — each field by its `key`, each option by its `value`, each button by the `cmd` it raises — because a
+translation carries no order of its own, and lining the two up by position is what would break every language
+at once the day you reorder the form. Everything else stays as you wrote it,
 `agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo itself is read in
 (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`,
 `pl`, `nl`, `uk`).
@@ -197,8 +199,8 @@ amenbo plugin validate plugins/mail.yaml
 ```
 
 Four things are refused there rather than quietly ignored: a language from outside that list, a field the
-manifest does not have, a `key` or option `value` it does not declare, and text past the cap its base field
-obeys. The full rule, and what this catalog then does with each half, is in
+manifest does not have, a `key`, an option `value` or an action `cmd` it does not declare, and text past the
+cap its base field obeys. The full rule, and what this catalog then does with each half, is in
 [Writing a plugin](docs/writing-a-plugin.md#writing-it-in-other-languages)
 ([日本語](docs/writing-a-plugin.ja.md#他の言語で書く)).
 
