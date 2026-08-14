@@ -10,8 +10,14 @@ about: |
 config:
   webhook_url:
     label: URL webhook Slack
+    help: |-
+      URL ini dibuat Slack, bukan amenbo, dan URL itulah kanalnya: webhook untuk kanal yang salah akan melapor ke ruang yang salah meski selebihnya sudah benar.
+      Di api.slack.com/apps, buat aplikasi di workspace yang perlu tahu tentang proyek ini, nyalakan Incoming Webhooks, tambahkan satu untuk kanal tujuan, lalu salin URL yang diberikan.
+      URL itu disimpan sebagai setelan rahasia — tidak keluar dari amenbo lewat ekspor, log, maupun pembacaan ulang.
   events:
     label: Apa yang dilaporkan
+    help: |-
+      Tidak mencentang satu pun juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak melaporkan apa pun. Mengosongkannya mengembalikan empat bawaan.
     options:
       task.created: Tugas dibuat
       task.status_changed: Status tugas berubah

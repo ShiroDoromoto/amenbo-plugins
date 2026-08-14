@@ -10,8 +10,14 @@ about: |
 config:
   webhook_url:
     label: Slack webhook adresi
+    help: |-
+      Bu adresi amenbo değil Slack üretir ve adres kanalın kendisidir: yanlış kanal için alınmış bir webhook, başka hiçbir şey yanlış olmasa da yanlış odaya bildirir.
+      api.slack.com/apps adresinde, bu projeyi duyması gereken çalışma alanında bir uygulama oluştur, Incoming Webhooks'u aç, bildirimin gideceği kanala bir tane ekle ve dönen adresi kopyala.
+      Gizli ayar olarak tutulur — dışa aktarmaya da, günlüğe de, geri okumaya da çıkmaz.
   events:
     label: Ne bildirilsin
+    help: |-
+      Hiçbirini işaretlememek de bir cevaptır ve öylece kabul edilir: eklenti açık kalır ve hiçbir şey bildirmez. Boşaltmak varsayılan dördünü geri getirir.
     options:
       task.created: Bir iş oluşturuldu
       task.status_changed: Bir işin durumu değişti

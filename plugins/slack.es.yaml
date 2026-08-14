@@ -10,8 +10,14 @@ about: |
 config:
   webhook_url:
     label: URL del webhook de Slack
+    help: |-
+      Esta URL la hace Slack, no amenbo, y esa URL es el canal: un webhook del canal equivocado publica en la sala equivocada sin que nada más esté mal puesto.
+      En api.slack.com/apps, crea una app en el espacio de trabajo que deba enterarse de este proyecto, activa Incoming Webhooks, añade uno al canal donde quieras publicar y copia la URL que te devuelve.
+      Se guarda como ajuste secreto: no sale de amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta.
   events:
     label: Qué se informa
+    help: |-
+      No marcar nada también es una respuesta y se respeta: el plugin sigue activo y no informa de nada. Vaciarlo devuelve los cuatro por defecto.
     options:
       task.created: Se creó una tarea
       task.status_changed: Cambió el estado de una tarea
