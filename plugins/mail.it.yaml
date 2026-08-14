@@ -16,19 +16,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Server SMTP (Gmail: smtp.gmail.com)"
+    label: Server SMTP
+    help: |-
+      Il server a cui il messaggio viene consegnato. Il tuo provider lo pubblica, di solito sotto "SMTP" o "posta in uscita".
   smtp_port:
     label: Porta
+    help: |-
+      587 è la porta di invio su cui ascolta quasi ogni provider. Cambiala solo se il tuo ne indica un’altra.
   smtp_user:
-    label: "Account (Gmail: il tuo indirizzo)"
+    label: Account
+    help: |-
+      L’account con cui autenticarsi, scritto per intero — l’indirizzo completo, non la parte prima della @. Lascialo vuoto insieme alla password per un relay che non chiede né l’uno né l’altra.
   smtp_password:
-    label: "Password (Gmail: una password per le app)"
+    label: Password
+    help: |-
+      La password che quell’account concede a un programma, che non è sempre quella con cui accedi. Gmail rifiuta la propria: attiva la verifica in due passaggi, crea una password per le app e inserisci i suoi sedici caratteri di seguito — gli spazi mostrati sullo schermo non ne fanno parte.
   from:
-    label: Mittente (se vuoto, l'account)
+    label: Mittente
+    help: |-
+      L’indirizzo da cui il messaggio parte. Lasciato vuoto è l’account, ed è ciò che un provider accetterà: quasi tutti rifiutano un messaggio che dice di venire da qualcun altro. Senza account non c’è nulla su cui ripiegare, quindi compilalo.
   to:
-    label: Destinatario (se vuoto, l'account; più indirizzi separati da virgole)
+    label: Destinatario
+    help: |-
+      Dove il messaggio viene inviato. Lasciato vuoto va all’account, e senza account va compilato. Più indirizzi stanno sulla stessa riga, separati da virgole.
   events:
     label: Che cosa segnalare
+    help: |-
+      Tutto ciò che amenbo emette e che questo plugin può segnalare. Qualunque cosa spunti, viene segnalato solo ciò che ha scritto la tua IA — a quello che hai fatto tu eri presente. Non spuntare nulla è anch’essa una risposta: il plugin resta attivo e non segnala niente.
     options:
       task.created: Un'attività è stata creata
       task.status_changed: Lo stato di un'attività è cambiato

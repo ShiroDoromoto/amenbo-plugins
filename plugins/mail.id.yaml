@@ -17,19 +17,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Server SMTP (Gmail: smtp.gmail.com)"
+    label: Server SMTP
+    help: |-
+      Server tempat pesan diserahkan. Penyedia Anda mencantumkannya, biasanya di bawah "SMTP" atau "outgoing mail".
   smtp_port:
     label: Port
+    help: |-
+      587 adalah port pengiriman yang didengarkan hampir semua penyedia. Ubah hanya jika penyedia Anda menyebut yang lain.
   smtp_user:
-    label: "Akun (Gmail: alamat Anda)"
+    label: Akun
+    help: |-
+      Akun untuk otentikasi, ditulis lengkap — seluruh alamatnya, bukan bagian sebelum @. Kosongkan bersama kata sandinya untuk relay yang tidak meminta keduanya.
   smtp_password:
-    label: "Kata sandi (Gmail: sandi aplikasi)"
+    label: Kata sandi
+    help: |-
+      Kata sandi yang boleh dipakai sebuah program pada akun itu, yang tidak selalu sama dengan kata sandi masuk Anda. Gmail menolak kata sandinya sendiri: nyalakan Verifikasi 2 Langkah, buat sandi aplikasi, lalu masukkan enam belas karakternya tanpa spasi — jarak yang tampil di layar bukan bagian darinya.
   from:
-    label: Pengirim (kosong berarti alamat akun)
+    label: Pengirim
+    help: |-
+      Alamat pengirim pesan. Bila dikosongkan, yang dipakai adalah akun, dan itulah yang diterima penyedia — kebanyakan menolak pesan yang mengaku dari orang lain. Tanpa akun tidak ada yang bisa dijadikan cadangan, jadi isilah.
   to:
-    label: Penerima (kosong berarti alamat akun; beberapa dipisah koma)
+    label: Penerima
+    help: |-
+      Ke mana pesan dikirim. Bila dikosongkan, pesan menuju akun, dan tanpa akun kolom ini harus diisi. Beberapa alamat ditulis dalam satu baris, dipisahkan koma.
   events:
     label: Apa yang dilaporkan
+    help: |-
+      Semua yang dipicu amenbo dan bisa dilaporkan plugin ini. Apa pun yang Anda centang, yang dilaporkan hanyalah tulisan AI Anda — yang Anda kerjakan sendiri, Anda sudah ada di sana. Tidak mencentang apa pun juga sebuah jawaban: plugin tetap menyala dan tidak melaporkan apa-apa.
     options:
       task.created: Tugas dibuat
       task.status_changed: Status tugas berubah

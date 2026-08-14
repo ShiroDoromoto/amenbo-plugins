@@ -17,19 +17,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Servidor SMTP (Gmail: smtp.gmail.com)"
+    label: Servidor SMTP
+    help: |-
+      O servidor a que a mensagem é entregue. Seu provedor o publica, normalmente em "SMTP" ou "servidor de saída".
   smtp_port:
     label: Porta
+    help: |-
+      587 é a porta de envio em que quase todo provedor escuta. Mude-a apenas se o seu indicar outra.
   smtp_user:
-    label: "Conta (Gmail: seu endereço)"
+    label: Conta
+    help: |-
+      A conta com que autenticar, escrita por inteiro — o endereço completo, não só a parte antes do @. Deixe-a vazia, junto com a senha, para um relay que não pede nenhuma das duas.
   smtp_password:
-    label: "Senha (Gmail: uma senha de app)"
+    label: Senha
+    help: |-
+      A senha que essa conta permite a um programa usar, que nem sempre é a mesma com que você entra. O Gmail recusa a própria: ative a verificação em duas etapas, crie uma senha de app e digite seus dezesseis caracteres emendados — os espaços que a tela mostra não fazem parte dela.
   from:
-    label: Remetente (se ficar vazio, a conta)
+    label: Remetente
+    help: |-
+      O endereço de onde a mensagem sai. Deixado vazio é a conta, e é isso que um provedor aceitará — a maioria recusa mensagem que diz vir de outra pessoa. Sem conta não há a que recorrer, então preencha.
   to:
-    label: Destinatário (se ficar vazio, a conta; vários separados por vírgula)
+    label: Destinatário
+    help: |-
+      Para onde a mensagem vai. Deixado vazio, vai para a conta, e sem conta precisa ser preenchido. Vários endereços cabem na mesma linha, separados por vírgulas.
   events:
     label: O que informar
+    help: |-
+      Tudo o que o amenbo dispara e este plugin consegue informar. Marque o que marcar, só as escritas da sua IA são informadas — no que você mesmo fez, você estava lá. Não marcar nada também é uma resposta: o plugin continua ligado e não informa nada.
     options:
       task.created: Uma tarefa foi criada
       task.status_changed: O estado de uma tarefa mudou

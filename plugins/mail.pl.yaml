@@ -16,19 +16,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Serwer SMTP (dla Gmaila: smtp.gmail.com)"
+    label: Serwer SMTP
+    help: |-
+      Serwer, któremu wiadomość zostaje przekazana. Twój dostawca go podaje, zwykle pod "SMTP" lub "poczta wychodząca".
   smtp_port:
     label: Port
+    help: |-
+      587 to port wysyłki, na którym nasłuchuje niemal każdy dostawca. Zmień go tylko wtedy, gdy twój wskazuje inny.
   smtp_user:
-    label: "Konto (w Gmailu: twój adres)"
+    label: Konto
+    help: |-
+      Konto, którym następuje uwierzytelnienie, zapisane w całości — cały adres, nie sam człon przed @. Zostaw je puste razem z hasłem, jeśli przekaźnik nie żąda żadnego z nich.
   smtp_password:
-    label: "Hasło (w Gmailu: hasło do aplikacji)"
+    label: Hasło
+    help: |-
+      Hasło, które to konto udostępnia programowi, nie zawsze to samo, którym się logujesz. Gmail odrzuca własne: włącz weryfikację dwuetapową, utwórz hasło do aplikacji i wpisz jego szesnaście znaków bez przerw — odstępy widoczne na ekranie nie są jego częścią.
   from:
-    label: Nadawca (puste — adres konta)
+    label: Nadawca
+    help: |-
+      Adres, z którego wychodzi wiadomość. Puste pole oznacza konto, i właśnie to dostawca przyjmie — większość odrzuca wiadomość podającą się za kogoś innego. Bez konta nie ma do czego się cofnąć, więc wtedy wypełnij je.
   to:
-    label: Odbiorca (puste — adres konta; kilku po przecinku)
+    label: Odbiorca
+    help: |-
+      Dokąd trafia wiadomość. Puste pole oznacza konto, a bez konta trzeba je wypełnić. Kilka adresów mieści się w jednym wierszu, rozdzielonych przecinkami.
   events:
     label: Co zgłaszać
+    help: |-
+      Wszystko, co amenbo wywołuje, a ta wtyczka potrafi zgłosić. Cokolwiek zaznaczysz, zgłaszane są tylko zapisy twojej SI — przy tym, co zrobiłeś sam, byłeś obecny. Nie zaznaczyć niczego to również odpowiedź: wtyczka pozostaje włączona i nic nie zgłasza.
     options:
       task.created: Utworzono zadanie
       task.status_changed: Zmienił się status zadania

@@ -17,19 +17,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "SMTP-Server (Gmail: smtp.gmail.com)"
+    label: SMTP-Server
+    help: |-
+      Der Server, dem die Nachricht übergeben wird. Ihr Anbieter nennt ihn, meist unter "SMTP" oder "Postausgang".
   smtp_port:
     label: Port
+    help: |-
+      587 ist der Einlieferungsport, auf dem fast jeder Anbieter lauscht. Ändern Sie ihn nur, wenn Ihrer einen anderen nennt.
   smtp_user:
-    label: "Konto (Gmail: Ihre Adresse)"
+    label: Konto
+    help: |-
+      Das Konto, mit dem angemeldet wird, vollständig geschrieben — die ganze Adresse, nicht nur der Teil vor dem @. Für ein Relay, das weder Konto noch Passwort verlangt, lassen Sie beides leer.
   smtp_password:
-    label: "Passwort (Gmail: ein App-Passwort)"
+    label: Passwort
+    help: |-
+      Das Passwort, das dieses Konto einem Programm erlaubt — nicht immer dasselbe, mit dem Sie sich anmelden. Gmail lehnt sein eigenes ab: Schalten Sie die Bestätigung in zwei Schritten ein, erstellen Sie ein App-Passwort und geben Sie dessen sechzehn Zeichen ohne Leerzeichen ein — die Abstände auf dem Bildschirm gehören nicht dazu.
   from:
-    label: Absender (leer, dann das Konto)
+    label: Absender
+    help: |-
+      Die Adresse, von der die Nachricht kommt. Leer gelassen ist es das Konto, und genau das akzeptiert ein Anbieter — die meisten lehnen eine Nachricht ab, die sich als jemand anderes ausgibt. Ohne Konto gibt es nichts, worauf zurückgegriffen werden könnte: dann füllen Sie es aus.
   to:
-    label: Empfänger (leer, dann das Konto; mehrere durch Komma getrennt)
+    label: Empfänger
+    help: |-
+      Wohin die Nachricht geht. Leer gelassen geht sie an das Konto, und ohne Konto muss sie ausgefüllt werden. Mehrere Adressen stehen in derselben Zeile, durch Kommas getrennt.
   events:
     label: Was gemeldet wird
+    help: |-
+      Alles, was amenbo auslöst und dieses Plugin melden kann. Gemeldet werden nur die Schreibvorgänge Ihrer KI, was Sie hier auch ankreuzen — was Sie selbst getan haben, waren Sie dabei. Nichts anzukreuzen ist auch eine Antwort: Das Plugin bleibt eingeschaltet und meldet nichts.
     options:
       task.created: Eine Aufgabe wurde erstellt
       task.status_changed: Der Status einer Aufgabe hat sich geändert

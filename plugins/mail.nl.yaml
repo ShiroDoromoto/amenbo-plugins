@@ -16,19 +16,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "SMTP-server (Gmail: smtp.gmail.com)"
+    label: SMTP-server
+    help: |-
+      De server waaraan het bericht wordt overhandigd. Je provider publiceert hem, meestal onder "SMTP" of "uitgaande mail".
   smtp_port:
     label: Poort
+    help: |-
+      587 is de verzendpoort waarop vrijwel elke provider luistert. Wijzig hem alleen als die van jou een andere noemt.
   smtp_user:
-    label: "Account (Gmail: je eigen adres)"
+    label: Account
+    help: |-
+      Het account waarmee wordt geauthenticeerd, voluit geschreven — het hele adres, niet alleen het deel vóór de @. Laat dit samen met het wachtwoord leeg voor een relay die om geen van beide vraagt.
   smtp_password:
-    label: "Wachtwoord (Gmail: een app-wachtwoord)"
+    label: Wachtwoord
+    help: |-
+      Het wachtwoord dat dit account een programma laat gebruiken, en dat niet altijd het wachtwoord is waarmee je inlogt. Gmail weigert zijn eigen wachtwoord: zet verificatie in twee stappen aan, maak een app-wachtwoord en voer de zestien tekens aaneengesloten in — de spaties die het scherm toont horen er niet bij.
   from:
-    label: Afzender (leeg is het adres van het account)
+    label: Afzender
+    help: |-
+      Het adres waarvandaan het bericht wordt verstuurd. Leeg gelaten is het het account, en dat is wat een provider accepteert — de meeste weigeren een bericht dat beweert van iemand anders te komen. Zonder account is er niets om op terug te vallen, vul het dan in.
   to:
-    label: Ontvanger (leeg is het adres van het account; meerdere gescheiden door komma's)
+    label: Ontvanger
+    help: |-
+      Waar het bericht heen gaat. Leeg gelaten gaat het naar het account, en zonder account moet dit ingevuld worden. Meerdere adressen staan op dezelfde regel, gescheiden door komma's.
   events:
     label: Wat er gemeld wordt
+    help: |-
+      Alles wat amenbo afvuurt en deze plug-in kan melden. Wat je hier ook aanvinkt, gemeld wordt alleen wat je AI schrijft — bij wat je zelf deed was je erbij. Niets aanvinken is ook een antwoord: de plug-in blijft aan en meldt niets.
     options:
       task.created: Een taak is aangemaakt
       task.status_changed: De status van een taak is gewijzigd

@@ -17,19 +17,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Serveur SMTP (Gmail : smtp.gmail.com)"
+    label: Serveur SMTP
+    help: |-
+      Le serveur auquel le message est remis. Votre fournisseur le publie, en général sous « SMTP » ou « courrier sortant ».
   smtp_port:
     label: Port
+    help: |-
+      587 est le port de soumission sur lequel écoute presque tout fournisseur. Ne le changez que si le vôtre en indique un autre.
   smtp_user:
-    label: "Compte (Gmail : votre adresse)"
+    label: Compte
+    help: |-
+      Le compte avec lequel s'authentifier, écrit en entier — l'adresse complète, pas seulement ce qui précède le @. Laissez-le vide, ainsi que le mot de passe, pour un relais qui n'en demande aucun.
   smtp_password:
-    label: "Mot de passe (Gmail : un mot de passe d'application)"
+    label: Mot de passe
+    help: |-
+      Le mot de passe que ce compte autorise un programme à utiliser, qui n'est pas toujours celui de votre connexion. Gmail refuse le sien : activez la validation en deux étapes, créez un mot de passe d'application et saisissez ses seize caractères d'affilée — les espaces affichés à l'écran n'en font pas partie.
   from:
-    label: Expéditeur (vide, ce sera le compte)
+    label: Expéditeur
+    help: |-
+      L'adresse depuis laquelle le message est envoyé. Laissée vide, c'est le compte, et c'est ce qu'un fournisseur acceptera : la plupart refusent un message se présentant comme venant d'un autre. Sans compte, il n'y a rien sur quoi se rabattre : remplissez-la.
   to:
-    label: Destinataire (vide, ce sera le compte ; plusieurs séparés par des virgules)
+    label: Destinataire
+    help: |-
+      Où le message est envoyé. Laissé vide, il part vers le compte, et sans compte il faut le remplir. Plusieurs adresses tiennent sur la même ligne, séparées par des virgules.
   events:
     label: Ce qu'il faut signaler
+    help: |-
+      Tout ce qu'amenbo émet et que ce plugin peut signaler. Seules les écritures de votre IA sont signalées, quoi que vous cochiez ici : ce que vous avez fait vous-même, vous y étiez. Ne rien cocher est aussi une réponse : le plugin reste activé et ne signale rien.
     options:
       task.created: Une tâche a été créée
       task.status_changed: Le statut d'une tâche a changé

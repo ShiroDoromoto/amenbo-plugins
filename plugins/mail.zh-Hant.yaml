@@ -14,19 +14,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: SMTP 伺服器（Gmail 為 smtp.gmail.com）
+    label: SMTP 伺服器
+    help: |-
+      把郵件交給它寄出的伺服器。你的服務商會公布，通常寫在「SMTP」或「寄件伺服器」底下。
   smtp_port:
     label: 連接埠
+    help: |-
+      587 是幾乎所有服務商都在監聽的投遞連接埠。只有當你的服務商指明別的連接埠時才需要改。
   smtp_user:
-    label: 帳號（Gmail 為你的信箱地址）
+    label: 帳號
+    help: |-
+      用來驗證的帳號，要寫完整：是整個地址，不是 @ 前面那一段。若寄往不要求驗證的中繼，就和密碼一起留空。
   smtp_password:
-    label: 密碼（Gmail 需應用程式密碼）
+    label: 密碼
+    help: |-
+      該帳號允許程式使用的密碼，未必是你登入時用的那一個。Gmail 不接受本人密碼：請開啟兩步驟驗證，建立應用程式密碼，把十六個字元連著輸入——畫面上顯示的空格並不屬於密碼。
   from:
-    label: 寄件者（留空則用該帳號）
+    label: 寄件者
+    help: |-
+      郵件的寄件地址。留空就是該帳號，服務商能接受的也正是它——大多數會拒收自稱來自他人的郵件。沒有帳號時就沒有可退回的值，這時請填寫。
   to:
-    label: 收件者（留空則用該帳號，多個以逗號分隔）
+    label: 收件者
+    help: |-
+      郵件寄往哪裡。留空就寄往該帳號，沒有帳號時必須填寫。多個地址寫在同一行，以逗號分隔。
   events:
     label: 報告哪些事
+    help: |-
+      amenbo 會觸發、而本外掛能報告的全部事件。無論勾選哪些，報告的都只是 AI 的寫入——你自己動手的那些，你當時就在場。一個都不勾也是一種回答：外掛保持啟用，什麼都不報告。
     options:
       task.created: 任務被建立
       task.status_changed: 任務狀態變更

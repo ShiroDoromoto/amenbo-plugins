@@ -9,23 +9,23 @@ os:
 category: notification
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-macos-arm64.tar.gz
-    checksum: sha256:34cd6c8f07752de3dc4d38c7a3bb88dbd730b3425cbb96da1964d30128b29adf
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-macos-arm64.tar.gz
+    checksum: sha256:c8a0e55fe47795bcc377d428bbca974e811f573d73ac0ef640f371eafeec3f5c
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-macos-x64.tar.gz
-    checksum: sha256:756e5a34504d0270a493f1dd3476796f12cf7eb6d0123b9b244df11acf5f40f6
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-macos-x64.tar.gz
+    checksum: sha256:94f68882d80d9335c851b969e457c44bf971b63dad6659ee85b311d3b608b184
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-linux-x64.tar.gz
-    checksum: sha256:ba80f20223cfccf0b06cf7c5b1b1b6ea048f040d460cdc143144d0c665e830f4
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-linux-x64.tar.gz
+    checksum: sha256:c3381336aeff68a397c3d294a2e7b56293239931691259655ab58ebca0605179
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-linux-arm64.tar.gz
-    checksum: sha256:ebd7adc0bdab041d45df027bbed1ee9c3cae479b9a96b92c68159e03f19aa793
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-linux-arm64.tar.gz
+    checksum: sha256:316300c362b67ab0d8dbc42315a82b92baf18d45660dbd833fc4e66ae92b1207
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-windows-x64.tar.gz
-    checksum: sha256:d4735afa827e8948c37518296eb288800cbc74422ac82747125e5b30a2dcaae0
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-windows-x64.tar.gz
+    checksum: sha256:cdd8709597fd821042a99f602d341f4d2188c8d8d023f84cf1e2be452b30c958
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v2/mail-v2-windows-arm64.tar.gz
-    checksum: sha256:aac36d6b6471d531d20ed4786c7ad94772bedf836eeb6f6229b933e311f9703c
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-windows-arm64.tar.gz
+    checksum: sha256:b4063ff96806f2a755434fffc90339961c445272e03b5642041dd6e39c2ad08b
 about: |
   Report by email what your AI did in a project while you were away from it.
 
@@ -43,27 +43,41 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 official: true
 payload_v: 1
-min_amenbo: 3.1.0
+min_amenbo: 13.0.0
 config:
   - key: smtp_host
-    label: "SMTP server (Gmail: smtp.gmail.com)"
-    required: true
+    label: SMTP server
+    help: |-
+      The server the message is handed to. Your provider publishes it, usually under "SMTP" or "outgoing mail".
+    placeholder: smtp.gmail.com
   - key: smtp_port
     label: Port
+    help: |-
+      587 is the submission port nearly every provider listens on. Change it only where yours names another.
     default: "587"
   - key: smtp_user
-    label: "Account (Gmail: your address)"
-    required: true
+    label: Account
+    help: |-
+      The account to authenticate as, written out in full — the whole address, not the part before the @. Leave it and the password empty for a relay that asks for neither.
+    placeholder: you@gmail.com
   - key: smtp_password
-    label: "Password (Gmail: an app password)"
+    label: Password
+    help: |-
+      The password that account lets a program use, which is not always the one you sign in with. Gmail refuses its own: turn on 2-Step Verification, create an app password, and enter its sixteen characters run together — the spaces the screen shows them in are not part of it.
     secret: true
-    required: true
   - key: from
-    label: From (defaults to the account)
+    label: From
+    help: |-
+      The address the message is sent from. Left empty it is the account, which is what a provider will accept — most refuse a message claiming to be from anyone else. With no account there is nothing to fall back on, so fill it in.
   - key: to
-    label: To (defaults to the account; comma-separated for several)
+    label: To
+    help: |-
+      Where the message is sent. Left empty it goes to the account, and with no account it has to be filled in. Several addresses go on the one line, separated by commas.
+    placeholder: you@example.com, someone-else@example.com
   - key: events
     label: What to report
+    help: |-
+      Everything amenbo fires that this plugin can report. Only your AI's writes are reported, whichever of these you tick — a write you drove yourself is one you were there for. Ticking none is an answer too: the plugin stays on and reports nothing.
     type: multi
     default: task.created,task.status_changed,task.done,task.rejected
     options:
@@ -89,6 +103,8 @@ config:
         label: A comment was added
       - value: comment.removed
         label: A comment was taken back
+settings:
+  check: config check
 events:
   - task.created
   - task.status_changed

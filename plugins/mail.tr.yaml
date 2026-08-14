@@ -17,19 +17,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "SMTP sunucusu (Gmail için: smtp.gmail.com)"
+    label: SMTP sunucusu
+    help: |-
+      İletinin teslim edileceği sunucu. Sağlayıcınız bunu genellikle "SMTP" ya da "giden posta" başlığı altında duyurur.
   smtp_port:
     label: Port
+    help: |-
+      587, neredeyse her sağlayıcının dinlediği gönderim portudur. Yalnızca sağlayıcınız başka bir port belirtiyorsa değiştirin.
   smtp_user:
-    label: "Hesap (Gmail'de: kendi adresiniz)"
+    label: Hesap
+    help: |-
+      Kimlik doğrulamada kullanılacak hesap, tam olarak yazılmış hâliyle — @ işaretinden önceki kısım değil, adresin tamamı. Hiçbirini istemeyen bir aktarıcı için bunu da parolayı da boş bırakın.
   smtp_password:
-    label: "Parola (Gmail'de: uygulama parolası)"
+    label: Parola
+    help: |-
+      O hesabın bir programa kullandırdığı parola; her zaman oturum açtığınız parola değildir. Gmail kendi parolasını kabul etmez: 2 Adımlı Doğrulama'yı açın, bir uygulama parolası oluşturun ve on altı karakterini bitişik girin — ekranda görünen boşluklar parolanın parçası değildir.
   from:
-    label: Gönderen (boş bırakılırsa hesabın adresi)
+    label: Gönderen
+    help: |-
+      İletinin gönderildiği adres. Boş bırakılırsa hesabın kendisidir ve bir sağlayıcının kabul edeceği de budur: çoğu, başkasından geliyormuş gibi görünen iletiyi reddeder. Hesap yoksa geri düşülecek bir şey de kalmaz, o zaman doldurun.
   to:
-    label: Alıcı (boş bırakılırsa hesabın adresi; birden fazlası virgülle ayrılır)
+    label: Alıcı
+    help: |-
+      İletinin gönderileceği yer. Boş bırakılırsa hesaba gider, hesap yoksa doldurulması gerekir. Birden fazla adres aynı satırda, virgülle ayrılarak yazılır.
   events:
     label: Neler bildirilsin
+    help: |-
+      amenbo'nun ürettiği ve bu eklentinin bildirebildiği her şey. Neyi işaretlerseniz işaretleyin, yalnızca yapay zekânızın yazdıkları bildirilir — kendi yaptığınızın zaten başındaydınız. Hiçbirini işaretlememek de bir yanıttır: eklenti açık kalır ve hiçbir şey bildirmez.
     options:
       task.created: Bir görev oluşturuldu
       task.status_changed: Bir görevin durumu değişti
