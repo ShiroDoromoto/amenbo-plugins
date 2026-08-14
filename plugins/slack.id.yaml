@@ -30,3 +30,7 @@ config:
       decision.rejected: Keputusan ditolak
       comment.added: Komentar ditambahkan
       comment.removed: Komentar ditarik
+settings:
+  actions:
+    config test:
+      label: Kirim pesan uji

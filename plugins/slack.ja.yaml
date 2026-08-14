@@ -30,3 +30,7 @@ config:
       decision.rejected: 決定が却下された
       comment.added: コメントが追加された
       comment.removed: コメントが取り消された
+settings:
+  actions:
+    config test:
+      label: テスト送信

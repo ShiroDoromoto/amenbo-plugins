@@ -30,3 +30,7 @@ config:
       decision.rejected: 결정이 기각됨
       comment.added: 댓글이 달림
       comment.removed: 댓글이 철회됨
+settings:
+  actions:
+    config test:
+      label: 테스트 메시지 보내기
