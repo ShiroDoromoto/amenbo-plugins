@@ -14,3 +14,9 @@ config:
     label: Worker 放行写入所用的令牌（由 setup 填入）
   encryption_key:
     label: 加密记录所用的密钥（由 setup 填入）
+settings:
+  actions:
+    setup:
+      label: 搭建 Cloudflare 通道
+      ask:
+        api_token: Cloudflare API 令牌

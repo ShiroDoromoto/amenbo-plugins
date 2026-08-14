@@ -14,3 +14,9 @@ config:
     label: Worker'ın yazmaya izin verdiği belirteç (setup doldurur)
   encryption_key:
     label: Kayıtların şifrelendiği anahtar (setup doldurur)
+settings:
+  actions:
+    setup:
+      label: Cloudflare yolunu kur
+      ask:
+        api_token: Cloudflare API belirteci

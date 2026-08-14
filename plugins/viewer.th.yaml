@@ -14,3 +14,9 @@ config:
     label: โทเคนที่ Worker ใช้อนุญาตการเขียน (setup เติมให้)
   encryption_key:
     label: กุญแจที่ใช้เข้ารหัสระเบียน (setup เติมให้)
+settings:
+  actions:
+    setup:
+      label: ตั้งค่า Cloudflare
+      ask:
+        api_token: โทเคน API ของ Cloudflare

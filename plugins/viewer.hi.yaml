@@ -14,3 +14,9 @@ config:
     label: जिस टोकन से Worker लिखने देता है (setup भर देता है)
   encryption_key:
     label: जिस कुंजी से रिकॉर्ड एन्क्रिप्ट होते हैं (setup भर देता है)
+settings:
+  actions:
+    setup:
+      label: Cloudflare तैयार करें
+      ask:
+        api_token: Cloudflare का API टोकन

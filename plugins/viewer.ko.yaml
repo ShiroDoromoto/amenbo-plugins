@@ -14,3 +14,9 @@ config:
     label: Worker가 쓰기를 받아들이는 토큰(setup이 채운다)
   encryption_key:
     label: 기록을 암호화하는 키(setup이 채운다)
+settings:
+  actions:
+    setup:
+      label: Cloudflare 경로 세우기
+      ask:
+        api_token: Cloudflare API 토큰

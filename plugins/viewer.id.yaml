@@ -14,3 +14,9 @@ config:
     label: Token yang dipakai Worker untuk menerima tulisan (diisi oleh setup)
   encryption_key:
     label: Kunci untuk mengenkripsi catatan (diisi oleh setup)
+settings:
+  actions:
+    setup:
+      label: Siapkan jalur Cloudflare
+      ask:
+        api_token: Token API Cloudflare

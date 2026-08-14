@@ -14,3 +14,9 @@ config:
     label: Token con el que el Worker admite escrituras (lo rellena setup)
   encryption_key:
     label: Clave con la que se cifran los registros (la rellena setup)
+settings:
+  actions:
+    setup:
+      label: Configurar la ruta de Cloudflare
+      ask:
+        api_token: Token de API de Cloudflare

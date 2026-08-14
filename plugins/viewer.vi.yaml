@@ -14,3 +14,9 @@ config:
     label: Token để Worker cho phép ghi (setup điền vào)
   encryption_key:
     label: Khóa dùng để mã hóa bản ghi (setup điền vào)
+settings:
+  actions:
+    setup:
+      label: Dựng tuyến Cloudflare
+      ask:
+        api_token: Token API Cloudflare

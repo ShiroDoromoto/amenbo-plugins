@@ -14,3 +14,9 @@ config:
     label: Токен, с которым Worker пропускает запись (заполняет setup)
   encryption_key:
     label: Ключ, которым шифруются записи (заполняет setup)
+settings:
+  actions:
+    setup:
+      label: Настроить путь Cloudflare
+      ask:
+        api_token: Токен API Cloudflare

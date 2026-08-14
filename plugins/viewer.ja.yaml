@@ -14,3 +14,9 @@ config:
     label: Worker が書き込みを受け入れるトークン（setup が入れる）
   encryption_key:
     label: 記録を暗号化する鍵（setup が入れる）
+settings:
+  actions:
+    setup:
+      label: Cloudflare 経路を立てる
+      ask:
+        api_token: Cloudflare の API トークン

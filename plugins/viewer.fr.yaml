@@ -14,3 +14,9 @@ config:
     label: Jeton avec lequel le Worker accepte les écritures (renseigné par setup)
   encryption_key:
     label: Clé avec laquelle les enregistrements sont chiffrés (renseignée par setup)
+settings:
+  actions:
+    setup:
+      label: Configurer la voie Cloudflare
+      ask:
+        api_token: Jeton d'API Cloudflare

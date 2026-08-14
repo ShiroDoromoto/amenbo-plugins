@@ -14,3 +14,9 @@ config:
     label: Token, którym Worker przepuszcza zapisy (wypełnia setup)
   encryption_key:
     label: Klucz, którym szyfrowane są wpisy (wypełnia setup)
+settings:
+  actions:
+    setup:
+      label: Skonfiguruj trasę Cloudflare
+      ask:
+        api_token: Token API Cloudflare
