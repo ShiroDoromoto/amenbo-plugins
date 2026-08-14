@@ -16,19 +16,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Máy chủ SMTP (Gmail: smtp.gmail.com)"
+    label: Máy chủ SMTP
+    help: |-
+      Máy chủ nhận thư để chuyển đi. Nhà cung cấp của bạn công bố nó, thường nằm dưới mục "SMTP" hoặc "máy chủ gửi đi".
   smtp_port:
     label: Cổng
+    help: |-
+      587 là cổng gửi mà gần như mọi nhà cung cấp đều lắng nghe. Chỉ đổi khi nhà cung cấp của bạn ghi một cổng khác.
   smtp_user:
-    label: "Tài khoản (Gmail: địa chỉ của bạn)"
+    label: Tài khoản
+    help: |-
+      Tài khoản dùng để xác thực, viết đầy đủ — cả địa chỉ, không phải chỉ phần trước dấu @. Với một relay không đòi hỏi gì, hãy bỏ trống cả ô này lẫn mật khẩu.
   smtp_password:
-    label: "Mật khẩu (Gmail: mật khẩu ứng dụng)"
+    label: Mật khẩu
+    help: |-
+      Mật khẩu mà tài khoản đó cho phép một chương trình dùng, không phải lúc nào cũng là mật khẩu bạn đăng nhập. Gmail từ chối mật khẩu của chính nó: hãy bật Xác minh 2 bước, tạo mật khẩu ứng dụng, rồi nhập mười sáu ký tự liền nhau — các khoảng trắng hiện trên màn hình không thuộc về nó.
   from:
-    label: Người gửi (bỏ trống thì lấy địa chỉ tài khoản)
+    label: Người gửi
+    help: |-
+      Địa chỉ đứng tên người gửi. Bỏ trống thì lấy tài khoản, và đó cũng là thứ nhà cung cấp chấp nhận: phần lớn từ chối thư tự nhận là của người khác. Không có tài khoản thì không còn gì để dựa vào, khi đó hãy điền.
   to:
-    label: Người nhận (bỏ trống thì lấy địa chỉ tài khoản; nhiều người cách nhau bằng dấu phẩy)
+    label: Người nhận
+    help: |-
+      Nơi thư được gửi tới. Bỏ trống thì thư đi tới tài khoản, và nếu không có tài khoản thì bắt buộc phải điền. Nhiều địa chỉ viết trên cùng một dòng, cách nhau bằng dấu phẩy.
   events:
     label: Báo những gì
+    help: |-
+      Tất cả những gì amenbo phát ra mà plugin này có thể báo. Dù bạn đánh dấu gì, chỉ những thay đổi do AI của bạn ghi mới được báo — việc bạn tự làm thì bạn đã có mặt ở đó. Không đánh dấu gì cũng là một câu trả lời: plugin vẫn bật và không báo gì cả.
     options:
       task.created: Công việc được tạo
       task.status_changed: Trạng thái công việc thay đổi

@@ -16,19 +16,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: "Servidor SMTP (Gmail: smtp.gmail.com)"
+    label: Servidor SMTP
+    help: |-
+      El servidor al que se entrega el mensaje. Tu proveedor lo publica, normalmente bajo "SMTP" o "correo saliente".
   smtp_port:
     label: Puerto
+    help: |-
+      587 es el puerto de envío en el que escucha casi todo proveedor. Cámbialo solo si el tuyo indica otro.
   smtp_user:
-    label: "Cuenta (Gmail: tu dirección)"
+    label: Cuenta
+    help: |-
+      La cuenta con la que autenticarse, escrita entera — la dirección completa, no la parte anterior a la @. Déjala vacía, junto con la contraseña, para un relay que no pide ninguna de las dos.
   smtp_password:
-    label: "Contraseña (Gmail: una contraseña de aplicación)"
+    label: Contraseña
+    help: |-
+      La contraseña que esa cuenta permite usar a un programa, que no siempre es con la que inicias sesión. Gmail rechaza la suya propia: activa la verificación en dos pasos, crea una contraseña de aplicación e introduce sus dieciséis caracteres seguidos — los espacios que muestra la pantalla no forman parte de ella.
   from:
-    label: Remitente (si se deja vacío, la cuenta)
+    label: Remitente
+    help: |-
+      La dirección desde la que se envía el mensaje. Si se deja vacía es la cuenta, que es lo que un proveedor aceptará: casi todos rechazan un mensaje que dice venir de otra persona. Sin cuenta no hay nada a lo que recurrir, así que rellénala.
   to:
-    label: Destinatario (si se deja vacío, la cuenta; varios separados por comas)
+    label: Destinatario
+    help: |-
+      A dónde se envía el mensaje. Si se deja vacío va a la cuenta, y sin cuenta hay que rellenarlo. Varias direcciones van en la misma línea, separadas por comas.
   events:
     label: Qué informar
+    help: |-
+      Todo lo que amenbo emite y este complemento puede informar. Solo se informa de lo que escribe tu IA, marques lo que marques: lo que hiciste tú, ahí estabas. No marcar nada también es una respuesta: el complemento sigue activo y no informa de nada.
     options:
       task.created: Se creó una tarea
       task.status_changed: Cambió el estado de una tarea

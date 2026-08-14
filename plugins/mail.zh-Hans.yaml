@@ -14,19 +14,33 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 config:
   smtp_host:
-    label: SMTP 服务器（Gmail 为 smtp.gmail.com）
+    label: SMTP 服务器
+    help: |-
+      把邮件交给它发出的服务器。你的服务商会公布，通常写在“SMTP”或“发件服务器”下面。
   smtp_port:
     label: 端口
+    help: |-
+      587 是几乎所有服务商都在监听的投递端口。只有当你的服务商指明别的端口时才需要改。
   smtp_user:
-    label: 账号（Gmail 为你的邮箱地址）
+    label: 账号
+    help: |-
+      用来认证的账号，要写完整：是整个地址，不是 @ 前面那一段。若发往不要求认证的中继，就和密码一起留空。
   smtp_password:
-    label: 密码（Gmail 需应用专用密码）
+    label: 密码
+    help: |-
+      该账号允许程序使用的密码，未必是你登录时用的那一个。Gmail 不接受本人密码：请开启两步验证，创建应用专用密码，把十六个字符连着输入——屏幕上显示的空格并不属于密码。
   from:
-    label: 发件人（留空则用该账号）
+    label: 发件人
+    help: |-
+      邮件的发件地址。留空就是该账号，服务商能接受的也正是它——大多数会拒收自称来自他人的邮件。没有账号时就没有可退回的值，这时请填写。
   to:
-    label: 收件人（留空则用该账号，多个用逗号分隔）
+    label: 收件人
+    help: |-
+      邮件发往哪里。留空就发往该账号，没有账号时必须填写。多个地址写在同一行，用逗号分隔。
   events:
     label: 报告哪些事
+    help: |-
+      amenbo 会触发、而本插件能报告的全部事件。无论勾选哪些，报告的都只是 AI 的写入——你自己动手的那些，你当时就在场。一个都不勾也是一种回答：插件保持启用，什么都不报告。
     options:
       task.created: 任务被创建
       task.status_changed: 任务状态变更
