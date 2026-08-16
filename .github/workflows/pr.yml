@@ -23,12 +23,15 @@ name: PR
 # all: downloading bytes and hashing them is unprivileged. Signing those bytes is not, and stays on
 # `main`, one workflow over.
 
+# Every pull request, with no path filter. The one check `main` requires is this workflow's aggregate job,
+# and a check that is never reported is not one that passes — it is a pull request left waiting for a
+# verdict nobody will give. A path filter here would be exactly that for anything touching only the
+# documentation, so what this workflow costs such a pull request is the price of the branch having a gate at
+# all. Little of it is wasted: the listed manifests are worth checking against the current amenbo whatever
+# the pull request touched, and the asset check below scopes itself to the manifests actually submitted, so
+# it fetches nothing when none were.
 on:
   pull_request:
-    paths:
-      - 'plugins/**'
-      - 'scripts/**'
-      - '.github/workflows/pr.yml'
   workflow_dispatch:
 
 permissions:
@@ -128,3 +131,45 @@ jobs:
           python3 scripts/aggregate.py --strict \
             --out "${RUNNER_TEMP}/catalog-dry-run.json" \
             "${submitted[@]}"
+
+  # The gate's own shape, which nothing else is in a position to report on. `main` requires one check — the
+  # aggregate below — and that job waits for exactly what its `needs:` names, so a job added without a line
+  # there is a job the required check never waits for. That failure is silent by construction: the run is
+  # green and the merge goes through.
+  gate-shape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check that the merge gate waits for every job
+        run: python3 scripts/check-pr-aggregate.py
+
+  # The one check `main` requires, standing in for every job above it. Naming one fixed check keeps jobs a
+  # matter of this file: they can be added, renamed or dropped without a visit to the repository's settings,
+  # where a change leaves no trace in the tree for anyone to review. `always()` is what makes this a gate
+  # rather than a formality — without it a failed dependency *skips* this job, and a skipped check is not a
+  # red one.
+  all-green:
+    name: all green
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs:
+      - validate
+      - gate-shape
+    steps:
+      - name: Fold every job's result
+        env:
+          # Read as data rather than one interpolation per job: this expression carries whatever `needs:`
+          # names, so the fold cannot fall behind that list the way a hand-written set of
+          # `needs.<id>.result` reads would.
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTS" | jq -r 'to_entries[] | "  \(.value.result)\t\(.key)"'
+          failed=$(echo "$RESULTS" | jq -r '
+            to_entries[]
+            | select(.value.result != "success" and .value.result != "skipped")
+            | .key')
+          if [ -n "$failed" ]; then
+            echo "::error::did not pass: $(echo "$failed" | tr '\n' ' ')"
+            exit 1
+          fi
+          echo "every job in this workflow passed or was skipped"
