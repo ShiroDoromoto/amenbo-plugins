@@ -14,7 +14,7 @@ about: |
   amenbo plugin run worktree finish 123
   ```
 
-  `start` mengembalikan baris `cd` itu sendiri, sehingga shell tempat Anda berdiri yang masuk ke worktree. `finish` dijalankan dari repositori utama, dan menolak selama checkout masih kotor atau branch memegang commit yang tidak ada di basisnya; `--force` menerobos keduanya. Tanpa `--base`, keduanya menjawab dengan branch tempat repositori sedang berdiri, jadi tidak ada yang perlu diisi lebih dulu.
+  `start` mengembalikan baris `cd` itu sendiri, sehingga shell tempat Anda berdiri yang masuk ke worktree. `finish` dijalankan dari repositori utama, dan menolak selama checkout masih kotor atau branch masih membawa perubahan yang tidak ada di basisnya; `--force` menerobos keduanya. Yang dihitung adalah perubahannya, bukan commit yang membawanya, sehingga merge squash atau rebase terbaca sudah ter-merge sama seperti merge biasa. Tanpa `--base`, keduanya menjawab dengan branch tempat repositori sedang berdiri, jadi tidak ada yang perlu diisi lebih dulu.
 
   Memesan sebuah tugas membuat plugin menulis satu saran ke stderr, tidak lebih: apakah tugas *ini* mau checkout sendiri adalah penilaian, dan itu tinggal pada yang membaca saran tersebut. Backlog pun tetap pada amenbo — plugin ini membaca sebuah tugas untuk melihat di mana ia dikerjakan, dan tidak menulis apa pun selain git.
 

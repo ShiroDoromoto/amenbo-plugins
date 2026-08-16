@@ -48,7 +48,7 @@ about: |
   amenbo plugin run worktree finish 123
   ```
 
-  `start` returns that `cd` line itself, so the shell you are standing in is the one that enters the worktree. `finish` is run from the main repository, and refuses while the checkout is dirty or the branch holds commits the base does not; `--force` overrides both. Without `--base` they answer with the branch the repository is standing on, so there is nothing to fill in first.
+  `start` returns that `cd` line itself, so the shell you are standing in is the one that enters the worktree. `finish` is run from the main repository, and refuses while the checkout is dirty or the branch still carries changes the base does not have; `--force` overrides both. What counts is the change rather than the commit carrying it, so a squash or rebase merge reads as merged just as a plain merge does. Without `--base` they answer with the branch the repository is standing on, so there is nothing to fill in first.
 
   Reserving a task makes the plugin write one suggestion to stderr, and nothing more: whether *this* task wants a checkout of its own is a judgement, and it stays with whoever reads the suggestion. The backlog stays with amenbo as well — this plugin reads a task to see where it is worked, and writes nothing but git.
 

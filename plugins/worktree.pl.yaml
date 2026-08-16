@@ -14,7 +14,7 @@ about: |
   amenbo plugin run worktree finish 123
   ```
 
-  `start` zwraca dokładnie tę linię `cd`, więc do worktree wchodzi ta powłoka, w której stoisz. `finish` uruchamiasz z głównego repozytorium; odmawia, dopóki checkout jest brudny albo gałąź trzyma commity, których nie ma w bazie — `--force` przechodzi nad jednym i drugim. Bez `--base` obie odpowiadają gałęzią, na której stoi repozytorium, więc nie trzeba niczego wypełniać wcześniej.
+  `start` zwraca dokładnie tę linię `cd`, więc do worktree wchodzi ta powłoka, w której stoisz. `finish` uruchamiasz z głównego repozytorium; odmawia, dopóki checkout jest brudny albo gałąź wciąż niesie zmiany, których nie ma w bazie — `--force` przechodzi nad jednym i drugim. Liczy się zmiana, a nie commit, który ją niesie, więc scalenie przez squash albo rebase czyta się jako scalone tak samo jak zwykłe. Bez `--base` obie odpowiadają gałęzią, na której stoi repozytorium, więc nie trzeba niczego wypełniać wcześniej.
 
   Rezerwacja zadania każe wtyczce napisać jedną podpowiedź na stderr i nic ponadto: czy *to* zadanie chce własnego checkoutu, jest oceną i zostaje przy tym, kto podpowiedź czyta. Backlog też zostaje przy amenbo — ta wtyczka czyta zadanie tylko po to, by zobaczyć, gdzie jest wykonywane, a pisze wyłącznie gita.
 
