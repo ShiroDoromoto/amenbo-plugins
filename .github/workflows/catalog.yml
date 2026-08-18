@@ -33,6 +33,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # As on the pull-request gate: the CLI installed below asks whether a newer release is out, and the
+    # file that answers is an asset of that release, so each publish would read as one more person taking
+    # amenbo. Set on the job to cover every step that reaches for the binary.
+    env:
+      AMENBO_UPDATE_CHECK: "0"
     steps:
       - uses: actions/checkout@v7
         with:

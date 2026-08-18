@@ -45,6 +45,13 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    # The CLI installed below asks whether a newer release is out, and the file that answers is an asset
+    # of that release — so on a runner whose cache starts empty, every job that runs the binary reads as
+    # one more person taking amenbo. Nobody here wants the answer either: this door deliberately holds
+    # submitters to whatever the published release is. Set on the job, so every step that reaches for the
+    # binary is covered — the aggregation below, which calls it once per manifest, included.
+    env:
+      AMENBO_UPDATE_CHECK: "0"
     steps:
       - uses: actions/checkout@v7
         with:
