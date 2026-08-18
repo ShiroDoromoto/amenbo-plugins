@@ -45,11 +45,12 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    # The CLI installed below asks whether a newer release is out, and the file that answers is an asset
-    # of that release — so on a runner whose cache starts empty, every job that runs the binary reads as
-    # one more person taking amenbo. Nobody here wants the answer either: this door deliberately holds
-    # submitters to whatever the published release is. Set on the job, so every step that reaches for the
-    # binary is covered — the aggregation below, which calls it once per manifest, included.
+    # The CLI below asks whether a newer release is out, and the file that answers is an asset of that
+    # release. A runner carries no answer over from a previous run, so every job that runs the binary
+    # would ask again, and each ask reads as one more person taking amenbo. Nobody here wants the answer
+    # either: this door deliberately holds submitters to whatever the published release is. Set on the
+    # job, so every step that reaches for the binary is covered — the aggregation below, which calls it
+    # once per manifest, included.
     env:
       AMENBO_UPDATE_CHECK: "0"
     steps:
@@ -65,13 +66,48 @@ jobs:
       # catalog guards is the one clients actually hold, and a rule that has not been released yet is a
       # rule no client enforces. It follows that a rule tightened in amenbo reaches this door when it
       # reaches everyone else's — on the release, not on the commit.
-      - name: Install the amenbo CLI (its manifest validator)
+      - id: release
+        name: Resolve the release that would be installed
         run: |
           set -euo pipefail
+          # `latest` answers with a redirect naming the tag, and reading that redirect is a page request
+          # rather than a download of a release asset — which is the whole point: the two assets the
+          # install below fetches are each counted as somebody taking amenbo, and knowing the tag is what
+          # lets a run skip fetching them. It resolves the same `latest` the installer is fetched from, so
+          # the key below can never name a release other than the one that would be installed.
+          location=$(curl -fsSI https://github.com/ShiroDoromoto/amenbo/releases/latest \
+            | awk 'tolower($1) == "location:" { sub(/\r$/, "", $2); print $2 }')
+          tag="${location##*/}"
+          case "$tag" in
+            v*) ;;
+            *) echo "::error::could not resolve amenbo's latest release (redirected to '${location:-nothing}')"; exit 1 ;;
+          esac
+          echo "resolved amenbo $tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "AMENBO_BIN=$HOME/.local/bin/amenbo" >> "$GITHUB_ENV"
+
+      # Installing the CLI fetches two release assets — the installer, and the archive it unpacks — and
+      # GitHub counts each as somebody taking amenbo, with no way to tell this repository's own CI back
+      # out of the numbers afterwards. Keyed by the tag resolved above, that fetch happens once per
+      # release rather than once per run. It cannot serve a build older than the one `latest` names: a
+      # new release is a new key, which is a miss. And it needs no secret, so a pull request from a fork
+      # reads this cache like any other run — writing one is all a fork may not do.
+      - uses: actions/cache@v6
+        with:
+          path: ~/.local/bin/amenbo
+          key: amenbo-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.release.outputs.tag }}
+
+      # Gated on the binary actually running rather than on the cache reporting a hit: an entry that is
+      # truncated or otherwise unusable heals itself here, instead of failing every job that restores it
+      # until it ages out.
+      - name: Install the amenbo CLI (its manifest validator), unless the cache had it
+        run: |
+          set -euo pipefail
+          if [ -x "$AMENBO_BIN" ] && "$AMENBO_BIN" --version; then
+            exit 0
+          fi
           curl -fsSL https://github.com/ShiroDoromoto/amenbo/releases/latest/download/install.sh | sh
-          amenbo="$HOME/.local/bin/amenbo"
-          "$amenbo" --version
-          echo "AMENBO_BIN=$amenbo" >> "$GITHUB_ENV"
+          "$AMENBO_BIN" --version
 
       # Every manifest, not only the ones this pull request touched: a rule tightened in amenbo should
       # surface against the entries already listed too, and validating the whole catalog is cheap.
