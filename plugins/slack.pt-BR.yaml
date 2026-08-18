@@ -1,10 +1,10 @@
 desc: Informar em um canal do Slack o que a sua IA fez
 about: |
-  Cada tarefa que sua IA conclui, cada uma que ela decide não fazer, cada decisão que ela aceita: a linha chega a um canal do Slack. O que aconteceu enquanto você estava longe do projeto, na sala que você já acompanha.
+  Cada tarefa que sua IA conclui, cada uma que ela decide não fazer, cada decisão que ela aceita, cada tarefa cujo dia chegou: a linha chega a um canal do Slack. O que aconteceu enquanto você estava longe do projeto, na sala que você já acompanha.
 
-  - **Só o que a IA escreve é publicado.** O que você mesmo escreveu você presenciou; no canal fica o trabalho que aconteceu sem você.
+  - **Só o que a IA escreve é publicado — e os dias que ninguém escreveu.** O que você mesmo escreveu você presenciou; no canal fica o trabalho que aconteceu sem você. Um prazo que chega não é escrita de ninguém, e chega enquanto ninguém está olhando, então também é informado.
   - **O canal é a configuração.** `webhook_url` pertence ao projeto em que foi escrita, então esse valor *é* o canal para o qual aquele projeto reporta. Dois projetos com dois webhooks reportam a dois canais; cada mensagem diz de qual projeto veio, então apontar os dois para um só canal também se lê.
-  - **Quais eventos, você escolhe.** Onze para marcar, de uma tarefa criada a um comentário retirado. O padrão são os quatro que dizem que uma tarefa foi criada, mudou de estado, foi concluída ou foi descartada.
+  - **Quais eventos, você escolhe.** Treze para marcar, de uma tarefa criada à chegada de um prazo. O padrão são seis: uma tarefa criada, que mudou de estado, foi concluída ou descartada, e um prazo que chegou ou está a um dia.
 
   Do Slack só é preciso uma URL de Incoming Webhook, guardada como configuração secreta — ela não sai do amenbo nem em uma exportação, nem em um log, nem em uma releitura. As mensagens são escritas no idioma em que você lê o amenbo e chamam sua IA pelo nome que você deu a ela.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: O que informar
     help: |-
-      Não marcar nada também é uma resposta e é respeitada: o plugin continua ativo e não informa nada. Esvaziar devolve os quatro padrões.
+      Não marcar nada também é uma resposta e é respeitada: o plugin continua ativo e não informa nada. Esvaziar devolve os seis padrões.
     options:
       task.created: Uma tarefa foi criada
       task.status_changed: O status de uma tarefa mudou
@@ -30,6 +30,8 @@ config:
       decision.rejected: Uma decisão foi recusada
       comment.added: Um comentário foi adicionado
       comment.removed: Um comentário foi retirado
+      task.due: Uma tarefa vence hoje, ou já venceu
+      task.due_tomorrow: Uma tarefa vence amanhã
 settings:
   actions:
     config test:

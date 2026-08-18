@@ -1,10 +1,10 @@
 desc: Signaler dans un canal Slack ce que votre IA a fait
 about: |
-  Chaque tâche que votre IA termine, chaque tâche qu'elle décide de ne pas faire, chaque décision qu'elle accepte : la ligne arrive dans un canal Slack. Ce qui s'est passé pendant que vous étiez loin du projet, là où vous regardez déjà.
+  Chaque tâche que votre IA termine, chaque tâche qu'elle décide de ne pas faire, chaque décision qu'elle accepte, chaque tâche dont le jour est arrivé : la ligne arrive dans un canal Slack. Ce qui s'est passé pendant que vous étiez loin du projet, là où vous regardez déjà.
 
-  - **Seules les écritures de l'IA sont publiées.** Ce que vous avez écrit vous-même, vous y étiez ; le canal garde le travail fait sans vous.
+  - **Seules les écritures de l'IA sont publiées — et les jours que personne n'a écrits.** Ce que vous avez écrit vous-même, vous y étiez ; le canal garde le travail fait sans vous. Une échéance qui arrive n'est l'écriture de personne, et elle arrive quand personne ne regarde : elle est signalée aussi.
   - **Le canal, c'est le réglage.** `webhook_url` appartient au projet où elle a été écrite : cette valeur *est* le canal auquel ce projet rend compte. Deux projets avec deux webhooks rendent compte dans deux canaux ; chaque message nomme son projet, donc les pointer tous les deux vers un même canal se lit aussi.
-  - **Quels événements, c'est vous qui choisissez.** Onze à cocher, de la création d'une tâche au retrait d'un commentaire. Par défaut, les quatre qui disent qu'une tâche a été créée, a changé d'état, a été terminée ou abandonnée.
+  - **Quels événements, c'est vous qui choisissez.** Treize à cocher, de la création d'une tâche à l'arrivée d'une échéance. Par défaut, six : une tâche créée, un état changé, une tâche terminée ou abandonnée, et une échéance atteinte ou à un jour.
 
   Slack n'a qu'une seule URL d'Incoming Webhook à fournir, et elle est gardée comme un réglage secret : elle ne quitte amenbo ni dans un export, ni dans un journal, ni dans une relecture. Les messages sont écrits dans la langue où vous lisez amenbo et appellent votre IA par le nom que vous lui avez donné.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Ce qui est signalé
     help: |-
-      Ne rien cocher est aussi une réponse, et elle est respectée : le plugin reste activé et ne signale rien. Vider ce réglage remet les quatre par défaut.
+      Ne rien cocher est aussi une réponse, et elle est respectée : le plugin reste activé et ne signale rien. Vider ce réglage remet les six par défaut.
     options:
       task.created: Une tâche a été créée
       task.status_changed: L'état d'une tâche a changé
@@ -30,6 +30,8 @@ config:
       decision.rejected: Une décision a été rejetée
       comment.added: Un commentaire a été ajouté
       comment.removed: Un commentaire a été retiré
+      task.due: Une tâche est à échéance aujourd'hui, ou en retard
+      task.due_tomorrow: Une tâche est à échéance demain
 settings:
   actions:
     config test:

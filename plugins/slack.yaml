@@ -27,11 +27,11 @@ assets:
     url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-windows-arm64.tar.gz
     checksum: sha256:eed81c90780fcf7b58ddba6dc8cae6cb34c8ba885f1019702ef0e2df0eea9551
 about: |
-  Every task your AI finishes, every one it decides against, every decision it settles — the line arrives in a Slack channel. What happened while you were away from the project, in the room you already watch.
+  Every task your AI finishes, every one it decides against, every decision it settles, every task whose day has come — the line arrives in a Slack channel. What happened while you were away from the project, in the room you already watch.
 
-  - **Only your AI's writes are posted.** A write you made yourself is one you were there for, so the channel carries the work that happened without you rather than an echo of your own.
+  - **Only your AI's writes are posted — and the days nobody wrote.** A write you made yourself is one you were there for, so the channel carries the work that happened without you rather than an echo of your own. A due date arriving is nobody's write at all, and it arrives while nobody is looking, so it is reported too.
   - **The channel is the setting.** `webhook_url` belongs to the project it was written in, so that value *is* the channel that project reports to. Point two projects at two webhooks and they report to two channels; every message names its project, so pointing both at one channel reads too.
-  - **Which events, you choose.** Eleven to tick, from a task being created to a comment being taken back. The default is the four that say a task was created, moved, finished, or dropped.
+  - **Which events, you choose.** Thirteen to tick, from a task being created to a due date arriving. The default is six: a task created, moved, finished or dropped, and a due date reached or one day out.
 
   All Slack has to hand over is one Incoming Webhook URL, and it is held as a secret setting — it never leaves amenbo into an export, a log, or a read-back. Messages are written in the language you read amenbo in, and call your AI by the name you gave it.
 
@@ -52,8 +52,8 @@ config:
     label: What to report
     type: multi
     help: |-
-      Ticking none is an answer and it is honoured: the plugin stays enabled and reports nothing. Clearing this puts the default four back.
-    default: task.created,task.status_changed,task.done,task.rejected
+      Ticking none is an answer and it is honoured: the plugin stays enabled and reports nothing. Clearing this puts the default six back.
+    default: task.created,task.status_changed,task.done,task.rejected,task.due,task.due_tomorrow
     options:
       - value: task.created
         label: A task was created
@@ -77,6 +77,10 @@ config:
         label: A comment was added
       - value: comment.removed
         label: A comment was taken back
+      - value: task.due
+        label: A task is due today, or overdue
+      - value: task.due_tomorrow
+        label: A task is due tomorrow
 settings:
   check: config check
   actions:
@@ -94,3 +98,5 @@ events:
   - decision.rejected
   - comment.added
   - comment.removed
+  - task.due
+  - task.due_tomorrow

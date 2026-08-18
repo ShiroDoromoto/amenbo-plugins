@@ -1,10 +1,10 @@
 desc: Informar en un canal de Slack lo que hizo tu IA
 about: |
-  Cada tarea que tu IA termina, cada una que decide no hacer, cada decisión que acepta: la línea llega a un canal de Slack. Lo que pasó mientras estabas lejos del proyecto, en la sala que ya miras.
+  Cada tarea que tu IA termina, cada una que decide no hacer, cada decisión que acepta, cada tarea cuyo día ha llegado: la línea llega a un canal de Slack. Lo que pasó mientras estabas lejos del proyecto, en la sala que ya miras.
 
-  - **Solo se publica lo que escribe la IA.** Lo que escribiste tú ya lo viviste; en el canal queda el trabajo que ocurrió sin ti.
+  - **Solo se publica lo que escribe la IA, y los días que no escribió nadie.** Lo que escribiste tú ya lo viviste; en el canal queda el trabajo que ocurrió sin ti. Que llegue un plazo no lo escribe nadie, y llega mientras nadie mira, así que también se informa.
   - **El canal es el ajuste.** `webhook_url` pertenece al proyecto donde se escribió, así que ese valor *es* el canal al que ese proyecto informa. Dos proyectos con dos webhooks informan a dos canales; cada mensaje dice de qué proyecto viene, así que apuntar ambos al mismo canal también se lee.
-  - **Qué eventos, lo eliges tú.** Once para marcar, desde crear una tarea hasta retirar un comentario. Por defecto, los cuatro que dicen que una tarea se creó, cambió de estado, se terminó o se descartó.
+  - **Qué eventos, lo eliges tú.** Trece para marcar, desde crear una tarea hasta la llegada de un plazo. Por defecto, seis: una tarea se creó, cambió de estado, se terminó o se descartó, y un plazo llegó o queda a un día.
 
   Slack solo tiene que darte una URL de Incoming Webhook, y se guarda como ajuste secreto: no sale de amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta. Los mensajes se escriben en el idioma en que lees amenbo y llaman a tu IA por el nombre que le pusiste.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Qué se informa
     help: |-
-      No marcar nada también es una respuesta y se respeta: el plugin sigue activo y no informa de nada. Vaciarlo devuelve los cuatro por defecto.
+      No marcar nada también es una respuesta y se respeta: el plugin sigue activo y no informa de nada. Vaciarlo devuelve los seis por defecto.
     options:
       task.created: Se creó una tarea
       task.status_changed: Cambió el estado de una tarea
@@ -30,6 +30,8 @@ config:
       decision.rejected: Se rechazó una decisión
       comment.added: Se añadió un comentario
       comment.removed: Se retiró un comentario
+      task.due: Una tarea vence hoy, o ya venció
+      task.due_tomorrow: Una tarea vence mañana
 settings:
   actions:
     config test:
