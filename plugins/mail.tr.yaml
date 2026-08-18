@@ -3,8 +3,9 @@ about: |
   Siz projeden uzaktayken yapay zekânın orada ne yaptığını e-postayla alırsınız.
 
   Yalnızca yapay zekânın yazdıkları bildirilir: kendi yaptığınız bir değişiklikte zaten
-  oradaydınız. Hangi olayların bir e-postaya değdiğini, amenbo'nun ürettiği on bir olay
-  arasından siz seçersiniz.
+  oradaydınız. Bir tarihin gelmesi kimsenin yazdığı bir şey değildir ve kimse bakmazken gelir;
+  bu yüzden o da bildirilir. Hangi olayların bir e-postaya değdiğini, amenbo'nun ürettiği on üç
+  olay arasından siz seçersiniz.
 
   Arka arkaya gelen olaylar bir düzine ileti yerine tek iletiyle ulaşır ve bir projenin
   gönderdiği iletiler aynı konu dizisinde toplanır. Nereye gideceği projenin kendi ayarıdır;
@@ -43,7 +44,7 @@ config:
   events:
     label: Neler bildirilsin
     help: |-
-      amenbo'nun ürettiği ve bu eklentinin bildirebildiği her şey. Neyi işaretlerseniz işaretleyin, yalnızca yapay zekânızın yazdıkları bildirilir — kendi yaptığınızın zaten başındaydınız. Hiçbirini işaretlememek de bir yanıttır: eklenti açık kalır ve hiçbir şey bildirmez.
+      amenbo'nun ürettiği ve bu eklentinin bildirebildiği her şey. Yazılanlardan, neyi işaretlerseniz işaretleyin, yalnızca yapay zekânızın yazdıkları bildirilir — kendi yaptığınızın zaten başındaydınız. Son ikisi yazı değildir: amenbo günde bir kez, süresi gelen bir görevi ve yarın süresi dolan bir görevi bildirir. Bunları kimse yazmadı, dolayısıyla hiçbir şey onları elemez. Hiçbirini işaretlememek de bir yanıttır: eklenti açık kalır ve hiçbir şey bildirmez.
     options:
       task.created: Bir görev oluşturuldu
       task.status_changed: Bir görevin durumu değişti
@@ -56,3 +57,5 @@ config:
       decision.rejected: Bir karar reddedildi
       comment.added: Bir yorum eklendi
       comment.removed: Bir yorum geri alındı
+      task.due: Bir görevin süresi bugün doluyor ya da geçmiş
+      task.due_tomorrow: Bir görevin süresi yarın doluyor

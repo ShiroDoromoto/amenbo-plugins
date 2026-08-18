@@ -30,7 +30,9 @@ about: |
   Report by email what your AI did in a project while you were away from it.
 
   Only the AI's writes are reported: a change you made yourself is one you were there for.
-  Which events are worth a mail is yours to tick, from the eleven amenbo fires.
+  A due day arriving is nobody's write, and nobody is looking when it comes, so that is
+  reported too. Which events are worth a mail is yours to tick, from the thirteen amenbo
+  fires.
 
   A burst of them arrives as one message instead of a dozen, and every message a project
   sends joins the same thread. Where it goes is that project's own setting, so two projects
@@ -77,9 +79,9 @@ config:
   - key: events
     label: What to report
     help: |-
-      Everything amenbo fires that this plugin can report. Only your AI's writes are reported, whichever of these you tick — a write you drove yourself is one you were there for. Ticking none is an answer too: the plugin stays on and reports nothing.
+      Everything amenbo fires that this plugin can report. Of the writes, only your AI's are reported, whichever of these you tick — a write you drove yourself is one you were there for. The last two are not writes: amenbo warns once a day about a task whose due day has come, and about one whose day is tomorrow, so nobody drove them and nothing filters them out. Ticking none is an answer too: the plugin stays on and reports nothing.
     type: multi
-    default: task.created,task.status_changed,task.done,task.rejected
+    default: task.created,task.status_changed,task.done,task.rejected,task.due,task.due_tomorrow
     options:
       - value: task.created
         label: A task was created
@@ -103,6 +105,10 @@ config:
         label: A comment was added
       - value: comment.removed
         label: A comment was taken back
+      - value: task.due
+        label: A task is due today, or overdue
+      - value: task.due_tomorrow
+        label: A task is due tomorrow
 settings:
   check: config check
 events:
@@ -117,3 +123,5 @@ events:
   - decision.rejected
   - comment.added
   - comment.removed
+  - task.due
+  - task.due_tomorrow

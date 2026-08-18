@@ -3,7 +3,9 @@ about: |
   Je krijgt per e-mail wat je AI in een project heeft gedaan terwijl je er niet bij was.
 
   Alleen wat de AI schrijft wordt gemeld: bij een wijziging van jezelf was je er immers bij.
-  Welke gebeurtenissen een e-mail waard zijn, kies je zelf uit de elf die amenbo afgeeft.
+  Een einddatum die aanbreekt is niemands schrijven, en breekt aan terwijl niemand kijkt, dus
+  ook die wordt gemeld. Welke gebeurtenissen een e-mail waard zijn, kies je zelf uit de
+  dertien die amenbo afgeeft.
 
   Een reeks ervan komt als één bericht binnen in plaats van als een stuk of twaalf, en alle
   berichten van een project belanden in dezelfde thread. Waar ze heen gaan is een instelling
@@ -42,7 +44,7 @@ config:
   events:
     label: Wat er gemeld wordt
     help: |-
-      Alles wat amenbo afvuurt en deze plug-in kan melden. Wat je hier ook aanvinkt, gemeld wordt alleen wat je AI schrijft — bij wat je zelf deed was je erbij. Niets aanvinken is ook een antwoord: de plug-in blijft aan en meldt niets.
+      Alles wat amenbo afvuurt en deze plug-in kan melden. Van het schrijfwerk wordt, wat je hier ook aanvinkt, alleen gemeld wat je AI schrijft — bij wat je zelf deed was je erbij. De laatste twee zijn geen schrijfwerk: amenbo waarschuwt één keer per dag voor een taak waarvan de einddatum is aangebroken, en voor een taak die morgen aan de beurt is. Niemand schreef ze, dus niets filtert ze weg. Niets aanvinken is ook een antwoord: de plug-in blijft aan en meldt niets.
     options:
       task.created: Een taak is aangemaakt
       task.status_changed: De status van een taak is gewijzigd
@@ -55,3 +57,5 @@ config:
       decision.rejected: Een besluit is afgewezen
       comment.added: Een reactie is toegevoegd
       comment.removed: Een reactie is ingetrokken
+      task.due: Een taak moet vandaag af, of is te laat
+      task.due_tomorrow: Een taak moet morgen af
