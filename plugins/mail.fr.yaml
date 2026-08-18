@@ -3,8 +3,9 @@ about: |
   Recevez par e-mail ce que votre IA a fait dans un projet pendant que vous en étiez loin.
 
   Seules les écritures de l'IA sont signalées : une modification que vous avez faite
-  vous-même, vous y étiez. Les événements qui méritent un e-mail, c'est vous qui les cochez,
-  parmi les onze qu'amenbo émet.
+  vous-même, vous y étiez. Une échéance qui arrive n'est l'écriture de personne, et personne ne
+  regarde quand elle arrive : elle est donc signalée aussi. Les événements qui méritent un
+  e-mail, c'est vous qui les cochez, parmi les treize qu'amenbo émet.
 
   Une rafale d'événements arrive en un seul message plutôt qu'en une douzaine, et tous les
   messages d'un projet se rejoignent dans le même fil. Leur destination est un réglage du
@@ -43,7 +44,7 @@ config:
   events:
     label: Ce qu'il faut signaler
     help: |-
-      Tout ce qu'amenbo émet et que ce plugin peut signaler. Seules les écritures de votre IA sont signalées, quoi que vous cochiez ici : ce que vous avez fait vous-même, vous y étiez. Ne rien cocher est aussi une réponse : le plugin reste activé et ne signale rien.
+      Tout ce qu'amenbo émet et que ce plugin peut signaler. Parmi les écritures, seules celles de votre IA sont signalées, quoi que vous cochiez ici : ce que vous avez fait vous-même, vous y étiez. Les deux derniers ne sont pas des écritures : amenbo signale une fois par jour une tâche dont l'échéance est arrivée, et une autre qui échoit demain. Personne ne les a écrites, donc rien ne les filtre. Ne rien cocher est aussi une réponse : le plugin reste activé et ne signale rien.
     options:
       task.created: Une tâche a été créée
       task.status_changed: Le statut d'une tâche a changé
@@ -56,3 +57,5 @@ config:
       decision.rejected: Une décision a été rejetée
       comment.added: Un commentaire a été ajouté
       comment.removed: Un commentaire a été retiré
+      task.due: Une tâche échoit aujourd'hui ou est en retard
+      task.due_tomorrow: Une tâche échoit demain

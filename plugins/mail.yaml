@@ -9,28 +9,30 @@ os:
 category: notification
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-macos-arm64.tar.gz
-    checksum: sha256:c8a0e55fe47795bcc377d428bbca974e811f573d73ac0ef640f371eafeec3f5c
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-macos-arm64.tar.gz
+    checksum: sha256:487166667da85f333ed7ae882895a39372f3802fffb41ea684703260a69fa87d
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-macos-x64.tar.gz
-    checksum: sha256:94f68882d80d9335c851b969e457c44bf971b63dad6659ee85b311d3b608b184
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-macos-x64.tar.gz
+    checksum: sha256:9536f1a98afdc7688e9c75355ca29fdf6670f83357bd5abd518e34639e9184aa
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-linux-x64.tar.gz
-    checksum: sha256:c3381336aeff68a397c3d294a2e7b56293239931691259655ab58ebca0605179
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-linux-x64.tar.gz
+    checksum: sha256:c7a67b31b0ff6d9ca30271a232297accb0ea3050544ee9f62009f6b9a759a5ea
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-linux-arm64.tar.gz
-    checksum: sha256:316300c362b67ab0d8dbc42315a82b92baf18d45660dbd833fc4e66ae92b1207
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-linux-arm64.tar.gz
+    checksum: sha256:fd90e06f0663dcc88659ad15dd883cae195ee2871751ef3b58cf833694cc9199
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-windows-x64.tar.gz
-    checksum: sha256:cdd8709597fd821042a99f602d341f4d2188c8d8d023f84cf1e2be452b30c958
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-windows-x64.tar.gz
+    checksum: sha256:433f810bdd78dc0d153e3a38320684d59873763ffb63f8ee85ba219f2c82faf6
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v3/mail-v3-windows-arm64.tar.gz
-    checksum: sha256:b4063ff96806f2a755434fffc90339961c445272e03b5642041dd6e39c2ad08b
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-windows-arm64.tar.gz
+    checksum: sha256:5eba113e9104144342beabb627596a53dd1194e87db4bad85968579f703fc1ef
 about: |
   Report by email what your AI did in a project while you were away from it.
 
   Only the AI's writes are reported: a change you made yourself is one you were there for.
-  Which events are worth a mail is yours to tick, from the eleven amenbo fires.
+  A due day arriving is nobody's write, and nobody is looking when it comes, so that is
+  reported too. Which events are worth a mail is yours to tick, from the thirteen amenbo
+  fires.
 
   A burst of them arrives as one message instead of a dozen, and every message a project
   sends joins the same thread. Where it goes is that project's own setting, so two projects
@@ -77,9 +79,9 @@ config:
   - key: events
     label: What to report
     help: |-
-      Everything amenbo fires that this plugin can report. Only your AI's writes are reported, whichever of these you tick — a write you drove yourself is one you were there for. Ticking none is an answer too: the plugin stays on and reports nothing.
+      Everything amenbo fires that this plugin can report. Of the writes, only your AI's are reported, whichever of these you tick — a write you drove yourself is one you were there for. The last two are not writes: amenbo warns once a day about a task whose due day has come, and about one whose day is tomorrow, so nobody drove them and nothing filters them out. Ticking none is an answer too: the plugin stays on and reports nothing.
     type: multi
-    default: task.created,task.status_changed,task.done,task.rejected
+    default: task.created,task.status_changed,task.done,task.rejected,task.due,task.due_tomorrow
     options:
       - value: task.created
         label: A task was created
@@ -103,6 +105,10 @@ config:
         label: A comment was added
       - value: comment.removed
         label: A comment was taken back
+      - value: task.due
+        label: A task is due today, or overdue
+      - value: task.due_tomorrow
+        label: A task is due tomorrow
 settings:
   check: config check
 events:
@@ -117,3 +123,5 @@ events:
   - decision.rejected
   - comment.added
   - comment.removed
+  - task.due
+  - task.due_tomorrow
