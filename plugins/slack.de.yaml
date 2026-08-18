@@ -1,10 +1,10 @@
 desc: In einem Slack-Kanal melden, was deine KI getan hat
 about: |
-  Jede Aufgabe, die deine KI erledigt, jede, die sie verwirft, jede Entscheidung, die sie annimmt — die Zeile landet in einem Slack-Kanal. Was passiert ist, während du vom Projekt weg warst, in dem Raum, den du ohnehin liest.
+  Jede Aufgabe, die deine KI erledigt, jede, die sie verwirft, jede Entscheidung, die sie annimmt, jede Aufgabe, deren Tag gekommen ist — die Zeile landet in einem Slack-Kanal. Was passiert ist, während du vom Projekt weg warst, in dem Raum, den du ohnehin liest.
 
-  - **Gemeldet wird nur, was die KI schreibt.** Was du selbst geschrieben hast, hast du miterlebt; im Kanal bleibt die Arbeit, die ohne dich passiert ist.
+  - **Gemeldet wird nur, was die KI schreibt — und die Tage, die niemand geschrieben hat.** Was du selbst geschrieben hast, hast du miterlebt; im Kanal bleibt die Arbeit, die ohne dich passiert ist. Ein fälliges Datum schreibt niemand, und es kommt, während niemand hinsieht — deshalb wird es ebenfalls gemeldet.
   - **Der Kanal ist die Einstellung.** `webhook_url` gehört dem Projekt, in dem sie gesetzt wurde, also *ist* dieser Wert der Kanal, in den das Projekt meldet. Zwei Projekte mit zwei Webhooks melden in zwei Kanäle; jede Nachricht nennt ihr Projekt, sodass sich auch ein gemeinsamer Kanal lesen lässt.
-  - **Welche Ereignisse, entscheidest du.** Elf zum Ankreuzen, vom Erstellen einer Aufgabe bis zum Zurücknehmen eines Kommentars. Voreingestellt sind die vier, die sagen, dass eine Aufgabe erstellt, verschoben, erledigt oder verworfen wurde.
+  - **Welche Ereignisse, entscheidest du.** Dreizehn zum Ankreuzen, vom Erstellen einer Aufgabe bis zu einem fälligen Datum. Voreingestellt sind sechs: eine Aufgabe erstellt, verschoben, erledigt oder verworfen, und ein Datum erreicht oder einen Tag entfernt.
 
   Slack muss nur eine einzige Incoming-Webhook-URL herausgeben, und sie wird als geheime Einstellung gehalten — sie verlässt amenbo weder in einen Export noch in ein Log oder eine Rücklese. Die Nachrichten stehen in der Sprache, in der du amenbo liest, und nennen deine KI bei dem Namen, den du ihr gegeben hast.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Was gemeldet wird
     help: |-
-      Nichts anzukreuzen ist auch eine Antwort und wird respektiert: Das Plugin bleibt eingeschaltet und meldet nichts. Leeren setzt die vier voreingestellten zurück.
+      Nichts anzukreuzen ist auch eine Antwort und wird respektiert: Das Plugin bleibt eingeschaltet und meldet nichts. Leeren setzt die sechs voreingestellten zurück.
     options:
       task.created: Eine Aufgabe wurde erstellt
       task.status_changed: Der Status einer Aufgabe hat sich geändert
@@ -30,6 +30,8 @@ config:
       decision.rejected: Eine Entscheidung wurde abgelehnt
       comment.added: Ein Kommentar wurde hinzugefügt
       comment.removed: Ein Kommentar wurde zurückgenommen
+      task.due: Eine Aufgabe ist heute fällig oder überfällig
+      task.due_tomorrow: Eine Aufgabe ist morgen fällig
 settings:
   actions:
     config test:

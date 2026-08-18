@@ -1,10 +1,10 @@
 desc: Zgłaszać na kanale Slack to, co zrobiła Twoja SI
 about: |
-  Każde zadanie, które twoja SI ukończy, każde, którego postanowi nie robić, każda przyjęta decyzja — wiersz trafia na kanał Slacka. To, co działo się, gdy nie było cię przy projekcie, czytasz tam, gdzie i tak zaglądasz.
+  Każde zadanie, które twoja SI ukończy, każde, którego postanowi nie robić, każda przyjęta decyzja, każde zadanie, którego termin nadszedł — wiersz trafia na kanał Slacka. To, co działo się, gdy nie było cię przy projekcie, czytasz tam, gdzie i tak zaglądasz.
 
-  - **Publikowane jest tylko to, co pisze SI.** Przy tym, co napisałeś sam, byłeś obecny; na kanale zostaje praca wykonana bez ciebie.
+  - **Publikowane jest tylko to, co pisze SI — i dni, których nikt nie zapisał.** Przy tym, co napisałeś sam, byłeś obecny; na kanale zostaje praca wykonana bez ciebie. Nadejście terminu nie jest niczyim zapisem i przychodzi, gdy nikt nie patrzy, więc też trafia na kanał.
   - **Kanał to właśnie to ustawienie.** `webhook_url` należy do projektu, w którym został zapisany, więc ta wartość *jest* kanałem, na który ten projekt raportuje. Dwa projekty z dwoma webhookami raportują na dwa kanały; każda wiadomość nazywa swój projekt, więc wspólny kanał też się czyta.
-  - **Które zdarzenia — wybierasz ty.** Jedenaście do zaznaczenia, od utworzenia zadania po wycofanie komentarza. Domyślnie cztery: zadanie utworzone, zmieniony status, ukończone, odrzucone.
+  - **Które zdarzenia — wybierasz ty.** Trzynaście do zaznaczenia, od utworzenia zadania po nadejście terminu. Domyślnie sześć: zadanie utworzone, zmieniony status, ukończone, odrzucone, termin nadszedł lub jest jutro.
 
   Slack musi wydać tylko jeden adres Incoming Webhook, a ten jest trzymany jako tajne ustawienie — nie opuszcza amenbo ani w eksporcie, ani w dzienniku, ani przy odczycie zwrotnym. Wiadomości są pisane w języku, w którym czytasz amenbo, i nazywają twoją SI imieniem, które jej nadałeś.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Co zgłaszać
     help: |-
-      Niezaznaczenie niczego też jest odpowiedzią i jest respektowane: wtyczka pozostaje włączona i nic nie zgłasza. Wyczyszczenie przywraca cztery domyślne.
+      Niezaznaczenie niczego też jest odpowiedzią i jest respektowane: wtyczka pozostaje włączona i nic nie zgłasza. Wyczyszczenie przywraca sześć domyślnych.
     options:
       task.created: Utworzono zadanie
       task.status_changed: Zmienił się status zadania
@@ -30,6 +30,8 @@ config:
       decision.rejected: Odrzucono decyzję
       comment.added: Dodano komentarz
       comment.removed: Wycofano komentarz
+      task.due: Termin zadania jest dziś albo już minął
+      task.due_tomorrow: Termin zadania przypada jutro
 settings:
   actions:
     config test:

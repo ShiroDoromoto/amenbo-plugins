@@ -1,10 +1,10 @@
 desc: Melaporkan apa yang dikerjakan AI Anda ke kanal Slack
 about: |
-  Setiap tugas yang diselesaikan AI-mu, setiap tugas yang diputuskan untuk tidak dikerjakan, setiap keputusan yang diterima: barisnya sampai di kanal Slack. Apa yang terjadi selagi kamu jauh dari proyek, di ruang yang memang sudah kamu baca.
+  Setiap tugas yang diselesaikan AI-mu, setiap tugas yang diputuskan untuk tidak dikerjakan, setiap keputusan yang diterima, setiap tugas yang harinya tiba: barisnya sampai di kanal Slack. Apa yang terjadi selagi kamu jauh dari proyek, di ruang yang memang sudah kamu baca.
 
-  - **Yang dilaporkan hanya tulisan AI.** Yang kamu tulis sendiri sudah kamu alami; di kanal tersisa pekerjaan yang berjalan tanpa kamu.
+  - **Yang dilaporkan hanya tulisan AI — dan hari yang tidak ditulis siapa pun.** Yang kamu tulis sendiri sudah kamu alami; di kanal tersisa pekerjaan yang berjalan tanpa kamu. Jatuh tempo yang tiba bukan tulisan siapa pun, dan tiba saat tidak ada yang melihat, jadi dilaporkan juga.
   - **Kanal itu setelannya.** `webhook_url` milik proyek tempat ia ditulis, jadi nilai itulah kanal yang dilapori proyek tersebut. Dua proyek dengan dua webhook melapor ke dua kanal; tiap pesan menyebut proyeknya, jadi mengarahkan keduanya ke satu kanal pun tetap terbaca.
-  - **Peristiwa mana, kamu yang pilih.** Sebelas untuk dicentang, dari tugas dibuat sampai komentar ditarik. Bawaannya empat: tugas dibuat, statusnya berubah, selesai, atau dibatalkan.
+  - **Peristiwa mana, kamu yang pilih.** Tiga belas untuk dicentang, dari tugas dibuat sampai jatuh tempo tiba. Bawaannya enam: tugas dibuat, statusnya berubah, selesai, dibatalkan, jatuh tempo tiba, atau tinggal sehari.
 
   Slack cukup memberi satu URL Incoming Webhook, dan itu disimpan sebagai setelan rahasia — ia tidak keluar dari amenbo lewat ekspor, log, maupun pembacaan ulang. Pesan ditulis dalam bahasa yang kamu pakai membaca amenbo, dan memanggil AI-mu dengan nama yang kamu berikan.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Apa yang dilaporkan
     help: |-
-      Tidak mencentang satu pun juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak melaporkan apa pun. Mengosongkannya mengembalikan empat bawaan.
+      Tidak mencentang satu pun juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak melaporkan apa pun. Mengosongkannya mengembalikan enam bawaan.
     options:
       task.created: Tugas dibuat
       task.status_changed: Status tugas berubah
@@ -30,6 +30,8 @@ config:
       decision.rejected: Keputusan ditolak
       comment.added: Komentar ditambahkan
       comment.removed: Komentar ditarik
+      task.due: Sebuah tugas jatuh tempo hari ini, atau sudah lewat
+      task.due_tomorrow: Sebuah tugas jatuh tempo besok
 settings:
   actions:
     config test:

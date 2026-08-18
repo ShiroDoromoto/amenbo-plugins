@@ -1,10 +1,10 @@
 desc: Segnalare in un canale Slack quello che ha fatto la tua IA
 about: |
-  Ogni attività che la tua IA completa, ogni attività che decide di non fare, ogni decisione che accetta: la riga arriva in un canale Slack. Quello che è successo mentre eri lontano dal progetto, nella stanza che già guardi.
+  Ogni attività che la tua IA completa, ogni attività che decide di non fare, ogni decisione che accetta, ogni attività il cui giorno è arrivato: la riga arriva in un canale Slack. Quello che è successo mentre eri lontano dal progetto, nella stanza che già guardi.
 
-  - **Viene pubblicato solo ciò che scrive l'IA.** Quello che hai scritto tu l'hai vissuto; nel canale resta il lavoro fatto senza di te.
+  - **Viene pubblicato solo ciò che scrive l'IA — e i giorni che non ha scritto nessuno.** Quello che hai scritto tu l'hai vissuto; nel canale resta il lavoro fatto senza di te. Una scadenza che arriva non l'ha scritta nessuno, e arriva mentre nessuno guarda: perciò viene segnalata anche quella.
   - **Il canale è l'impostazione.** `webhook_url` appartiene al progetto in cui è stata scritta, quindi quel valore *è* il canale a cui quel progetto riferisce. Due progetti con due webhook riferiscono a due canali; ogni messaggio dice da quale progetto viene, così anche puntarli entrambi su un solo canale si legge.
-  - **Quali eventi, lo scegli tu.** Undici da spuntare, dalla creazione di un'attività al ritiro di un commento. Di default i quattro che dicono che un'attività è stata creata, ha cambiato stato, è stata completata o è stata scartata.
+  - **Quali eventi, lo scegli tu.** Tredici da spuntare, dalla creazione di un'attività all'arrivo di una scadenza. Di default sei: un'attività creata, che ha cambiato stato, completata o scartata, e una scadenza arrivata o a un giorno.
 
   A Slack basta consegnare un solo URL di Incoming Webhook, tenuto come impostazione segreta: non lascia amenbo né in un export, né in un log, né in una rilettura. I messaggi sono scritti nella lingua in cui leggi amenbo e chiamano la tua IA con il nome che le hai dato.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Che cosa segnalare
     help: |-
-      Non spuntare nulla è anch'essa una risposta e viene rispettata: il plugin resta attivo e non segnala niente. Svuotarlo rimette i quattro predefiniti.
+      Non spuntare nulla è anch'essa una risposta e viene rispettata: il plugin resta attivo e non segnala niente. Svuotarlo rimette i sei predefiniti.
     options:
       task.created: È stata creata un'attività
       task.status_changed: È cambiato lo stato di un'attività
@@ -30,6 +30,8 @@ config:
       decision.rejected: Una decisione è stata respinta
       comment.added: È stato aggiunto un commento
       comment.removed: Un commento è stato ritirato
+      task.due: Un'attività scade oggi, o è già scaduta
+      task.due_tomorrow: Un'attività scade domani
 settings:
   actions:
     config test:

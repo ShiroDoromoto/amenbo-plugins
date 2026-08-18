@@ -1,10 +1,10 @@
 desc: Báo lên kênh Slack những gì AI của bạn đã làm
 about: |
-  Mỗi việc AI của bạn hoàn thành, mỗi việc nó quyết định không làm, mỗi quyết định nó chấp nhận: dòng tin đến một kênh Slack. Những gì đã diễn ra khi bạn rời khỏi dự án, đọc ngay ở nơi bạn vẫn theo dõi.
+  Mỗi việc AI của bạn hoàn thành, mỗi việc nó quyết định không làm, mỗi quyết định nó chấp nhận, mỗi việc đã đến ngày hạn: dòng tin đến một kênh Slack. Những gì đã diễn ra khi bạn rời khỏi dự án, đọc ngay ở nơi bạn vẫn theo dõi.
 
-  - **Chỉ những gì AI ghi mới được đăng.** Việc bạn tự làm thì bạn đã ở đó rồi; kênh giữ lại phần việc chạy khi không có bạn.
+  - **Chỉ những gì AI ghi mới được đăng — và những ngày không ai ghi.** Việc bạn tự làm thì bạn đã ở đó rồi; kênh giữ lại phần việc chạy khi không có bạn. Hạn đến không phải do ai ghi, và nó đến lúc không ai nhìn, nên cũng được báo.
   - **Kênh chính là thiết lập.** `webhook_url` thuộc về dự án nơi nó được ghi, nên giá trị đó *chính là* kênh mà dự án ấy báo về. Hai dự án với hai webhook báo về hai kênh; mỗi tin nhắn đều nêu tên dự án của nó, nên gộp cả hai vào một kênh vẫn đọc được.
-  - **Báo những gì, bạn chọn.** Mười một mục để tick, từ một việc được tạo đến một bình luận bị thu hồi. Mặc định là bốn: việc được tạo, đổi trạng thái, hoàn thành, hoặc bị bỏ.
+  - **Báo những gì, bạn chọn.** Mười ba mục để tick, từ một việc được tạo đến một hạn chót đến ngày. Mặc định là sáu: việc được tạo, đổi trạng thái, hoàn thành, bị bỏ, đến hạn, hoặc còn một ngày.
 
   Slack chỉ cần đưa ra một URL Incoming Webhook, và nó được giữ như một thiết lập bí mật — nó không rời amenbo qua bản xuất, nhật ký hay lần đọc lại nào. Tin nhắn được viết bằng ngôn ngữ bạn đang đọc amenbo, và gọi AI bằng cái tên bạn đã đặt.
 config:
@@ -17,7 +17,7 @@ config:
   events:
     label: Báo những gì
     help: |-
-      Không tick mục nào cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không báo gì. Xoá trống sẽ đưa bốn mục mặc định trở lại.
+      Không tick mục nào cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không báo gì. Xoá trống sẽ đưa sáu mục mặc định trở lại.
     options:
       task.created: Một việc được tạo
       task.status_changed: Trạng thái của một việc thay đổi
@@ -30,6 +30,8 @@ config:
       decision.rejected: Một quyết định bị bác
       comment.added: Một bình luận được thêm
       comment.removed: Một bình luận bị rút lại
+      task.due: Một việc đến hạn hôm nay, hoặc đã quá hạn
+      task.due_tomorrow: Một việc đến hạn vào ngày mai
 settings:
   actions:
     config test:

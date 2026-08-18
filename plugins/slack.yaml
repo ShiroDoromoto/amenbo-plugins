@@ -9,29 +9,29 @@ os:
 category: notification
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-macos-arm64.tar.gz
-    checksum: sha256:552e91ceae6e93ecbde9e60327e1fd6e39f9de174391f466267007f2af2199e8
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v6/slack-v6-macos-arm64.tar.gz
+    checksum: sha256:a647d4ad13150e389fd3efe8f04df04f473f0507d81d798108773bbb3c84a9b9
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-macos-x64.tar.gz
-    checksum: sha256:48ef1faeb096f79711201385fb4450899da9ccabc14a5b32958ee3be4308979b
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v6/slack-v6-macos-x64.tar.gz
+    checksum: sha256:bb96b9c052a74bdc9a847c9aa43b6b8d3d287c984fd612c2e36798cf14d1a752
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-linux-x64.tar.gz
-    checksum: sha256:38591612d09514c19f6d5e11c52e8f8f750d1f1a7c6d0e52aed4c24572bf22a0
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v6/slack-v6-linux-x64.tar.gz
+    checksum: sha256:4e7a1dc8a32b99482edc0e996ff41269c65a2e72aa76145d23894386f0e100a9
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-linux-arm64.tar.gz
-    checksum: sha256:7d10b3b0bdf0fa2a9766dbcb7cc74f21bab2bd3193a26c3b12b311ee380d7f88
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v6/slack-v6-linux-arm64.tar.gz
+    checksum: sha256:c35c5f0ccac2297117c7efd42a32a4560990e67029ce0890dff31cfb29b454b2
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-windows-x64.tar.gz
-    checksum: sha256:1ac5a5c7fea10e33736224bfe96ec112f5b35362a12878c3e5362cb1bdd393e9
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v6/slack-v6-windows-x64.tar.gz
+    checksum: sha256:4410dddc07b04ed20da158f9c48edae50c4920761b0c2e73c0487b448055b546
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v5/slack-v5-windows-arm64.tar.gz
-    checksum: sha256:eed81c90780fcf7b58ddba6dc8cae6cb34c8ba885f1019702ef0e2df0eea9551
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v6/slack-v6-windows-arm64.tar.gz
+    checksum: sha256:009aa25f723fc841d473876194129562f64538480145caced4f71dfba19226bd
 about: |
-  Every task your AI finishes, every one it decides against, every decision it settles — the line arrives in a Slack channel. What happened while you were away from the project, in the room you already watch.
+  Every task your AI finishes, every one it decides against, every decision it settles, every task whose day has come — the line arrives in a Slack channel. What happened while you were away from the project, in the room you already watch.
 
-  - **Only your AI's writes are posted.** A write you made yourself is one you were there for, so the channel carries the work that happened without you rather than an echo of your own.
+  - **Only your AI's writes are posted — and the days nobody wrote.** A write you made yourself is one you were there for, so the channel carries the work that happened without you rather than an echo of your own. A due date arriving is nobody's write at all, and it arrives while nobody is looking, so it is reported too.
   - **The channel is the setting.** `webhook_url` belongs to the project it was written in, so that value *is* the channel that project reports to. Point two projects at two webhooks and they report to two channels; every message names its project, so pointing both at one channel reads too.
-  - **Which events, you choose.** Eleven to tick, from a task being created to a comment being taken back. The default is the four that say a task was created, moved, finished, or dropped.
+  - **Which events, you choose.** Thirteen to tick, from a task being created to a due date arriving. The default is six: a task created, moved, finished or dropped, and a due date reached or one day out.
 
   All Slack has to hand over is one Incoming Webhook URL, and it is held as a secret setting — it never leaves amenbo into an export, a log, or a read-back. Messages are written in the language you read amenbo in, and call your AI by the name you gave it.
 
@@ -52,8 +52,8 @@ config:
     label: What to report
     type: multi
     help: |-
-      Ticking none is an answer and it is honoured: the plugin stays enabled and reports nothing. Clearing this puts the default four back.
-    default: task.created,task.status_changed,task.done,task.rejected
+      Ticking none is an answer and it is honoured: the plugin stays enabled and reports nothing. Clearing this puts the default six back.
+    default: task.created,task.status_changed,task.done,task.rejected,task.due,task.due_tomorrow
     options:
       - value: task.created
         label: A task was created
@@ -77,6 +77,10 @@ config:
         label: A comment was added
       - value: comment.removed
         label: A comment was taken back
+      - value: task.due
+        label: A task is due today, or overdue
+      - value: task.due_tomorrow
+        label: A task is due tomorrow
 settings:
   check: config check
   actions:
@@ -94,3 +98,5 @@ events:
   - decision.rejected
   - comment.added
   - comment.removed
+  - task.due
+  - task.due_tomorrow
