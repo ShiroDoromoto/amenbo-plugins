@@ -4,7 +4,7 @@ about: |
 
   Seules les écritures de l'IA sont signalées : une modification que vous avez faite
   vous-même, vous y étiez. Les événements qui méritent un e-mail, c'est vous qui les cochez,
-  parmi les onze qu'amenbo émet.
+  parmi les onze qu'Amenbo émet.
 
   Une rafale d'événements arrive en un seul message plutôt qu'en une douzaine, et tous les
   messages d'un projet se rejoignent dans le même fil. Leur destination est un réglage du
@@ -43,7 +43,7 @@ config:
   events:
     label: Ce qu'il faut signaler
     help: |-
-      Tout ce qu'amenbo émet et que ce plugin peut signaler. Seules les écritures de votre IA sont signalées, quoi que vous cochiez ici : ce que vous avez fait vous-même, vous y étiez. Ne rien cocher est aussi une réponse : le plugin reste activé et ne signale rien.
+      Tout ce qu'Amenbo émet et que ce plugin peut signaler. Seules les écritures de votre IA sont signalées, quoi que vous cochiez ici : ce que vous avez fait vous-même, vous y étiez. Ne rien cocher est aussi une réponse : le plugin reste activé et ne signale rien.
     options:
       task.created: Une tâche a été créée
       task.status_changed: Le statut d'une tâche a changé

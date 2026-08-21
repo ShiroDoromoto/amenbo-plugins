@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    nhánh task/<id>
   ```
 
-  Bản checkout nằm **ngoài** kho, nên đó là một môi trường phát triển thuần túy — không gì trong đó buộc vào amenbo, và không gì có thể bị nhầm là một phần của dự án. Nhiều phiên làm việc nhờ vậy chạy cùng lúc mà không va nhau: một việc, một checkout, một nhánh.
+  Bản checkout nằm **ngoài** kho, nên đó là một môi trường phát triển thuần túy — không gì trong đó buộc vào Amenbo, và không gì có thể bị nhầm là một phần của dự án. Nhiều phiên làm việc nhờ vậy chạy cùng lúc mà không va nhau: một việc, một checkout, một nhánh.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # PowerShell thì iex (…)
@@ -16,6 +16,6 @@ about: |
 
   `start` trả về đúng dòng `cd` ấy, nên chính shell bạn đang đứng là cái bước vào worktree. `finish` chạy từ kho chính, và từ chối chừng nào bản checkout còn bẩn hoặc nhánh còn mang thay đổi mà nhánh gốc không có; `--force` vượt qua cả hai. Cái được đếm là thay đổi chứ không phải commit chở nó, nên một lần gộp bằng squash hay rebase cũng được đọc là đã gộp như một lần gộp thường. Không đưa `--base` thì cả hai lấy nhánh mà kho đang đứng, nên chẳng phải điền gì trước.
 
-  Đặt chỗ một việc khiến plugin ghi một dòng gợi ý ra stderr, chỉ vậy: việc *này* có cần checkout riêng hay không là một phán đoán, và nó ở lại với người đọc gợi ý. Backlog cũng ở lại với amenbo — plugin này đọc một việc chỉ để xem nó được làm ở đâu, và không ghi gì ngoài git.
+  Đặt chỗ một việc khiến plugin ghi một dòng gợi ý ra stderr, chỉ vậy: việc *này* có cần checkout riêng hay không là một phán đoán, và nó ở lại với người đọc gợi ý. Backlog cũng ở lại với Amenbo — plugin này đọc một việc chỉ để xem nó được làm ở đâu, và không ghi gì ngoài git.
 
   Cần git 2.31 trở lên.

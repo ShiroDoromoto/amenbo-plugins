@@ -1,6 +1,6 @@
 name: worktree
 desc: Isolate each task in its own git worktree
-author: amenbo
+author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-worktree
 os:
   - macos
@@ -40,7 +40,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    on branch task/<id>
   ```
 
-  The checkout lives **outside** the repository, so it is a pure development environment — nothing in it is bound to amenbo, and nothing about it can be mistaken for part of the project. Several implementation sessions can then run at once without colliding: one task, one checkout, one branch.
+  The checkout lives **outside** the repository, so it is a pure development environment — nothing in it is bound to Amenbo, and nothing about it can be mistaken for part of the project. Several implementation sessions can then run at once without colliding: one task, one checkout, one branch.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # iex (…) in PowerShell
@@ -50,6 +50,6 @@ about: |
 
   `start` returns that `cd` line itself, so the shell you are standing in is the one that enters the worktree. `finish` is run from the main repository, and refuses while the checkout is dirty or the branch still carries changes the base does not have; `--force` overrides both. What counts is the change rather than the commit carrying it, so a squash or rebase merge reads as merged just as a plain merge does. Without `--base` they answer with the branch the repository is standing on, so there is nothing to fill in first.
 
-  Reserving a task makes the plugin write one suggestion to stderr, and nothing more: whether *this* task wants a checkout of its own is a judgement, and it stays with whoever reads the suggestion. The backlog stays with amenbo as well — this plugin reads a task to see where it is worked, and writes nothing but git.
+  Reserving a task makes the plugin write one suggestion to stderr, and nothing more: whether *this* task wants a checkout of its own is a judgement, and it stays with whoever reads the suggestion. The backlog stays with Amenbo as well — this plugin reads a task to see where it is worked, and writes nothing but git.
 
   Needs git 2.31 or newer.

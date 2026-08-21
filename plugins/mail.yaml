@@ -1,6 +1,6 @@
 name: mail
 desc: Report what your AI did by email
-author: amenbo
+author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-mail
 os:
   - macos
@@ -30,7 +30,7 @@ about: |
   Report by email what your AI did in a project while you were away from it.
 
   Only the AI's writes are reported: a change you made yourself is one you were there for.
-  Which events are worth a mail is yours to tick, from the eleven amenbo fires.
+  Which events are worth a mail is yours to tick, from the eleven Amenbo fires.
 
   A burst of them arrives as one message instead of a dozen, and every message a project
   sends joins the same thread. Where it goes is that project's own setting, so two projects
@@ -77,7 +77,7 @@ config:
   - key: events
     label: What to report
     help: |-
-      Everything amenbo fires that this plugin can report. Only your AI's writes are reported, whichever of these you tick — a write you drove yourself is one you were there for. Ticking none is an answer too: the plugin stays on and reports nothing.
+      Everything Amenbo fires that this plugin can report. Only your AI's writes are reported, whichever of these you tick — a write you drove yourself is one you were there for. Ticking none is an answer too: the plugin stays on and reports nothing.
     type: multi
     default: task.created,task.status_changed,task.done,task.rejected
     options:

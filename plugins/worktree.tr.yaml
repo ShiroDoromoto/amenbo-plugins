@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    dal: task/<id>
   ```
 
-  Checkout deponun **dışında** durur, yani saf bir geliştirme ortamıdır — içindeki hiçbir şey amenbo'ya bağlı değildir ve hiçbir yanı projenin parçası sanılamaz. Böylece birkaç oturum çarpışmadan aynı anda yürür: bir iş, bir checkout, bir dal.
+  Checkout deponun **dışında** durur, yani saf bir geliştirme ortamıdır — içindeki hiçbir şey Amenbo'ya bağlı değildir ve hiçbir yanı projenin parçası sanılamaz. Böylece birkaç oturum çarpışmadan aynı anda yürür: bir iş, bir checkout, bir dal.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # PowerShell'de iex (…)
@@ -16,6 +16,6 @@ about: |
 
   `start` tam da o `cd` satırını döndürür; worktree'ye giren, üzerinde durduğunuz kabuğun kendisidir. `finish` ana depodan çalıştırılır ve checkout kirliyken ya da dal, temelde bulunmayan değişiklikleri hâlâ taşırken reddeder; `--force` ikisini de aşar. Sayılan, onu taşıyan commit değil değişikliğin kendisidir — bu yüzden squash ya da rebase ile yapılan bir birleştirme de sıradan bir birleştirme gibi birleşmiş sayılır. `--base` verilmezse ikisi de deponun üzerinde durduğu dalı esas alır, yani önceden doldurulacak bir şey yoktur.
 
-  Bir işi rezerve etmek eklentiye stderr'e tek bir öneri yazdırır, o kadar: *bu* işin kendi checkout'unu isteyip istemediği bir yargıdır ve öneriyi okuyanda kalır. Backlog da amenbo'da kalır — bu eklenti bir işi yalnızca nerede yürütüldüğünü görmek için okur ve git'ten başka bir şey yazmaz.
+  Bir işi rezerve etmek eklentiye stderr'e tek bir öneri yazdırır, o kadar: *bu* işin kendi checkout'unu isteyip istemediği bir yargıdır ve öneriyi okuyanda kalır. Backlog da Amenbo'da kalır — bu eklenti bir işi yalnızca nerede yürütüldüğünü görmek için okur ve git'ten başka bir şey yazmaz.
 
   git 2.31 veya üstü gerekir.

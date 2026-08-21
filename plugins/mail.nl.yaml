@@ -3,7 +3,7 @@ about: |
   Je krijgt per e-mail wat je AI in een project heeft gedaan terwijl je er niet bij was.
 
   Alleen wat de AI schrijft wordt gemeld: bij een wijziging van jezelf was je er immers bij.
-  Welke gebeurtenissen een e-mail waard zijn, kies je zelf uit de elf die amenbo afgeeft.
+  Welke gebeurtenissen een e-mail waard zijn, kies je zelf uit de elf die Amenbo afgeeft.
 
   Een reeks ervan komt als één bericht binnen in plaats van als een stuk of twaalf, en alle
   berichten van een project belanden in dezelfde thread. Waar ze heen gaan is een instelling
@@ -42,7 +42,7 @@ config:
   events:
     label: Wat er gemeld wordt
     help: |-
-      Alles wat amenbo afvuurt en deze plug-in kan melden. Wat je hier ook aanvinkt, gemeld wordt alleen wat je AI schrijft — bij wat je zelf deed was je erbij. Niets aanvinken is ook een antwoord: de plug-in blijft aan en meldt niets.
+      Alles wat Amenbo afvuurt en deze plug-in kan melden. Wat je hier ook aanvinkt, gemeld wordt alleen wat je AI schrijft — bij wat je zelf deed was je erbij. Niets aanvinken is ook een antwoord: de plug-in blijft aan en meldt niets.
     options:
       task.created: Een taak is aangemaakt
       task.status_changed: De status van een taak is gewijzigd

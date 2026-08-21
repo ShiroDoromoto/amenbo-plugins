@@ -4,7 +4,7 @@ about: |
 
   Só é informado o que a IA escreveu: uma mudança feita por você é uma mudança que você
   acompanhou. Quais eventos merecem um e-mail é você quem escolhe, entre os onze que o
-  amenbo dispara.
+  Amenbo dispara.
 
   Uma rajada de eventos chega em uma única mensagem, e não em uma dúzia, e todas as mensagens
   de um projeto ficam na mesma conversa. Para onde elas vão é um ajuste do próprio projeto,
@@ -43,7 +43,7 @@ config:
   events:
     label: O que informar
     help: |-
-      Tudo o que o amenbo dispara e este plugin consegue informar. Marque o que marcar, só as escritas da sua IA são informadas — no que você mesmo fez, você estava lá. Não marcar nada também é uma resposta: o plugin continua ligado e não informa nada.
+      Tudo o que o Amenbo dispara e este plugin consegue informar. Marque o que marcar, só as escritas da sua IA são informadas — no que você mesmo fez, você estava lá. Não marcar nada também é uma resposta: o plugin continua ligado e não informa nada.
     options:
       task.created: Uma tarefa foi criada
       task.status_changed: O estado de uma tarefa mudou

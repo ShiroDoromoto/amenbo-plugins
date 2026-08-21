@@ -3,7 +3,7 @@ about: |
   Ricevi per e-mail quello che la tua IA ha fatto in un progetto mentre eri altrove.
 
   Viene segnalato solo ciò che ha scritto l'IA: a una modifica fatta da te c'eri già tu.
-  Quali eventi meritano un'e-mail lo scegli tu, fra gli undici che amenbo emette.
+  Quali eventi meritano un'e-mail lo scegli tu, fra gli undici che Amenbo emette.
 
   Una raffica di eventi arriva in un solo messaggio invece che in una dozzina, e tutti i
   messaggi di un progetto finiscono nella stessa conversazione. Dove vengono spediti è
@@ -42,7 +42,7 @@ config:
   events:
     label: Che cosa segnalare
     help: |-
-      Tutto ciò che amenbo emette e che questo plugin può segnalare. Qualunque cosa spunti, viene segnalato solo ciò che ha scritto la tua IA — a quello che hai fatto tu eri presente. Non spuntare nulla è anch’essa una risposta: il plugin resta attivo e non segnala niente.
+      Tutto ciò che Amenbo emette e che questo plugin può segnalare. Qualunque cosa spunti, viene segnalato solo ciò che ha scritto la tua IA — a quello che hai fatto tu eri presente. Non spuntare nulla è anch’essa una risposta: il plugin resta attivo e non segnala niente.
     options:
       task.created: Un'attività è stata creata
       task.status_changed: Lo stato di un'attività è cambiato

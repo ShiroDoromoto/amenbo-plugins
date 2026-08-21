@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    na gałęzi task/<id>
   ```
 
-  Checkout leży **poza** repozytorium, więc jest czystym środowiskiem pracy — nic w nim nie jest związane z amenbo i nic nie da się wziąć za część projektu. Kilka sesji biegnie wtedy naraz bez kolizji: jedno zadanie, jeden checkout, jedna gałąź.
+  Checkout leży **poza** repozytorium, więc jest czystym środowiskiem pracy — nic w nim nie jest związane z Amenbo i nic nie da się wziąć za część projektu. Kilka sesji biegnie wtedy naraz bez kolizji: jedno zadanie, jeden checkout, jedna gałąź.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # w PowerShellu: iex (…)
@@ -16,6 +16,6 @@ about: |
 
   `start` zwraca dokładnie tę linię `cd`, więc do worktree wchodzi ta powłoka, w której stoisz. `finish` uruchamiasz z głównego repozytorium; odmawia, dopóki checkout jest brudny albo gałąź wciąż niesie zmiany, których nie ma w bazie — `--force` przechodzi nad jednym i drugim. Liczy się zmiana, a nie commit, który ją niesie, więc scalenie przez squash albo rebase czyta się jako scalone tak samo jak zwykłe. Bez `--base` obie odpowiadają gałęzią, na której stoi repozytorium, więc nie trzeba niczego wypełniać wcześniej.
 
-  Rezerwacja zadania każe wtyczce napisać jedną podpowiedź na stderr i nic ponadto: czy *to* zadanie chce własnego checkoutu, jest oceną i zostaje przy tym, kto podpowiedź czyta. Backlog też zostaje przy amenbo — ta wtyczka czyta zadanie tylko po to, by zobaczyć, gdzie jest wykonywane, a pisze wyłącznie gita.
+  Rezerwacja zadania każe wtyczce napisać jedną podpowiedź na stderr i nic ponadto: czy *to* zadanie chce własnego checkoutu, jest oceną i zostaje przy tym, kto podpowiedź czyta. Backlog też zostaje przy Amenbo — ta wtyczka czyta zadanie tylko po to, by zobaczyć, gdzie jest wykonywane, a pisze wyłącznie gita.
 
   Wymaga gita 2.31 lub nowszego.

@@ -1,6 +1,6 @@
 name: slack
 desc: Report what your AI did to a Slack channel
-author: amenbo
+author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-slack
 os:
   - macos
@@ -33,7 +33,7 @@ about: |
   - **The channel is the setting.** `webhook_url` belongs to the project it was written in, so that value *is* the channel that project reports to. Point two projects at two webhooks and they report to two channels; every message names its project, so pointing both at one channel reads too.
   - **Which events, you choose.** Thirteen to tick, from a task being created to a due date arriving. The default is six: a task created, moved, finished or dropped, and a due date reached or one day out.
 
-  All Slack has to hand over is one Incoming Webhook URL, and it is held as a secret setting — it never leaves amenbo into an export, a log, or a read-back. Messages are written in the language you read amenbo in, and call your AI by the name you gave it.
+  All Slack has to hand over is one Incoming Webhook URL, and it is held as a secret setting — it never leaves Amenbo into an export, a log, or a read-back. Messages are written in the language you read Amenbo in, and call your AI by the name you gave it.
 
 official: true
 payload_v: 1
@@ -44,9 +44,9 @@ config:
     secret: true
     required: true
     help: |-
-      Slack makes this, not amenbo, and the URL is the channel: a webhook for the wrong channel posts to the wrong room with nothing else set wrong.
+      Slack makes this, not Amenbo, and the URL is the channel: a webhook for the wrong channel posts to the wrong room with nothing else set wrong.
       At api.slack.com/apps, create an app in the workspace that should hear about this project, turn on Incoming Webhooks, add one to the channel it should post to, and copy the URL it hands back.
-      It is held as a secret — it never leaves amenbo into an export, a log, or a read-back.
+      It is held as a secret — it never leaves Amenbo into an export, a log, or a read-back.
     placeholder: https://hooks.slack.com/services/T…/B…/…
   - key: events
     label: What to report

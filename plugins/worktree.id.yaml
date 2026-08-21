@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    di branch task/<id>
   ```
 
-  Checkout itu berada **di luar** repositori, jadi ia lingkungan pengembangan murni — tidak ada isinya yang terikat pada amenbo, dan tidak ada yang bisa dikira bagian dari proyek. Beberapa sesi pun berjalan sekaligus tanpa bertabrakan: satu tugas, satu checkout, satu branch.
+  Checkout itu berada **di luar** repositori, jadi ia lingkungan pengembangan murni — tidak ada isinya yang terikat pada Amenbo, dan tidak ada yang bisa dikira bagian dari proyek. Beberapa sesi pun berjalan sekaligus tanpa bertabrakan: satu tugas, satu checkout, satu branch.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # iex (…) di PowerShell
@@ -16,6 +16,6 @@ about: |
 
   `start` mengembalikan baris `cd` itu sendiri, sehingga shell tempat Anda berdiri yang masuk ke worktree. `finish` dijalankan dari repositori utama, dan menolak selama checkout masih kotor atau branch masih membawa perubahan yang tidak ada di basisnya; `--force` menerobos keduanya. Yang dihitung adalah perubahannya, bukan commit yang membawanya, sehingga merge squash atau rebase terbaca sudah ter-merge sama seperti merge biasa. Tanpa `--base`, keduanya menjawab dengan branch tempat repositori sedang berdiri, jadi tidak ada yang perlu diisi lebih dulu.
 
-  Memesan sebuah tugas membuat plugin menulis satu saran ke stderr, tidak lebih: apakah tugas *ini* mau checkout sendiri adalah penilaian, dan itu tinggal pada yang membaca saran tersebut. Backlog pun tetap pada amenbo — plugin ini membaca sebuah tugas untuk melihat di mana ia dikerjakan, dan tidak menulis apa pun selain git.
+  Memesan sebuah tugas membuat plugin menulis satu saran ke stderr, tidak lebih: apakah tugas *ini* mau checkout sendiri adalah penilaian, dan itu tinggal pada yang membaca saran tersebut. Backlog pun tetap pada Amenbo — plugin ini membaca sebuah tugas untuk melihat di mana ia dikerjakan, dan tidak menulis apa pun selain git.
 
   Butuh git 2.31 atau lebih baru.

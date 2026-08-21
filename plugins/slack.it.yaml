@@ -6,14 +6,14 @@ about: |
   - **Il canale è l'impostazione.** `webhook_url` appartiene al progetto in cui è stata scritta, quindi quel valore *è* il canale a cui quel progetto riferisce. Due progetti con due webhook riferiscono a due canali; ogni messaggio dice da quale progetto viene, così anche puntarli entrambi su un solo canale si legge.
   - **Quali eventi, lo scegli tu.** Tredici da spuntare, dalla creazione di un'attività all'arrivo di una scadenza. Di default sei: un'attività creata, che ha cambiato stato, completata o scartata, e una scadenza arrivata o a un giorno.
 
-  A Slack basta consegnare un solo URL di Incoming Webhook, tenuto come impostazione segreta: non lascia amenbo né in un export, né in un log, né in una rilettura. I messaggi sono scritti nella lingua in cui leggi amenbo e chiamano la tua IA con il nome che le hai dato.
+  A Slack basta consegnare un solo URL di Incoming Webhook, tenuto come impostazione segreta: non lascia Amenbo né in un export, né in un log, né in una rilettura. I messaggi sono scritti nella lingua in cui leggi Amenbo e chiamano la tua IA con il nome che le hai dato.
 config:
   webhook_url:
     label: URL del webhook di Slack
     help: |-
-      Questo URL lo crea Slack, non amenbo, ed è il canale: un webhook fatto per il canale sbagliato pubblica nella stanza sbagliata anche con tutto il resto a posto.
+      Questo URL lo crea Slack, non Amenbo, ed è il canale: un webhook fatto per il canale sbagliato pubblica nella stanza sbagliata anche con tutto il resto a posto.
       Su api.slack.com/apps crea un'app nello spazio di lavoro che deve sapere di questo progetto, attiva Incoming Webhooks, aggiungine uno al canale desiderato e copia l'URL restituito.
-      È tenuto come impostazione segreta: non lascia amenbo né in un export, né in un log, né in una rilettura.
+      È tenuto come impostazione segreta: non lascia Amenbo né in un export, né in un log, né in una rilettura.
   events:
     label: Che cosa segnalare
     help: |-
