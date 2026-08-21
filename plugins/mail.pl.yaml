@@ -2,8 +2,10 @@ desc: Zgłasza e-mailem, co zrobiła twoja AI
 about: |
   Dostajesz e-mailem to, co twoja AI zrobiła w projekcie, gdy cię przy nim nie było.
 
-  Zgłaszane jest tylko to, co zapisała AI: własna zmiana dzieje się na twoich oczach. Które
-  zdarzenia są warte e-maila, wybierasz ty — z jedenastu, które wysyła Amenbo.
+  Zgłaszane jest tylko to, co zapisała AI: własna zmiana dzieje się na twoich oczach.
+  Nadejście terminu nie jest niczyim zapisem, a przychodzi wtedy, gdy nikt nie patrzy — więc
+  jest zgłaszane też. Które zdarzenia są warte e-maila, wybierasz ty — z trzynastu, które
+  wysyła Amenbo.
 
   Seria zdarzeń przychodzi jako jedna wiadomość, a nie kilkanaście, a wszystkie wiadomości
   jednego projektu trafiają do tego samego wątku. Dokąd idą, to ustawienie samego projektu,
@@ -42,7 +44,7 @@ config:
   events:
     label: Co zgłaszać
     help: |-
-      Wszystko, co Amenbo wywołuje, a ta wtyczka potrafi zgłosić. Cokolwiek zaznaczysz, zgłaszane są tylko zapisy twojej SI — przy tym, co zrobiłeś sam, byłeś obecny. Nie zaznaczyć niczego to również odpowiedź: wtyczka pozostaje włączona i nic nie zgłasza.
+      Wszystko, co Amenbo wywołuje, a ta wtyczka potrafi zgłosić. Spośród zapisów, cokolwiek zaznaczysz, zgłaszane są tylko zapisy twojej SI — przy tym, co zrobiłeś sam, byłeś obecny. Dwa ostatnie nie są zapisami: raz dziennie Amenbo zgłasza zadanie, którego termin nadszedł, i takie, którego termin przypada jutro. Nikt ich nie zapisał, więc nic ich nie odfiltrowuje. Nie zaznaczyć niczego to również odpowiedź: wtyczka pozostaje włączona i nic nie zgłasza.
     options:
       task.created: Utworzono zadanie
       task.status_changed: Zmienił się status zadania
@@ -55,3 +57,5 @@ config:
       decision.rejected: Odrzucono decyzję
       comment.added: Dodano komentarz
       comment.removed: Wycofano komentarz
+      task.due: Termin zadania jest dziś lub już minął
+      task.due_tomorrow: Termin zadania jest jutro

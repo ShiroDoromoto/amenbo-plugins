@@ -3,8 +3,9 @@ about: |
   Sie bekommen per E-Mail, was Ihre KI in einem Projekt getan hat, während Sie weg waren.
 
   Gemeldet wird nur, was die KI geschrieben hat: bei einer Änderung von Ihnen waren Sie ja
-  dabei. Welche Ereignisse eine E-Mail wert sind, wählen Sie selbst aus den elf, die Amenbo
-  auslöst.
+  dabei. Dass ein Fälligkeitstag kommt, hat niemand geschrieben, und niemand schaut hin, wenn
+  er kommt — deshalb wird auch das gemeldet. Welche Ereignisse eine E-Mail wert sind, wählen
+  Sie selbst aus den dreizehn, die Amenbo auslöst.
 
   Ein Schwall davon kommt als eine Nachricht statt als ein Dutzend, und alle Nachrichten eines
   Projekts landen im selben Thread. Wohin sie gehen, ist eine Einstellung des Projekts selbst –
@@ -43,7 +44,7 @@ config:
   events:
     label: Was gemeldet wird
     help: |-
-      Alles, was Amenbo auslöst und dieses Plugin melden kann. Gemeldet werden nur die Schreibvorgänge Ihrer KI, was Sie hier auch ankreuzen — was Sie selbst getan haben, waren Sie dabei. Nichts anzukreuzen ist auch eine Antwort: Das Plugin bleibt eingeschaltet und meldet nichts.
+      Alles, was Amenbo auslöst und dieses Plugin melden kann. Von den Schreibvorgängen werden nur die Ihrer KI gemeldet, was Sie hier auch ankreuzen — was Sie selbst getan haben, waren Sie dabei. Die letzten beiden sind keine Schreibvorgänge: Amenbo weist einmal am Tag auf eine Aufgabe hin, deren Fälligkeitstag gekommen ist, und auf eine, die morgen fällig ist. Niemand hat sie ausgelöst, also filtert nichts sie heraus. Nichts anzukreuzen ist auch eine Antwort: Das Plugin bleibt eingeschaltet und meldet nichts.
     options:
       task.created: Eine Aufgabe wurde erstellt
       task.status_changed: Der Status einer Aufgabe hat sich geändert
@@ -56,3 +57,5 @@ config:
       decision.rejected: Eine Entscheidung wurde abgelehnt
       comment.added: Ein Kommentar wurde hinzugefügt
       comment.removed: Ein Kommentar wurde zurückgenommen
+      task.due: Eine Aufgabe ist heute oder schon länger fällig
+      task.due_tomorrow: Eine Aufgabe ist morgen fällig
