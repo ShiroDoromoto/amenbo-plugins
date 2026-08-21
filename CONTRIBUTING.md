@@ -81,8 +81,8 @@ single-`url` form stays valid and is not deprecated.
 | `official` | bool | `false` | The official badge (author is the Amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
 | `min_amenbo` | string | none | Minimum Amenbo version the plugin needs, as semver — below it, Amenbo warns or refuses to enable/run it. |
-| `config` | list | none | The plugin's configuration schema: a flat list of fields Amenbo renders as a form and injects at run time. |
-| `settings` | map | none | The calls that form raises: `check` (one call, run when the plugin is enabled — a verdict that is not a yes leaves it disabled) and `actions` (up to four buttons a user presses, each able to `ask` for input that is handed to that run and stored nowhere). See [Writing a plugin](docs/writing-a-plugin.md#saying-whether-the-values-are-usable). |
+| `config` | list | none | The plugin's settings form: a flat list of the fields Amenbo renders and injects at run time, each shown under its own `when`, with the parts it draws between them (`text` / `heading` / `note` / `list` / `copy`, and `qr` / `link` for an official plugin). See [Writing a plugin](docs/writing-a-plugin.md#putting-more-than-a-line-on-the-screen). |
+| `settings` | map | none | The calls that form raises: `check` (one call, run when the plugin is enabled — a verdict that is not a yes leaves it disabled) and `actions` (up to four buttons a user presses, each shown under its own `when` and able to `ask` for input that is handed to that run and stored nowhere). Either run may answer with parts for the form to draw. See [Writing a plugin](docs/writing-a-plugin.md#saying-whether-the-values-are-usable). |
 | `events` | list | none | The events your plugin's hook fires on. Absent means it observes nothing — a command-only plugin. |
 | `agent` | map | none | What the plugin says for itself where an AI reads how to work in a folder: `when` (the occasion, required once the block is written) and `commands` (`cmd` / `does` / `steps`, one per call). Write your own command face only — Amenbo prepends `amenbo plugin run <name> `; `steps` names the steps of Amenbo's own cycle a call is a tool for, by id. See [Writing a plugin](docs/writing-a-plugin.md#saying-what-you-are-for). |
 
@@ -189,7 +189,8 @@ What has a translation to pick from is what a **person** reads: `desc`, `about`,
 `placeholder`, and the `label` on a config field, on one of its options, or on a settings button and what it
 asks for. Those are keyed here rather than listed — each field by its `key`, each option by its `value`, each
 button by the `cmd` it raises — because a translation carries no order of its own, and lining the two up by
-position is what would break every language at once the day you reorder the form. Everything else stays as
+position is what would break every language at once the day you reorder the form. A part drawn between your
+fields has no key of either sort, so it has no translation: it reads in the one language you wrote it. Everything else stays as
 you wrote it, `agent.when` and each `does` included: an AI reads those. The languages are the 19 Amenbo
 itself is read in (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`,
 `vi`, `th`, `tr`, `pl`, `nl`, `uk`).

@@ -332,6 +332,7 @@ save while it is enabled**. Write the verdict on stdout:
 | `ok` | whether the values are usable. The gate turns on this alone |
 | `message` | one sentence about the settings as a whole. Optional |
 | `fields` | one sentence per setting, keyed by the setting's own key. A key you did not declare is dropped, and the rest of the verdict stands |
+| `show` | more than a sentence will hold — the parts Amenbo draws under the verdict. Optional, and written up below |
 
 **A check that does not say yes leaves the plugin disabled — and so does one that says nothing.** Failing
 to start, exiting non-zero, overrunning **two seconds**, or writing something that is not a verdict all
@@ -370,8 +371,9 @@ plugin**, through the road every other run takes: the same injected settings, th
 same execution log. The check at the moment of enabling is the one call that runs before the gate, because
 the hand pressing *enable* is the consent.
 
-**Nothing reads what an action returns.** Its exit code says whether it worked, the one line it wrote to
-`stderr` is what the screen shows, and nothing is undone by a press that fails. Nor is it held to the
+**A press is judged by its exit code.** That is what says whether it worked, the one line it wrote to
+`stderr` is what the screen shows, and nothing is undone by a press that fails. Its stdout is read for one
+thing and nothing else — the parts written up below — so an `ok` written there decides nothing. Nor is it held to the
 check's two seconds — a `setup` that stands something up is allowed to take as long as it takes.
 
 An `ask` is a config field's opposite: a value Amenbo never has. It reaches your process as
@@ -396,6 +398,139 @@ would never happen.
 
 **All of this is the settings form's.** The CLI calls you the way it always has, with `amenbo plugin run` —
 which takes arguments a form cannot, and is not limited to what the manifest named in advance.
+
+### Putting more than a line on the screen
+
+A verdict's `message` and the line a press writes to `stderr` are one sentence each, and a setup is rarely
+one sentence long. `show` is the other half of both answers — a list of parts Amenbo draws on the settings
+form, under whatever raised the run:
+
+```json
+{ "v": 1, "ok": true, "show": [
+  { "text": "Read this with your phone's camera" },
+  { "qr": "https://apps.apple.com/…" }
+]}
+```
+
+| Part | What is drawn | What you write |
+| --- | --- | --- |
+| `text` | a line of explanation | a string |
+| `heading` | a heading, to break a long answer up | a string |
+| `note` | a line that should stand out — a caution | a string |
+| `list` | those lines, drawn as a list | an array of strings |
+| `copy` | the string, with a copy button beside it | a string |
+| `qr` | a QR code | the string to encode |
+| `link` | a button that opens a page in the browser | `url` and `label` |
+
+**You write strings and Amenbo draws them.** There is no markup here, no Markdown and no image: a `qr` is
+the text to encode, not a picture of one. That line is what keeps a plugin a child process instead of
+something that ships a webview per platform — and it is what keeps the person at the form able to tell
+Amenbo's words from a stranger's.
+
+**The same vocabulary is the manifest's.** `config` is a list of your fields, and a part written between
+them draws where it stands, before anything of yours has run:
+
+```yaml
+config:
+  - link: { url: "https://myaccount.google.com/apppasswords", label: "Create a Gmail app password" }
+  - key: smtp_password
+    label: Password
+    secret: true
+```
+
+An answer cannot reach the person who has typed nothing yet. A plugin whose only call is a `check` has no
+button to press, and that check runs at enabling and at the saves after it — while the moment a
+destination is most needed is the one before all of that.
+
+**`qr` and `link` are an official plugin's alone.** Both carry a destination, and a QR is the worse of the
+two: it is read by a phone and opened outside Amenbo, where nothing here can stop it. The badge is the
+catalog's and no author sets it, so this is a line no machine can be wrong about. What a third party has
+instead is `copy` — the same string, in front of a reader who can see where it goes before going there.
+Written into a manifest, one of the two is refused by name (`official_only`); returned from a run, it is
+dropped and the rest of the answer still draws.
+
+**The caps refuse rather than trim.** An answer carries **ten parts at most**, weighing **4KB at most** as
+the JSON it arrived as; past either, the whole `show` goes unread. Trimming would put Amenbo's edit of
+your answer in front of a person as though it were yours. A manifest is held to the same ten, and the
+strings in its parts spend the same size budget the rest of the schema does.
+
+Two more rules hold in both places. **No string may carry a control character** — this is the screen a
+user types a secret into, and `plugin config get` prints to a terminal, where an escape sequence can write
+over what Amenbo said. And **a `link` goes to an `http` or `https` page and nowhere else**: a scheme that
+starts something on this machine is not the button a reader was offered.
+
+**Where the two runs differ is what an unreadable answer means.** A check is fail-closed — a `show` it
+cannot draw makes the whole verdict unreadable, which is a silence like any other, and the plugin stays
+disabled. A press has never had its stdout read, so whatever cannot be read as an answer is simply no
+parts: the exit code still says whether it worked, and an `ok` written there is not consulted, that word
+being the check's.
+
+What is drawn goes away when the same button is pressed again, when another is pressed, and when the user
+leaves the form. Anything longer than a form's worth belongs in the execution log, where your `stderr` is
+read (`amenbo plugin log <name>`).
+
+**A part written into a manifest has no translation.** A translation is keyed — a field by its `key`, a
+button by its `cmd` — and a part has neither, so it reads in whatever language you wrote it, in every
+language your listing is read in. Keep the static ones to what survives that, and let the words that need
+a language be a field's `label` and `help`.
+
+### Showing something only when it applies
+
+A form that draws every field always offers a Windows user a macOS-only transport, and leaves the fields
+of a route nobody chose on the screen to scroll past. `when` says which of your declarations belong on the
+form in front of *this* user:
+
+```yaml
+config:
+  - key: transport
+    label: Transport
+    type: multi
+    options:
+      - value: icloud
+        label: iCloud
+        when:
+          - { os: [macos] }
+      - value: cloudflare
+        label: Cloudflare
+  - key: worker_url
+    label: Worker URL
+    when:
+      - { field: transport, has: cloudflare }
+settings:
+  actions:
+    - cmd: worker deploy
+      label: Deploy the worker
+      when:
+        - { field: transport, has: cloudflare }
+```
+
+Three things take one: **a field, one of a field's options, and a settings button.** There are two kinds of
+condition and no more — `os`, the platform this Amenbo runs on, and `field` with `has`, the answer another
+setting holds right now. Write several and **all of them have to hold**: the list is an `and`, there is no
+`or` and no `not`, and four clauses is the ceiling.
+
+`has` asks whether the value is *among* the answers rather than whether it is the whole of them, so a
+`multi` field reads the way its author means it. What it compares against is the value your plugin would
+actually receive, `default` resolved — so a field nobody has touched reads as the answer it really sends —
+and a field with no answer at all matches nothing.
+
+**A condition hides the box, never the value.** A value saved on a Mac is still there when the same store
+is opened on Windows, and still handed to you: hiding is a statement about the screen. The one thing it
+does decide is `required` — a hidden field left empty does not shut the enable gate, because the form has
+nowhere to show the user what is missing.
+
+**The reading is Amenbo's core, not its screen.** A face does not know which platform this build runs on
+and core does, so `amenbo plugin config get` answers about the fields the form draws rather than the two
+disagreeing about one manifest.
+
+A clause Amenbo cannot read is refused at your desk (`bad_when`) rather than becoming a rule that silently
+never fires: one naming neither kind, one naming both at once, one carrying half of a kind (`field`
+without `has`), one naming a setting your manifest does not declare — and one reading the field it is
+written on, which could only ever hide itself. A `has` carrying `,` goes with them, a `multi` field's
+answers being stored joined by one, so such a value could never be among them.
+
+A part drawn between your fields takes no `when` yet. Conditions are the field's, the option's and the
+button's.
 
 ## Reading a record back
 
@@ -468,8 +603,8 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
 | `payload_v` | `1` | the payload contract version you read |
 | `min_amenbo` | none | the minimum Amenbo version you need, as semver |
-| `config` | none | your settings schema: `key` / `label` / `help` / `placeholder` / `secret` / `required` / `readonly` / `type` / `options` / `default` |
-| `settings` | none | the calls the settings form raises: `check`, run when the plugin is enabled, and `actions`, the buttons a user presses. Written above |
+| `config` | none | your settings form: the fields you take — `key` / `label` / `help` / `placeholder` / `secret` / `required` / `readonly` / `type` / `options` / `default` / `when` — and the parts drawn between them. Written above |
+| `settings` | none | the calls that form raises: `check`, run when the plugin is enabled, and `actions`, the buttons a user presses — each under its own `when`. Written above |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
 | `agent` | none | how your plugin is driven, where an AI reads how to work here: `when` / `commands`. How much of it reaches the AI depends on the badge — see below |
 
