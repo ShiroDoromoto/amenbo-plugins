@@ -19,7 +19,13 @@ config:
     help: "setup erzeugt dies. Sie müssen nichts eintippen — das Telefon bekommt ihn über den QR-Code, nie über das Netz."
 settings:
   actions:
+    token:
+      label: 1. Cloudflare-API-Token holen
     setup:
-      label: Cloudflare-Weg aufstellen
+      label: 2. Cloudflare-Weg aufstellen
       ask:
         api_token: Cloudflare-API-Token
+    qr:
+      label: 3. Telefon koppeln
+      ask:
+        label: Name für dieses Telefon

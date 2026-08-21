@@ -19,7 +19,13 @@ config:
     help: "setup genereert deze. Je hoeft niets te typen — de telefoon krijgt hem via de QR, nooit via het netwerk."
 settings:
   actions:
+    token:
+      label: 1. Cloudflare-API-token halen
     setup:
-      label: Cloudflare-route opzetten
+      label: 2. Cloudflare-route opzetten
       ask:
         api_token: Cloudflare-API-token
+    qr:
+      label: 3. Telefoon koppelen
+      ask:
+        label: Naam voor deze telefoon

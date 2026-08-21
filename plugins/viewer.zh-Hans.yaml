@@ -19,7 +19,13 @@ config:
     help: "由 setup 生成。这里没有要输入的东西——手机通过二维码拿到，不经过网络。"
 settings:
   actions:
+    token:
+      label: 1. 获取 API 令牌
     setup:
-      label: 搭建 Cloudflare 通道
+      label: 2. 搭建 Cloudflare 通道
       ask:
         api_token: Cloudflare API 令牌
+    qr:
+      label: 3. 配对手机
+      ask:
+        label: 这台手机的名称

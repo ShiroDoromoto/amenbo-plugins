@@ -19,7 +19,13 @@ config:
     help: "setup が生成します。打つものはありません——端末へは QR で渡り、ネットワークには出ません。"
 settings:
   actions:
+    token:
+      label: 1. API トークンを取る
     setup:
-      label: Cloudflare 経路を立てる
+      label: 2. Cloudflare 経路を立てる
       ask:
         api_token: Cloudflare の API トークン
+    qr:
+      label: 3. 端末をペアリング
+      ask:
+        label: この端末の名前

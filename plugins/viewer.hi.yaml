@@ -19,7 +19,13 @@ config:
     help: "setup इसे बनाता है। आपको कुछ लिखना नहीं है — फ़ोन को यह QR से मिलती है, नेटवर्क से कभी नहीं।"
 settings:
   actions:
+    token:
+      label: 1. API टोकन लें
     setup:
-      label: Cloudflare तैयार करें
+      label: 2. Cloudflare सेटअप
       ask:
         api_token: Cloudflare का API टोकन
+    qr:
+      label: 3. फ़ोन जोड़ें
+      ask:
+        label: इस फ़ोन का नाम

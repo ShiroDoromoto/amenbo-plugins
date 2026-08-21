@@ -58,12 +58,19 @@ config:
     readonly: true
 settings:
   actions:
+    - cmd: token
+      label: 1. Get a Cloudflare API token
     - cmd: setup
-      label: Set up the Cloudflare route
+      label: 2. Set up the Cloudflare route
       ask:
         - key: api_token
           label: Cloudflare API token
           secret: true
+    - cmd: qr
+      label: 3. Pair a phone
+      ask:
+        - key: label
+          label: What to call this phone
 events:
   - task.created
   - task.status_changed
@@ -80,6 +87,8 @@ events:
 agent:
   when: Setting up the phone viewer, pairing a phone with it, or carrying by hand what has not reached one yet
   commands:
+    - cmd: token
+      does: Opens Cloudflare's token screen in the browser, with the three permissions setup needs already ticked, and ends there. Asks nothing and keeps nothing — the token the page makes is pasted into setup
     - cmd: setup
       does: Stands up the Worker and its database in the user's own Cloudflare account, and generates the token and key. Takes a Cloudflare API token from the settings screen, a terminal or CLOUDFLARE_API_TOKEN
     - cmd: push
@@ -89,4 +98,4 @@ agent:
     - cmd: revoke
       does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument
     - cmd: qr
-      does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label names it (one in use is refused); --terminal draws it here"
+      does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label or the settings screen box names it; --terminal draws it here"

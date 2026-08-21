@@ -19,7 +19,13 @@ config:
     help: "setup la génère. Vous n'avez rien à saisir — le téléphone la reçoit par le QR, jamais par le réseau."
 settings:
   actions:
+    token:
+      label: 1. Obtenir un jeton d'API
     setup:
-      label: Configurer la voie Cloudflare
+      label: 2. Configurer la voie Cloudflare
       ask:
         api_token: Jeton d'API Cloudflare
+    qr:
+      label: 3. Associer un téléphone
+      ask:
+        label: Nom de ce téléphone

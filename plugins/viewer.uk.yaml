@@ -19,7 +19,13 @@ config:
     help: "setup створює це. Вводити нічого не треба — на телефон він потрапляє через QR, а не мережею."
 settings:
   actions:
+    token:
+      label: 1. Отримати токен API
     setup:
-      label: Створити шлях Cloudflare
+      label: 2. Створити шлях Cloudflare
       ask:
         api_token: Токен API Cloudflare
+    qr:
+      label: 3. Підключити телефон
+      ask:
+        label: Назва цього телефона

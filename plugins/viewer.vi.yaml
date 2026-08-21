@@ -19,7 +19,13 @@ config:
     help: "setup tạo ra. Không có gì để gõ — điện thoại nhận qua QR, không bao giờ qua mạng."
 settings:
   actions:
+    token:
+      label: 1. Lấy token API
     setup:
-      label: Dựng tuyến Cloudflare
+      label: 2. Dựng tuyến Cloudflare
       ask:
         api_token: Token API Cloudflare
+    qr:
+      label: 3. Ghép nối điện thoại
+      ask:
+        label: Tên của điện thoại này

@@ -19,7 +19,13 @@ config:
     help: "setup bunu üretir. Yazmanız gereken bir şey yok — telefona QR ile geçer, ağ üzerinden asla."
 settings:
   actions:
+    token:
+      label: 1. API belirteci al
     setup:
-      label: Cloudflare yolunu kur
+      label: 2. Cloudflare yolunu kur
       ask:
         api_token: Cloudflare API belirteci
+    qr:
+      label: 3. Telefon eşle
+      ask:
+        label: Bu telefonun adı

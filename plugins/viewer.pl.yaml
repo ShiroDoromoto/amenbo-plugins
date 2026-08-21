@@ -19,7 +19,13 @@ config:
     help: "setup go generuje. Nie ma tu nic do wpisania — telefon dostaje go z kodu QR, nigdy przez sieć."
 settings:
   actions:
+    token:
+      label: 1. Pobierz token API
     setup:
-      label: Skonfiguruj trasę Cloudflare
+      label: 2. Skonfiguruj trasę Cloudflare
       ask:
         api_token: Token API Cloudflare
+    qr:
+      label: 3. Sparuj telefon
+      ask:
+        label: Nazwa tego telefonu

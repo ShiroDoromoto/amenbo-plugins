@@ -19,7 +19,13 @@ config:
     help: "由 setup 產生。這裡沒有要輸入的東西——手機透過 QR 取得，不經過網路。"
 settings:
   actions:
+    token:
+      label: 1. 取得 API 權杖
     setup:
-      label: 建立 Cloudflare 通道
+      label: 2. 建立 Cloudflare 通道
       ask:
         api_token: Cloudflare API 權杖
+    qr:
+      label: 3. 配對手機
+      ask:
+        label: 這台手機的名稱

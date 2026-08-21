@@ -19,7 +19,13 @@ config:
     help: "setup สร้างขึ้นให้ ไม่มีอะไรต้องพิมพ์ — โทรศัพท์รับผ่าน QR ไม่เคยผ่านเครือข่าย"
 settings:
   actions:
+    token:
+      label: 1. รับโทเคน API
     setup:
-      label: ตั้งค่า Cloudflare
+      label: 2. ตั้งค่า Cloudflare
       ask:
         api_token: โทเคน API ของ Cloudflare
+    qr:
+      label: 3. จับคู่มือถือ
+      ask:
+        label: ชื่อมือถือนี้

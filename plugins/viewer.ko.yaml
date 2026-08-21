@@ -19,7 +19,13 @@ config:
     help: "setup이 만들어 냅니다. 입력할 것은 없습니다 — 휴대폰에는 QR로 건네지며, 네트워크로는 나가지 않습니다."
 settings:
   actions:
+    token:
+      label: 1. API 토큰 받기
     setup:
-      label: Cloudflare 경로 세우기
+      label: 2. Cloudflare 경로 세우기
       ask:
         api_token: Cloudflare API 토큰
+    qr:
+      label: 3. 휴대폰 연결
+      ask:
+        label: 이 휴대폰의 이름

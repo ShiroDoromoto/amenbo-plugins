@@ -19,7 +19,13 @@ config:
     help: "setup gera isto. Não há nada para digitar — o telefone a recebe pelo QR, nunca pela rede."
 settings:
   actions:
+    token:
+      label: 1. Obter um token de API
     setup:
-      label: Configurar a rota do Cloudflare
+      label: 2. Configurar a rota do Cloudflare
       ask:
         api_token: Token de API do Cloudflare
+    qr:
+      label: 3. Parear um telefone
+      ask:
+        label: Como chamar este telefone

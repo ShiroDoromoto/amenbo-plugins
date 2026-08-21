@@ -19,7 +19,13 @@ config:
     help: "setup membuatnya. Tidak ada yang perlu diketik — ponsel menerimanya lewat QR, tidak pernah lewat jaringan."
 settings:
   actions:
+    token:
+      label: 1. Ambil token API
     setup:
-      label: Siapkan jalur Cloudflare
+      label: 2. Siapkan jalur Cloudflare
       ask:
         api_token: Token API Cloudflare
+    qr:
+      label: 3. Pasangkan ponsel
+      ask:
+        label: Nama untuk ponsel ini

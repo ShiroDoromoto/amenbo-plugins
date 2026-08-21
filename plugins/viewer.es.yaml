@@ -19,7 +19,13 @@ config:
     help: "setup la genera. No hay nada que escribir; el teléfono la recibe por el QR, nunca por la red."
 settings:
   actions:
+    token:
+      label: 1. Obtener el token de API
     setup:
-      label: Configurar la ruta de Cloudflare
+      label: 2. Configurar la ruta de Cloudflare
       ask:
         api_token: Token de API de Cloudflare
+    qr:
+      label: 3. Vincular un teléfono
+      ask:
+        label: Cómo llamar a este teléfono
