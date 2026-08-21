@@ -9,23 +9,23 @@ os:
 category: notification
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-macos-arm64.tar.gz
-    checksum: sha256:487166667da85f333ed7ae882895a39372f3802fffb41ea684703260a69fa87d
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v5/mail-v5-macos-arm64.tar.gz
+    checksum: sha256:7ed772c082fcd4e0005b980c935354b245af4a970f27529b623806738899087b
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-macos-x64.tar.gz
-    checksum: sha256:9536f1a98afdc7688e9c75355ca29fdf6670f83357bd5abd518e34639e9184aa
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v5/mail-v5-macos-x64.tar.gz
+    checksum: sha256:314285eb8bdad3387cc3b6a68598534a5b3e3dd09817dd707a0d96ffabb062ac
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-linux-x64.tar.gz
-    checksum: sha256:c7a67b31b0ff6d9ca30271a232297accb0ea3050544ee9f62009f6b9a759a5ea
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v5/mail-v5-linux-x64.tar.gz
+    checksum: sha256:bef512a683f6f67f5a40f8aa511939df68b80b300f49c0f132fe1c0cc29b4f2b
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-linux-arm64.tar.gz
-    checksum: sha256:fd90e06f0663dcc88659ad15dd883cae195ee2871751ef3b58cf833694cc9199
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v5/mail-v5-linux-arm64.tar.gz
+    checksum: sha256:f4cd9271713c4ae339ecd98cd0b996362be7e0a4d6631ef95faf75db5879f56b
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-windows-x64.tar.gz
-    checksum: sha256:433f810bdd78dc0d153e3a38320684d59873763ffb63f8ee85ba219f2c82faf6
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v5/mail-v5-windows-x64.tar.gz
+    checksum: sha256:3f37a1ad6291b089865ac3d2dcc832d4493e72daa511a7a9e08d3c6aad99b529
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v4/mail-v4-windows-arm64.tar.gz
-    checksum: sha256:5eba113e9104144342beabb627596a53dd1194e87db4bad85968579f703fc1ef
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-mail/releases/download/v5/mail-v5-windows-arm64.tar.gz
+    checksum: sha256:c9bdd0897a978441d970bf65c2dfad40aae820f2d8d6e1a900e9f59655a469c6
 about: |
   Report by email what your AI did in a project while you were away from it.
 
