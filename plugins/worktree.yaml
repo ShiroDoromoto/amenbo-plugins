@@ -1,6 +1,6 @@
 name: worktree
 desc: Isolate each task in its own git worktree
-author: amenbo
+author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-worktree
 os:
   - macos
@@ -9,17 +9,17 @@ os:
 category: workflow
 assets:
   macos:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v5/worktree-v5-macos-universal.tar.gz
-    checksum: sha256:d284de477cf7161b898b233c4dd4ef34039db1e6af17c030548e9a34713278cf
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v6/worktree-v6-macos-universal.tar.gz
+    checksum: sha256:d3bd051a00b0cba171f3c19e8f8d36fbba131c060486112529d9d1782d3ae5c4
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v5/worktree-v5-linux-x64.tar.gz
-    checksum: sha256:92ef7692ff32928c7f88e36ccd708ca803082c68990fd1bc4a42b0dc2b473356
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v6/worktree-v6-linux-x64.tar.gz
+    checksum: sha256:ae4915a73987f392b3139b4bbeb26b5fb0c4496ebf7b8f9dc6ffede9c7a068ee
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v5/worktree-v5-linux-arm64.tar.gz
-    checksum: sha256:85e5d133f06c097cbaf4f021a6fc89cbac61514e02c7ac05e29c61879a750034
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v6/worktree-v6-linux-arm64.tar.gz
+    checksum: sha256:8cd813e9face25afa74c3a8945b62862d7a327a9f82c240d4e5dc72361c630a1
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v5/worktree-v5-windows-x64.tar.gz
-    checksum: sha256:082e047349fd1730641f4314c638beacb0f378699bf27c30ed259a1daa727a24
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-worktree/releases/download/v6/worktree-v6-windows-x64.tar.gz
+    checksum: sha256:5bed16e1fc5c50356219332e49feb8ad929a84b18ca8bdf8ea1ce5a94d5f47af
 official: true
 payload_v: 1
 events:
@@ -40,7 +40,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    on branch task/<id>
   ```
 
-  The checkout lives **outside** the repository, so it is a pure development environment — nothing in it is bound to amenbo, and nothing about it can be mistaken for part of the project. Several implementation sessions can then run at once without colliding: one task, one checkout, one branch.
+  The checkout lives **outside** the repository, so it is a pure development environment — nothing in it is bound to Amenbo, and nothing about it can be mistaken for part of the project. Several implementation sessions can then run at once without colliding: one task, one checkout, one branch.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # iex (…) in PowerShell
@@ -50,6 +50,6 @@ about: |
 
   `start` returns that `cd` line itself, so the shell you are standing in is the one that enters the worktree. `finish` is run from the main repository, and refuses while the checkout is dirty or the branch still carries changes the base does not have; `--force` overrides both. What counts is the change rather than the commit carrying it, so a squash or rebase merge reads as merged just as a plain merge does. Without `--base` they answer with the branch the repository is standing on, so there is nothing to fill in first.
 
-  Reserving a task makes the plugin write one suggestion to stderr, and nothing more: whether *this* task wants a checkout of its own is a judgement, and it stays with whoever reads the suggestion. The backlog stays with amenbo as well — this plugin reads a task to see where it is worked, and writes nothing but git.
+  Reserving a task makes the plugin write one suggestion to stderr, and nothing more: whether *this* task wants a checkout of its own is a judgement, and it stays with whoever reads the suggestion. The backlog stays with Amenbo as well — this plugin reads a task to see where it is worked, and writes nothing but git.
 
   Needs git 2.31 or newer.

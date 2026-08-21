@@ -4,7 +4,7 @@ about: |
 
   Yalnızca yapay zekânın yazdıkları bildirilir: kendi yaptığınız bir değişiklikte zaten
   oradaydınız. Bir tarihin gelmesi kimsenin yazdığı bir şey değildir ve kimse bakmazken gelir;
-  bu yüzden o da bildirilir. Hangi olayların bir e-postaya değdiğini, amenbo'nun ürettiği on üç
+  bu yüzden o da bildirilir. Hangi olayların bir e-postaya değdiğini, Amenbo'nun ürettiği on üç
   olay arasından siz seçersiniz.
 
   Arka arkaya gelen olaylar bir düzine ileti yerine tek iletiyle ulaşır ve bir projenin
@@ -44,7 +44,7 @@ config:
   events:
     label: Neler bildirilsin
     help: |-
-      amenbo'nun ürettiği ve bu eklentinin bildirebildiği her şey. Yazılanlardan, neyi işaretlerseniz işaretleyin, yalnızca yapay zekânızın yazdıkları bildirilir — kendi yaptığınızın zaten başındaydınız. Son ikisi yazı değildir: amenbo günde bir kez, süresi gelen bir görevi ve yarın süresi dolan bir görevi bildirir. Bunları kimse yazmadı, dolayısıyla hiçbir şey onları elemez. Hiçbirini işaretlememek de bir yanıttır: eklenti açık kalır ve hiçbir şey bildirmez.
+      Amenbo'nun ürettiği ve bu eklentinin bildirebildiği her şey. Yazılanlardan, neyi işaretlerseniz işaretleyin, yalnızca yapay zekânızın yazdıkları bildirilir — kendi yaptığınızın zaten başındaydınız. Son ikisi yazı değildir: Amenbo günde bir kez, süresi gelen bir görevi ve yarın süresi dolan bir görevi bildirir. Bunları kimse yazmadı, dolayısıyla hiçbir şey onları elemez. Hiçbirini işaretlememek de bir yanıttır: eklenti açık kalır ve hiçbir şey bildirmez.
     options:
       task.created: Bir görev oluşturuldu
       task.status_changed: Bir görevin durumu değişti

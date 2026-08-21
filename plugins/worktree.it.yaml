@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    sul ramo task/<id>
   ```
 
-  Il checkout vive **fuori** dal repository, quindi è un ambiente di sviluppo puro: niente al suo interno è legato ad amenbo, e niente di esso può essere scambiato per parte del progetto. Così più sessioni procedono insieme senza scontrarsi: un'attività, un checkout, un ramo.
+  Il checkout vive **fuori** dal repository, quindi è un ambiente di sviluppo puro: niente al suo interno è legato ad Amenbo, e niente di esso può essere scambiato per parte del progetto. Così più sessioni procedono insieme senza scontrarsi: un'attività, un checkout, un ramo.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # iex (…) in PowerShell
@@ -16,6 +16,6 @@ about: |
 
   `start` restituisce proprio quella riga `cd`, così la shell in cui ti trovi è quella che entra nel worktree. `finish` si esegue dal repository principale e si rifiuta finché il checkout è sporco o il ramo porta ancora modifiche che la base non ha; `--force` scavalca entrambi. Conta la modifica, non il commit che la trasporta: un merge squash o rebase risulta quindi unito come un merge normale. Senza `--base` rispondono con il ramo su cui sta il repository, quindi non c'è nulla da compilare prima.
 
-  Prenotare un'attività fa scrivere al plugin un solo suggerimento su stderr, e nient'altro: se *questa* attività voglia un checkout proprio è un giudizio, e resta a chi legge il suggerimento. Anche il backlog resta ad amenbo — questo plugin legge un'attività per vedere dove viene lavorata, e non scrive nulla se non git.
+  Prenotare un'attività fa scrivere al plugin un solo suggerimento su stderr, e nient'altro: se *questa* attività voglia un checkout proprio è un giudizio, e resta a chi legge il suggerimento. Anche il backlog resta ad Amenbo — questo plugin legge un'attività per vedere dove viene lavorata, e non scrive nulla se non git.
 
   Richiede git 2.31 o superiore.

@@ -6,14 +6,14 @@ about: |
   - **El canal es el ajuste.** `webhook_url` pertenece al proyecto donde se escribió, así que ese valor *es* el canal al que ese proyecto informa. Dos proyectos con dos webhooks informan a dos canales; cada mensaje dice de qué proyecto viene, así que apuntar ambos al mismo canal también se lee.
   - **Qué eventos, lo eliges tú.** Trece para marcar, desde crear una tarea hasta la llegada de un plazo. Por defecto, seis: una tarea se creó, cambió de estado, se terminó o se descartó, y un plazo llegó o queda a un día.
 
-  Slack solo tiene que darte una URL de Incoming Webhook, y se guarda como ajuste secreto: no sale de amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta. Los mensajes se escriben en el idioma en que lees amenbo y llaman a tu IA por el nombre que le pusiste.
+  Slack solo tiene que darte una URL de Incoming Webhook, y se guarda como ajuste secreto: no sale de Amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta. Los mensajes se escriben en el idioma en que lees Amenbo y llaman a tu IA por el nombre que le pusiste.
 config:
   webhook_url:
     label: URL del webhook de Slack
     help: |-
-      Esta URL la hace Slack, no amenbo, y esa URL es el canal: un webhook del canal equivocado publica en la sala equivocada sin que nada más esté mal puesto.
+      Esta URL la hace Slack, no Amenbo, y esa URL es el canal: un webhook del canal equivocado publica en la sala equivocada sin que nada más esté mal puesto.
       En api.slack.com/apps, crea una app en el espacio de trabajo que deba enterarse de este proyecto, activa Incoming Webhooks, añade uno al canal donde quieras publicar y copia la URL que te devuelve.
-      Se guarda como ajuste secreto: no sale de amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta.
+      Se guarda como ajuste secreto: no sale de Amenbo ni en una exportación, ni en un registro, ni en una lectura de vuelta.
   events:
     label: Qué se informa
     help: |-

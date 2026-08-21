@@ -5,7 +5,7 @@ about: |
   Yang dilaporkan hanya tulisan AI: perubahan yang Anda buat sendiri sudah Anda saksikan.
   Tenggat yang tiba bukan tulisan siapa pun, dan tiba saat tak seorang pun melihat, jadi itu
   pun dilaporkan. Peristiwa mana yang layak dikirimkan, Anda sendiri yang memilih, dari tiga
-  belas yang dikeluarkan amenbo.
+  belas yang dikeluarkan Amenbo.
 
   Peristiwa yang beruntun datang sebagai satu pesan, bukan selusin, dan semua pesan dari satu
   proyek berkumpul di utas yang sama. Ke mana perginya adalah setelan proyek itu sendiri, jadi
@@ -44,7 +44,7 @@ config:
   events:
     label: Apa yang dilaporkan
     help: |-
-      Semua yang dipicu amenbo dan bisa dilaporkan plugin ini. Dari tulisan, apa pun yang Anda centang, yang dilaporkan hanyalah tulisan AI Anda — yang Anda kerjakan sendiri, Anda sudah ada di sana. Dua yang terakhir bukan tulisan: sekali sehari amenbo memberi tahu tentang tugas yang tenggatnya sudah tiba, dan tentang tugas yang jatuh tempo besok. Tak seorang pun menulisnya, jadi tak ada yang menyaringnya. Tidak mencentang apa pun juga sebuah jawaban: plugin tetap menyala dan tidak melaporkan apa-apa.
+      Semua yang dipicu Amenbo dan bisa dilaporkan plugin ini. Dari tulisan, apa pun yang Anda centang, yang dilaporkan hanyalah tulisan AI Anda — yang Anda kerjakan sendiri, Anda sudah ada di sana. Dua yang terakhir bukan tulisan: sekali sehari Amenbo memberi tahu tentang tugas yang tenggatnya sudah tiba, dan tentang tugas yang jatuh tempo besok. Tak seorang pun menulisnya, jadi tak ada yang menyaringnya. Tidak mencentang apa pun juga sebuah jawaban: plugin tetap menyala dan tidak melaporkan apa-apa.
     options:
       task.created: Tugas dibuat
       task.status_changed: Status tugas berubah

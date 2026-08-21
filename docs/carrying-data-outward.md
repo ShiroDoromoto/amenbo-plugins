@@ -2,13 +2,13 @@
 
 English · [日本語](carrying-data-outward.ja.md)
 
-A plugin that carries amenbo's data off the device — a viewer, an audit trail, an automated backup, a
+A plugin that carries Amenbo's data off the device — a viewer, an audit trail, an automated backup, a
 mirror in another tool — follows one way of doing it. The purposes differ; the road does not.
 
 This document is that road, and nothing else. Writing the plugin itself is
 [Writing a plugin](writing-a-plugin.md).
 
-> The road out is available from amenbo 11.0.0. Check whether `amenbo sync --help` answers on your machine.
+> The road out is available from Amenbo 11.0.0. Check whether `amenbo sync --help` answers on your machine.
 
 ## One-way, and read-only
 
@@ -44,7 +44,7 @@ The version is the window's too. Churn in another project never moves yours.
 
 ## The cursor is yours to keep
 
-amenbo does not hold it. Store how far you have read as your own setting, and hand it back next time.
+Amenbo does not hold it. Store how far you have read as your own setting, and hand it back next time.
 
 Your first cursor is named in the header of a `sync snapshot`.
 
@@ -91,7 +91,7 @@ The ledger says which record moved and **never what it now holds**.
 ```
 
 **Deletions arrive too.** A `delete` has nothing left to read back — drop it from the copy outside. Forget
-to, and what you deleted in amenbo lives on out there.
+to, and what you deleted in Amenbo lives on out there.
 
 A page is bounded. When one was cut short `more` is set, so come straight back with the cursor you were
 handed.
@@ -118,7 +118,7 @@ The whole window is for **the first run, a reset, and a gap**.
 
 ## A gap drops you back to the whole
 
-Stay away long enough and your cursor falls out of the stretch the ledger still speaks for. amenbo says
+Stay away long enough and your cursor falls out of the stretch the ledger still speaks for. Amenbo says
 **missing** rather than handing you an empty page that would read as "nothing changed".
 
 ```json
@@ -148,7 +148,7 @@ have to learn which is which.
 
 ## Do not make the signal responsible for correctness
 
-amenbo fires a hook when something changes. It is **fire-and-forget, so it can be missed**.
+Amenbo fires a hook when something changes. It is **fire-and-forget, so it can be missed**.
 
 **Carry three triggers.**
 
@@ -164,7 +164,7 @@ cursor, never the hook.
 
 ## Encryption is the carrier's job
 
-amenbo holds no key, and these doors answer in the clear. If it leaves the device, **the plugin encrypts it**.
+Amenbo holds no key, and these doors answer in the clear. If it leaves the device, **the plugin encrypts it**.
 
 The local store stays in the clear, and that is fine. The trust boundary closes at the device, and protection
 on it is the OS's full-disk encryption. What moves is only what goes outside, so that is the only place the

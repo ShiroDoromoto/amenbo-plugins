@@ -6,14 +6,14 @@ about: |
   - **頻道就是那項設定。** `webhook_url` 屬於寫下它的專案，所以這個值*就是*該專案回報的頻道。兩個專案填兩個 webhook，就回報到兩個頻道；每則訊息都會說明來自哪個專案，因此兩個專案共用一個頻道也讀得清。
   - **報哪些事，由你選。** 從任務被建立到期限到來，共十三項可勾選。預設是任務被建立、狀態變更、完成、放棄，以及期限到來、還剩一天這六項。
 
-  Slack 那邊只需要給出一條 Incoming Webhook URL，它以機密設定的形式保存——不會隨匯出、記錄或回讀離開 amenbo。訊息會用你閱讀 amenbo 的語言寫成，並以你為 AI 取的名字稱呼它。
+  Slack 那邊只需要給出一條 Incoming Webhook URL，它以機密設定的形式保存——不會隨匯出、記錄或回讀離開 Amenbo。訊息會用你閱讀 Amenbo 的語言寫成，並以你為 AI 取的名字稱呼它。
 config:
   webhook_url:
     label: Slack Webhook 位址
     help: |-
-      這個位址由 Slack 產生，不是 amenbo，而它就是頻道：webhook 選錯頻道，其他都設定對了也會發到錯的房間。
+      這個位址由 Slack 產生，不是 Amenbo，而它就是頻道：webhook 選錯頻道，其他都設定對了也會發到錯的房間。
       在 api.slack.com/apps 裡，為需要知道這個專案的工作區建立一個應用程式，打開 Incoming Webhooks，為要發訊息的頻道新增一條，再複製回傳的位址。
-      它以機密設定的形式保存——不會隨匯出、記錄或回讀離開 amenbo。
+      它以機密設定的形式保存——不會隨匯出、記錄或回讀離開 Amenbo。
   events:
     label: 報告哪些事
     help: |-

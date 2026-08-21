@@ -6,14 +6,14 @@ about: |
   - **Der Kanal ist die Einstellung.** `webhook_url` gehört dem Projekt, in dem sie gesetzt wurde, also *ist* dieser Wert der Kanal, in den das Projekt meldet. Zwei Projekte mit zwei Webhooks melden in zwei Kanäle; jede Nachricht nennt ihr Projekt, sodass sich auch ein gemeinsamer Kanal lesen lässt.
   - **Welche Ereignisse, entscheidest du.** Dreizehn zum Ankreuzen, vom Erstellen einer Aufgabe bis zu einem fälligen Datum. Voreingestellt sind sechs: eine Aufgabe erstellt, verschoben, erledigt oder verworfen, und ein Datum erreicht oder einen Tag entfernt.
 
-  Slack muss nur eine einzige Incoming-Webhook-URL herausgeben, und sie wird als geheime Einstellung gehalten — sie verlässt amenbo weder in einen Export noch in ein Log oder eine Rücklese. Die Nachrichten stehen in der Sprache, in der du amenbo liest, und nennen deine KI bei dem Namen, den du ihr gegeben hast.
+  Slack muss nur eine einzige Incoming-Webhook-URL herausgeben, und sie wird als geheime Einstellung gehalten — sie verlässt Amenbo weder in einen Export noch in ein Log oder eine Rücklese. Die Nachrichten stehen in der Sprache, in der du Amenbo liest, und nennen deine KI bei dem Namen, den du ihr gegeben hast.
 config:
   webhook_url:
     label: Slack-Webhook-URL
     help: |-
-      Diese URL kommt von Slack, nicht von amenbo, und sie ist der Kanal: ein Webhook für den falschen Kanal meldet in den falschen Raum, ohne dass sonst etwas falsch gesetzt wäre.
+      Diese URL kommt von Slack, nicht von Amenbo, und sie ist der Kanal: ein Webhook für den falschen Kanal meldet in den falschen Raum, ohne dass sonst etwas falsch gesetzt wäre.
       Erstelle unter api.slack.com/apps eine App in dem Workspace, der von diesem Projekt hören soll, schalte Incoming Webhooks ein, füge einen für den gewünschten Kanal hinzu und kopiere die zurückgegebene URL.
-      Sie wird als geheime Einstellung gehalten — sie verlässt amenbo weder in einen Export noch in ein Log oder eine Rücklese.
+      Sie wird als geheime Einstellung gehalten — sie verlässt Amenbo weder in einen Export noch in ein Log oder eine Rücklese.
   events:
     label: Was gemeldet wird
     help: |-

@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    no branch task/<id>
   ```
 
-  O checkout fica **fora** do repositório, então é um ambiente de desenvolvimento puro: nada nele está preso ao amenbo, e nada dele se confunde com parte do projeto. Assim várias sessões correm ao mesmo tempo sem colidir: uma tarefa, um checkout, um branch.
+  O checkout fica **fora** do repositório, então é um ambiente de desenvolvimento puro: nada nele está preso ao Amenbo, e nada dele se confunde com parte do projeto. Assim várias sessões correm ao mesmo tempo sem colidir: uma tarefa, um checkout, um branch.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # iex (…) no PowerShell
@@ -16,6 +16,6 @@ about: |
 
   `start` devolve essa mesma linha `cd`, de modo que o shell em que você está é o que entra no worktree. `finish` roda a partir do repositório principal e recusa enquanto o checkout estiver sujo ou o branch ainda carregar mudanças que a base não tem; `--force` passa por cima dos dois. O que conta é a mudança, não o commit que a carrega, então um merge squash ou rebase é lido como mesclado igual a um merge comum. Sem `--base`, ambos respondem com o branch em que o repositório está, então não há nada a preencher antes.
 
-  Reservar uma tarefa faz o plugin escrever uma sugestão no stderr, e nada além disso: se *esta* tarefa quer um checkout próprio é um juízo, e ele fica com quem lê a sugestão. O backlog também fica com o amenbo — este plugin lê uma tarefa para ver onde ela é trabalhada, e não escreve nada além de git.
+  Reservar uma tarefa faz o plugin escrever uma sugestão no stderr, e nada além disso: se *esta* tarefa quer um checkout próprio é um juízo, e ele fica com quem lê a sugestão. O backlog também fica com o Amenbo — este plugin lê uma tarefa para ver onde ela é trabalhada, e não escreve nada além de git.
 
   Precisa de git 2.31 ou mais novo.

@@ -2,13 +2,13 @@
 
 English · [日本語](writing-a-plugin.ja.md)
 
-An amenbo plugin is **just an executable**. Any language will do. amenbo starts it as a child process,
+An Amenbo plugin is **just an executable**. Any language will do. Amenbo starts it as a child process,
 hands it JSON on stdin, and reads what it wrote to stdout and stderr along with how it exited.
 
-This document is that contract, written for authors. These are the rules amenbo itself enforces at its door,
+This document is that contract, written for authors. These are the rules Amenbo itself enforces at its door,
 and the same ones `amenbo plugin validate` checks.
 
-> Plugins are available from amenbo 2.0.0. Check whether `amenbo plugin --help` answers on your machine.
+> Plugins are available from Amenbo 2.0.0. Check whether `amenbo plugin --help` answers on your machine.
 
 ## Two faces — hooks and commands
 
@@ -16,10 +16,10 @@ A plugin has two faces. Implementing one of them is fine.
 
 | Face | Who starts it | Return value | When it fails |
 | --- | --- | --- | --- |
-| **Observation hook** | amenbo, automatically and asynchronously, when an event fires | not used | a warning, nothing more — amenbo's own work is unaffected, and that one event is dropped (see "What delivery promises") |
+| **Observation hook** | Amenbo, automatically and asynchronously, when an event fires | not used | a warning, nothing more — Amenbo's own work is unaffected, and that one event is dropped (see "What delivery promises") |
 | **Command** | a person or their AI, explicitly, via `amenbo plugin run <name> …` | **used** — stdout *is* the return value | the call is reported as failed |
 
-A hook is an observer that runs **after the write is committed**. It cannot change amenbo's state and it
+A hook is an observer that runs **after the write is committed**. It cannot change Amenbo's state and it
 cannot veto anything. Actually *doing* something is the command face's job.
 
 ## What you receive
@@ -84,7 +84,7 @@ Called as a command, no event has fired, so the smallest possible document arriv
 { "v": 1, "config": { "base": "main" } }
 ```
 
-In `amenbo plugin run worktree start 123`, the words `start 123` reach you **verbatim on argv**. amenbo
+In `amenbo plugin run worktree start 123`, the words `start 123` reach you **verbatim on argv**. Amenbo
 neither parses nor rewrites them — what they mean is yours to decide.
 
 ## What you return
@@ -102,7 +102,7 @@ What that means depends on the face.
 | Command | with exit code 0, relayed verbatim as the caller's stdout | a non-zero (or signalled) exit **discards the return value** and the call is reported failed |
 | Observation hook | not used as a return value | warned about, and nothing else |
 
-The typical way to hand a shell a return value is one line to evaluate. amenbo relays that line
+The typical way to hand a shell a return value is one line to evaluate. Amenbo relays that line
 verbatim and judges no dialect, so the shell it has to survive is the caller's, not yours:
 
 ```sh
@@ -115,7 +115,7 @@ iex (amenbo plugin run worktree start 123)       # PowerShell
 
 If you take that shape, **keep it to one line that both dialects take as it stands**, and put both
 launches in your plugin's README. A line like `cd '<path>'` passes either way; escaping is where they
-part, and getting a value through both is the condition you take on — amenbo has no layer that guesses
+part, and getting a value through both is the condition you take on — Amenbo has no layer that guesses
 the caller's shell, and the only one who knows which dialect the line is in is you. Meet that condition
 and whether your `os` can name `windows` is decided by how the launch is written, not by anything in
 your implementation.
@@ -128,7 +128,7 @@ your implementation.
 | A replying hook (`reply: true`) | 2 seconds | the reply is given up on; the command it rode in on is never stalled |
 
 There is no reason to hurry an observation hook. Nothing is behind it but the rest of your own queue, and
-amenbo itself moved on long ago. Being cut off mid-work is the worse outcome by far — it leaves something
+Amenbo itself moved on long ago. Being cut off mid-work is the worse outcome by far — it leaves something
 half-done out in the world.
 
 Only a hook declaring `reply: true` runs **synchronously**, and it is its **stderr** that is carried back
@@ -139,17 +139,17 @@ the answer.
 
 Delivery happens in two layers. An event lands in the **record of what happened**, is fanned out onto a
 **queue** per subscribed plugin, and a **runner** works that queue from the head, one event at a time.
-There is at most one runner per plugin, and none of them is a daemon — a runner starts when amenbo runs,
+There is at most one runner per plugin, and none of them is a daemon — a runner starts when Amenbo runs,
 and ends when its own queue is empty.
 
 What this shape promises, and what it does not, is what shapes how you write a plugin.
 
-- **The same event can arrive twice.** If a runner dies right after you finish an event but before amenbo
-  takes that row off the queue, the next runner replays it. amenbo cannot see what you did on the other
+- **The same event can arrive twice.** If a runner dies right after you finish an event but before Amenbo
+  takes that row off the queue, the next runner replays it. Amenbo cannot see what you did on the other
   side, so it cannot prevent this. **Make the second run a no-op** — otherwise the same message gets posted
   twice.
-- **A failed event is dropped.** amenbo records it in the execution log and never retries. Whether to retry
-  is yours to decide. A half-hearted retry in amenbo would compound with yours, and nobody would be able to
+- **A failed event is dropped.** Amenbo records it in the execution log and never retries. Whether to retry
+  is yours to decide. A half-hearted retry in Amenbo would compound with yours, and nobody would be able to
   say how many times a thing gets sent.
 - **One failure does not stop the run.** The runner moves on to the next event. A single failure never
   clogs everything behind it.
@@ -164,9 +164,9 @@ What this shape promises, and what it does not, is what shapes how you write a p
   Creations and updates you can catch up on by re-reading the current state; deletions you cannot. If that
   matters to you, stay enabled and do nothing instead of being disabled.
 - **Nothing is promised about how soon.** If a runner is killed part-way, the rest waits until somebody
-  touches amenbo again. That is what carrying no daemon costs.
+  touches Amenbo again. That is what carrying no daemon costs.
 
-There is no "acknowledged" call back into amenbo, either. **The reply is your process returning**, and the
+There is no "acknowledged" call back into Amenbo, either. **The reply is your process returning**, and the
 row leaves the queue whether you exited clean or failing. There is nothing here for you to implement.
 
 ### How much is behind you
@@ -193,12 +193,12 @@ say so.
 
 **`0` means your project's queue is empty as of this launch — it does not promise nothing more is coming.**
 An event written a moment later is delivered like any other, so a batch you flushed on `0` may be followed
-by a second one. That is one message becoming two, never a message lost. amenbo itself never holds delivery
+by a second one. That is one message becoming two, never a message lost. Amenbo itself never holds delivery
 back: what it sends, it sends in order, as fast as it can.
 
 ## Settings and secrets
 
-You declare your settings in the manifest. The user fills them in and amenbo delivers them.
+You declare your settings in the manifest. The user fills them in and Amenbo delivers them.
 **A plugin never reads a secret file of its own.**
 
 | Declared | Where it is kept | How it reaches you |
@@ -214,7 +214,7 @@ so it is answered per project: enabled in two, it has two sets of values and rea
 belonging to where the event happened. There is no machine-wide default beneath them to fall back to.
 
 A field with no value set contributes nothing — no variable, no `config` key. A field marked
-`required: true` keeps the plugin from being enabled until it holds a value (amenbo checks **presence**
+`required: true` keeps the plugin from being enabled until it holds a value (Amenbo checks **presence**
 only; whether a value is *valid* is yours to judge).
 
 You receive **your own settings and no one else's.**
@@ -258,7 +258,7 @@ refuses a manifest that breaks any of this, so you find out before you ship.
 | chose some | those values, joined by `,` |
 | chose none, deliberately | empty — no values at all, and not your `default` |
 
-The last row is why `none` is reserved: amenbo stores that deliberate empty answer under that word so it
+The last row is why `none` is reserved: Amenbo stores that deliberate empty answer under that word so it
 stays distinguishable from *not answered yet*, and resolves it away before you see it. You never read
 `none`, and you cannot offer it.
 
@@ -291,7 +291,7 @@ config:
 **Both texts are plain, and drawn plain.** No Markdown and no link: this is the screen a user types a secret
 into, and a destination you chose does not belong on it. The validator refuses a control character in either
 — a newline aside in `help`, which is a body rather than a line — because `plugin config get` prints these
-to a terminal, where an escape sequence can write over what amenbo said. Both also count toward the byte cap
+to a terminal, where an escape sequence can write over what Amenbo said. Both also count toward the byte cap
 the schema as a whole obeys, so a form of many fields spends its budget on them.
 
 **A `placeholder` is not a `default`.** A default is a value your plugin really receives, so an example
@@ -313,7 +313,7 @@ none of it. Author prose landing where an AI reads is read as instruction.
 
 `required` asks whether a box holds *something*. Whether what it holds is a webhook that exists, a password
 that goes with its user, or two fields that contradict each other, nobody but you can say — so name one
-call for it and amenbo raises it:
+call for it and Amenbo raises it:
 
 ```yaml
 settings:
@@ -350,7 +350,7 @@ where your `stderr` is read (`amenbo plugin log <name>`).
 ### What a user may press
 
 A settings form is boxes and a save button until you say otherwise. `actions` puts calls you already answer
-on it as buttons — a connectivity test, a `setup` whose result is written back with `amenbo plugin config
+on it as buttons — a connectivity test, a `setup` whose result is written back with `Amenbo plugin config
 set`:
 
 ```yaml
@@ -374,7 +374,7 @@ the hand pressing *enable* is the consent.
 `stderr` is what the screen shows, and nothing is undone by a press that fails. Nor is it held to the
 check's two seconds — a `setup` that stands something up is allowed to take as long as it takes.
 
-An `ask` is a config field's opposite: a value amenbo never has. It reaches your process as
+An `ask` is a config field's opposite: a value Amenbo never has. It reaches your process as
 `AMENBO_ASK_<KEY>` — the key upper-cased, anything that is not a letter or a digit mapped to `_` — for that
 one run, and is gone when it exits.
 
@@ -425,11 +425,11 @@ amenbo task list --filter "done:false" --json
 outside it is refused — `out_of_reach`, with a non-zero exit, never an empty result. What you can observe
 is what you can read.
 
-Do not go looking for a project directory of your own. You are started by amenbo, not by a person standing
+Do not go looking for a project directory of your own. You are started by Amenbo, not by a person standing
 in a folder, so there is no `.amenbo` under you to find — which is exactly why the store is named to you
 rather than left to be discovered.
 
-This is not a sandbox, and amenbo does not pretend otherwise: you have a shell, so nothing here is a cage.
+This is not a sandbox, and Amenbo does not pretend otherwise: you have a shell, so nothing here is a cage.
 The trust boundary is the user enabling you. What this door is for is that the content you need has a
 supported way in, one that keeps working.
 
@@ -467,7 +467,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 | `about` | none | a long description for your plugin's detail view, as Markdown. Without one, that view falls back to the README in your `repo`. How to write it, and in how many languages, is below |
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
 | `payload_v` | `1` | the payload contract version you read |
-| `min_amenbo` | none | the minimum amenbo version you need, as semver |
+| `min_amenbo` | none | the minimum Amenbo version you need, as semver |
 | `config` | none | your settings schema: `key` / `label` / `help` / `placeholder` / `secret` / `required` / `readonly` / `type` / `options` / `default` |
 | `settings` | none | the calls the settings form raises: `check`, run when the plugin is enabled, and `actions`, the buttons a user presses. Written above |
 | `events` | none | the events your hook fires on. Absent means a command-only plugin |
@@ -483,23 +483,23 @@ events:
     reply: true                # relay the hook's advice to the caller; only with faces: [cli]
 ```
 
-Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on
+Unknown keys are ignored rather than rejected, so a manifest written for a newer Amenbo still parses on
 an older one.
 
 ### The one thing none of your sentences may hold
 
-Every string you write for a reader is refused if it cites an amenbo record — your `desc` and `about`, a
+Every string you write for a reader is refused if it cites an Amenbo record — your `desc` and `about`, a
 config field's `label`, `help` and `placeholder`, a settings button's `label` and the boxes a press asks
 for, `agent.when` and each `does`. A citation is `AMB-D-<n>`, `AMB-T-<n>` — any `AMB-`, a kind letter and a
 number, standing on its own as a word — whichever case you write it in.
 
 A number like that means something only inside the store it was issued in, and in your prose it reads as
-that store's own record: *AMB-D-<n> makes this required* borrows the user's authority for a sentence amenbo
+that store's own record: *AMB-D-<n> makes this required* borrows the user's authority for a sentence Amenbo
 never wrote. A number that exists nowhere does it just as well, which is why nothing is looked up — the
 spelling is the whole test, and a translation is held to it exactly as the manifest is.
 
 A `#42` or a `T-42` is left alone. Those belong to GitHub and to other trackers, and claiming them would
-hijack a reference that was never amenbo's — so your own issue number is yours to cite.
+hijack a reference that was never Amenbo's — so your own issue number is yours to cite.
 
 ### Saying what you are for
 
@@ -513,16 +513,16 @@ agent:
   commands:
     - cmd: <subcommand and arguments>
       does: what it does, and what it returns (one line)
-      steps: [<the ids of amenbo's own steps this call is a tool for>]
+      steps: [<the ids of Amenbo's own steps this call is a tool for>]
 ```
 
 | Field | Meaning |
 | --- | --- |
 | `when` | the occasion to reach for you. Required once you write the block — a block naming no occasion gives a reader nothing to act on |
 | `commands` | one entry per call your command face answers. Absent means none |
-| `steps` | on one call: where in amenbo's own working cycle it is a tool. Absent means nowhere in particular — see below |
+| `steps` | on one call: where in Amenbo's own working cycle it is a tool. Absent means nowhere in particular — see below |
 
-**Write only your own command face.** amenbo puts `amenbo plugin run <name> ` in front of it, from the
+**Write only your own command face.** Amenbo puts `amenbo plugin run <name> ` in front of it, from the
 name it just read, so the reader receives a line they can type. Writing the whole line yourself would be
 writing your own name into it, which is the one thing this shape keeps out.
 
@@ -531,11 +531,11 @@ nothing for a reader to call, and saying *when this plugin matters* is still wor
 
 #### Where your call is a tool
 
-Most of `amenbo agent --json` is amenbo's own working practice, written as runs of steps, and each step
-carries an `id`. A step can say *cut a worktree per task* while naming no command, because amenbo's source
+Most of `amenbo agent --json` is Amenbo's own working practice, written as runs of steps, and each step
+carries an `id`. A step can say *cut a worktree per task* while naming no command, because Amenbo's source
 holds no plugin's name — so an AI told to cut has no hand until it finds yours on its own.
 
-`steps` closes that. Name the step your call serves, and amenbo hangs the line to type there, under
+`steps` closes that. Name the step your call serves, and Amenbo hangs the line to type there, under
 `tools`:
 
 ```yaml
@@ -558,11 +558,11 @@ Read both off the document itself: `amenbo agent --json` shows every run and the
 One call may name up to four.
 
 **Only the calling form travels.** Your `when` and each `does` stay in your own entry, where a reader meets
-them as yours; a step's body is amenbo's working practice, and amenbo answers for every word of it. That is
+them as yours; a step's body is Amenbo's working practice, and Amenbo answers for every word of it. That is
 why this one field is drawn the same for a third party as for an official plugin — a `cmd` is held to a
 grammar, so it is the one thing that can cross without carrying a sentence with it.
 
-**Naming a step that is not there is not an error.** The steps travel with amenbo while your manifest stays
+**Naming a step that is not there is not an error.** The steps travel with Amenbo while your manifest stays
 where it was installed, so one can be renamed or retired — and a whole cycle can be left out of the run a
 reader is handed, the way `worktree` is off a git checkout. A ref that resolves to nothing hangs nowhere,
 and takes nothing else with it.
@@ -574,7 +574,7 @@ for a plugin that is not:
 
 | | Reaches the AI |
 | --- | --- |
-| `name`, `events` | yes — amenbo's own vocabulary, not your prose |
+| `name`, `events` | yes — Amenbo's own vocabulary, not your prose |
 | each `cmd`, and the `steps` it is hung on | yes, as the line to type. Its grammar is fixed, so no sentence fits in it |
 | `when`, each `does`, `desc` | **no** |
 
@@ -585,7 +585,7 @@ person reads that face. `when` and `does` reach nobody today unless the badge is
 instructs the AI reading it is not something a machine can decide, and nothing you publish is read by a
 reviewer before it ships — a catalog is a shelf, not a review queue. The badge is granted by catalog
 curation and cannot be self-declared, so it is the one split a machine can make without ever being wrong
-about which side you are on. amenbo takes the safe side by giving the sentences no field to arrive in
+about which side you are on. Amenbo takes the safe side by giving the sentences no field to arrive in
 rather than by filtering them: loosening this later is easy, and taking back something already relayed is
 not.
 
@@ -594,7 +594,7 @@ plugin to the AI. If the rule is ever loosened, what you wrote is already in pla
 
 Two more things worth knowing:
 
-- **What is relayed is relayed in the language you wrote it in.** amenbo's own entry point carries its
+- **What is relayed is relayed in the language you wrote it in.** Amenbo's own entry point carries its
   wording in more than one; it holds no translation for yours.
 - **Only an enabled plugin is listed.** A plugin that is not enabled would be refused if it were called,
   so it is not offered.
@@ -603,7 +603,7 @@ Two more things worth knowing:
 
 Three of the things you write are read by a **person**: your `desc`, your `about`, and the words on your
 settings form — every label, beside a box or on a button, and the `help` and `placeholder` that go with one.
-Those amenbo shows in the reader's own language, when you have written one. Everything else stays in the
+Those Amenbo shows in the reader's own language, when you have written one. Everything else stays in the
 language you wrote it in — `agent.when` and each `does` are read by an AI, and the CLI answers in English by
 contract, so neither has a translation to pick from.
 
@@ -626,7 +626,7 @@ Two rules hold it, and the manifest's copy and each translation obey both the sa
   English ones. It is a description and not your README: say what installing this does for the reader, and
   leave the rest to the repository.
 - **Every link and image is an absolute `https://` URL.** A relative path is refused, and so is `http://`.
-  What renders your `about` is amenbo, out of a document the catalog serves — there is no page under which
+  What renders your `about` is Amenbo, out of a document the catalog serves — there is no page under which
   `./README.md` would mean anything.
 
 A translation is **a file beside your manifest**, named for its language:
@@ -677,7 +677,7 @@ reorder the form.
 | a config option's `label` | `agent.when` and each `does` — an AI reads those, and they stay English |
 | an action's `label`, and the `label` on what it asks for | `settings.check` and an action's `cmd` — calls, not text anyone is shown, so there is no key to write them in another language |
 
-The languages are the 19 amenbo itself is read in: `en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`,
+The languages are the 19 Amenbo itself is read in: `en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`,
 `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`, `pl`, `nl`, `uk`.
 
 Your translations are checked along with the manifest, by the same command — you name the manifest, and
@@ -709,7 +709,7 @@ Whatever `url` serves is recognised by its leading bytes, not by the extension:
 - **the executable itself**
 - **a `.zip`** — for a Windows asset only; refused on the other systems.
 
-What comes out is laid down under amenbo's app-data directory as `plugins/<name>/`, holding that
+What comes out is laid down under Amenbo's app-data directory as `plugins/<name>/`, holding that
 executable and a `manifest.json`. **A manifest cannot say what to run** — the name convention decides it.
 
 ## Signatures and verification
@@ -726,11 +726,11 @@ the bytes went through the catalog — reviewed, downloaded, digest-checked — 
 personally vouched for them.
 
 *Which* key verifies it depends on **which catalog the plugin came from**: the key that ships inside
-amenbo for the official one, and **the key that catalog publishes** — pinned, fingerprint shown, when the
+Amenbo for the official one, and **the key that catalog publishes** — pinned, fingerprint shown, when the
 user ran `amenbo plugin catalog add <url>` — for a registered one. A catalog that publishes no key can be
 browsed and installs nothing, and an asset on no catalog at all cannot be installed.
 
-A pinned key stays pinned. If a catalog signs with a different key than the one you agreed to, amenbo
+A pinned key stays pinned. If a catalog signs with a different key than the one you agreed to, Amenbo
 does not quietly take it — it stops and says **the key changed**. Consent given to the old key does not
 carry to a new one. To trust it anyway, `amenbo plugin catalog remove <url>` and `add` it again: that
 round trip is what puts the new fingerprint back in front of you.
@@ -749,13 +749,13 @@ Enabling also checks compatibility:
 
 - `payload_v` must **match** — it moves only on a breaking change, so a difference in either direction
   means the two sides do not share a contract;
-- the running amenbo must be at or above `min_amenbo`.
+- the running Amenbo must be at or above `min_amenbo`.
 
 A `required` setting still empty refuses the enable, and so does your own `check` when it does not say yes.
 
 ## Check it before you ship it
 
-The validation amenbo runs at its door is available to you:
+The validation Amenbo runs at its door is available to you:
 
 ```sh
 amenbo plugin validate plugins/<name>.yaml

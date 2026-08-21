@@ -4,7 +4,7 @@ about: |
 
   Chỉ những gì AI ghi mới được báo: thay đổi do chính bạn làm thì bạn đã có mặt rồi. Hạn đến
   không phải là ghi chép của ai cả, và nó đến lúc không ai nhìn, nên điều đó cũng được báo.
-  Sự kiện nào đáng gửi một email là do bạn chọn, trong mười ba sự kiện amenbo phát ra.
+  Sự kiện nào đáng gửi một email là do bạn chọn, trong mười ba sự kiện Amenbo phát ra.
 
   Một loạt sự kiện đến trong một thư duy nhất thay vì cả chục thư, và mọi thư của cùng một
   dự án đều nằm chung một chuỗi hội thoại. Gửi đi đâu là thiết lập của riêng dự án đó, nên
@@ -43,7 +43,7 @@ config:
   events:
     label: Báo những gì
     help: |-
-      Tất cả những gì amenbo phát ra mà plugin này có thể báo. Trong số các ghi chép, dù bạn đánh dấu gì, chỉ những thay đổi do AI của bạn ghi mới được báo — việc bạn tự làm thì bạn đã có mặt ở đó. Hai mục cuối không phải là ghi chép: mỗi ngày một lần, amenbo báo về công việc đã đến hạn và công việc đến hạn vào ngày mai. Không ai ghi chúng cả, nên không có gì lọc chúng ra. Không đánh dấu gì cũng là một câu trả lời: plugin vẫn bật và không báo gì cả.
+      Tất cả những gì Amenbo phát ra mà plugin này có thể báo. Trong số các ghi chép, dù bạn đánh dấu gì, chỉ những thay đổi do AI của bạn ghi mới được báo — việc bạn tự làm thì bạn đã có mặt ở đó. Hai mục cuối không phải là ghi chép: mỗi ngày một lần, Amenbo báo về công việc đã đến hạn và công việc đến hạn vào ngày mai. Không ai ghi chúng cả, nên không có gì lọc chúng ra. Không đánh dấu gì cũng là một câu trả lời: plugin vẫn bật và không báo gì cả.
     options:
       task.created: Công việc được tạo
       task.status_changed: Trạng thái công việc thay đổi

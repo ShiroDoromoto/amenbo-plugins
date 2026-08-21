@@ -16,7 +16,7 @@ reasonable — it does **not** make the plugin *official*, nor *featured* (see t
 
 Have something to list already? Read on. Still building it? The contract your executable has to hold to
 is **[Writing a plugin](docs/writing-a-plugin.md)** ([日本語](docs/writing-a-plugin.ja.md)) —
-what arrives on stdin, what amenbo does with your output, and what a manifest must hold. Run
+what arrives on stdin, what Amenbo does with your output, and what a manifest must hold. Run
 `amenbo plugin validate <manifest>` before you open the pull request: this repository's PR workflow
 runs that very command on what you submit.
 
@@ -66,7 +66,7 @@ Two rules hold the keys and `os` together: **every OS in `os` is answered by at 
 key names an OS that `os` does not**. Within an OS, mix the shapes as your builds require — one `macos`
 for every Mac beside a `linux-x64` and a `linux-arm64`.
 
-On install, amenbo resolves the machine it is running on **exactly first, then OS-wide**: it looks for
+On install, Amenbo resolves the machine it is running on **exactly first, then OS-wide**: it looks for
 `<os>-<arch>`, then for `<os>` alone. When neither is there it refuses at the door, so an `x64`-only build
 is never handed to someone on `arm64` to discover at run time.
 
@@ -78,13 +78,13 @@ single-`url` form stays valid and is not deprecated.
 | Field | Type | Default | Meaning |
 |---|---|---|---|
 | `about` | string | none | The long description shown on the plugin's detail view, as Markdown — a YAML block scalar is what carries it. Capped at 2048 UTF-8 bytes per language, and every link and image in it must be an absolute `https://` URL. Without one, that view shows the README from `repo` instead. See [Writing a plugin](docs/writing-a-plugin.md#writing-it-in-other-languages). |
-| `official` | bool | `false` | The official badge (author is the amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
+| `official` | bool | `false` | The official badge (author is the Amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
-| `min_amenbo` | string | none | Minimum amenbo version the plugin needs, as semver — below it, amenbo warns or refuses to enable/run it. |
-| `config` | list | none | The plugin's configuration schema: a flat list of fields amenbo renders as a form and injects at run time. |
+| `min_amenbo` | string | none | Minimum Amenbo version the plugin needs, as semver — below it, Amenbo warns or refuses to enable/run it. |
+| `config` | list | none | The plugin's configuration schema: a flat list of fields Amenbo renders as a form and injects at run time. |
 | `settings` | map | none | The calls that form raises: `check` (one call, run when the plugin is enabled — a verdict that is not a yes leaves it disabled) and `actions` (up to four buttons a user presses, each able to `ask` for input that is handed to that run and stored nowhere). See [Writing a plugin](docs/writing-a-plugin.md#saying-whether-the-values-are-usable). |
 | `events` | list | none | The events your plugin's hook fires on. Absent means it observes nothing — a command-only plugin. |
-| `agent` | map | none | What the plugin says for itself where an AI reads how to work in a folder: `when` (the occasion, required once the block is written) and `commands` (`cmd` / `does` / `steps`, one per call). Write your own command face only — amenbo prepends `amenbo plugin run <name> `; `steps` names the steps of amenbo's own cycle a call is a tool for, by id. See [Writing a plugin](docs/writing-a-plugin.md#saying-what-you-are-for). |
+| `agent` | map | none | What the plugin says for itself where an AI reads how to work in a folder: `when` (the occasion, required once the block is written) and `commands` (`cmd` / `does` / `steps`, one per call). Write your own command face only — Amenbo prepends `amenbo plugin run <name> `; `steps` names the steps of Amenbo's own cycle a call is a tool for, by id. See [Writing a plugin](docs/writing-a-plugin.md#saying-what-you-are-for). |
 
 An `events` entry is either the event's name, or an object narrowing where it fires:
 
@@ -100,8 +100,8 @@ There is no `featured` field, and writing one does nothing: what the browser's f
 curated in [`featured.txt`](featured.txt), which only this catalog edits. See
 [the README](README.md#featured--a-third-axis-and-not-a-tier) for why it is not a manifest field.
 
-Unknown keys are ignored rather than rejected, so a manifest written for a newer amenbo still parses on an
-older one. The catalog entry is built from the manifest amenbo itself reads, so every field amenbo knows
+Unknown keys are ignored rather than rejected, so a manifest written for a newer Amenbo still parses on an
+older one. The catalog entry is built from the manifest Amenbo itself reads, so every field Amenbo knows
 about is carried into the entry your plugin installs from — none is quietly dropped for the aggregator to
 catch up with later.
 
@@ -115,7 +115,7 @@ Linux.
 # plugins/worktree.yaml
 name: worktree
 desc: Isolate each task in its own git worktree
-author: amenbo
+author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-worktree
 os:
   - macos
@@ -190,7 +190,7 @@ What has a translation to pick from is what a **person** reads: `desc`, `about`,
 asks for. Those are keyed here rather than listed — each field by its `key`, each option by its `value`, each
 button by the `cmd` it raises — because a translation carries no order of its own, and lining the two up by
 position is what would break every language at once the day you reorder the form. Everything else stays as
-you wrote it, `agent.when` and each `does` included: an AI reads those. The languages are the 19 amenbo
+you wrote it, `agent.when` and each `does` included: an AI reads those. The languages are the 19 Amenbo
 itself is read in (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`,
 `vi`, `th`, `tr`, `pl`, `nl`, `uk`).
 
@@ -215,15 +215,15 @@ cap its base field obeys. The full rule, and what this catalog then does with ea
 - [ ] Using `assets`: every OS in `os` is answered by at least one key (`<os>` or `<os>-<arch>`), and no key names an OS that is not in it.
 - [ ] Every `url` points at a real, downloadable release asset, and its `checksum` is that asset's real digest.
 - [ ] `repo` is the plugin's own `owner/name`, not this catalog.
-- [ ] You did **not** set `official: true` (unless you are the amenbo team).
-- [ ] No text a reader is shown cites an amenbo record (`AMB-D-<n>`, `AMB-T-<n>`) — a number that means nothing outside the store it came from. Your own issue numbers are fine.
+- [ ] You did **not** set `official: true` (unless you are the Amenbo team).
+- [ ] No text a reader is shown cites an Amenbo record (`AMB-D-<n>`, `AMB-T-<n>`) — a number that means nothing outside the store it came from. Your own issue numbers are fine.
 
 ## What CI checks
 
-**On your pull request**, your manifest is checked with **amenbo's own validator** — the very same one
-amenbo runs at its install door, so the catalog and the client can never disagree about what "valid"
-means. CI installs the latest released amenbo to do it, so the rules you are held to are the ones every
-client already enforces. You can run it yourself first, on an amenbo that is up to date:
+**On your pull request**, your manifest is checked with **Amenbo's own validator** — the very same one
+Amenbo runs at its install door, so the catalog and the client can never disagree about what "valid"
+means. CI installs the latest released Amenbo to do it, so the rules you are held to are the ones every
+client already enforces. You can run it yourself first, on an Amenbo that is up to date:
 
 ```sh
 amenbo plugin validate plugins/<name>.yaml
@@ -233,7 +233,7 @@ It prints every problem it finds at once, and exits non-zero if there are any.
 
 Your pull request then goes through the catalog build itself, over the manifest you submitted, as a dry
 run: the file name must match the manifest's `name`, `official: true` is refused from anyone outside the
-amenbo team, and **every asset you publish is downloaded and hashed** — bytes that do not match the
+Amenbo team, and **every asset you publish is downloaded and hashed** — bytes that do not match the
 `checksum` beside them fail the check, before the merge rather than after it. With `assets`, that is once
 per platform key, and the failure names which one (`assets.linux-x64: …`). Already-listed entries are not
 re-fetched, so someone else's asset going offline never blocks your PR.
@@ -242,7 +242,7 @@ re-fetched, so someone else's asset going offline never blocks your PR.
 again over every listed manifest, and then does what only it can:
 
 - **signs each of your assets with the catalog key** — one signature per set of bytes, stored beside the
-  `checksum` it belongs to — and publishes to GitHub Pages, where every amenbo picks it up: your plugin's
+  `checksum` it belongs to — and publishes to GitHub Pages, where every Amenbo picks it up: your plugin's
   line in the aggregated `catalog.json`, that line again in a `catalog.<lang>.json` for each language you
   translated it into, and the `plugins/<name>.json` an install reads the signature and digests from;
 - **drops** an entry whose checks now fail — a `url` that has rotted since it was merged, say — with the
@@ -258,4 +258,4 @@ Three consequences worth knowing:
 - **A URL that stops resolving drops your entry** from the next catalog build. Everything else stays
   listed.
 - **An entry is all-or-nothing.** One platform's asset failing drops the whole listing, not that one
-  platform — a listing that claims a platform it cannot serve is exactly what amenbo refuses to install.
+  platform — a listing that claims a platform it cannot serve is exactly what Amenbo refuses to install.

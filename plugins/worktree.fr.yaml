@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    sur la branche task/<id>
   ```
 
-  La copie vit **hors** du dépôt : c'est donc un environnement de développement pur — rien n'y est lié à amenbo, et rien ne peut être pris pour une partie du projet. Plusieurs sessions tournent alors en même temps sans se heurter : une tâche, une copie, une branche.
+  La copie vit **hors** du dépôt : c'est donc un environnement de développement pur — rien n'y est lié à Amenbo, et rien ne peut être pris pour une partie du projet. Plusieurs sessions tournent alors en même temps sans se heurter : une tâche, une copie, une branche.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # iex (…) en PowerShell
@@ -16,6 +16,6 @@ about: |
 
   `start` renvoie cette ligne `cd` elle-même : le shell où vous vous tenez est celui qui entre dans le worktree. `finish` se lance depuis le dépôt principal et refuse tant que la copie est sale ou que la branche porte encore des changements absents de la base ; `--force` passe outre. Ce qui compte, c'est le changement et non le commit qui le porte : une fusion squash ou rebase est donc lue comme fusionnée, au même titre qu'une fusion ordinaire. Sans `--base`, les deux répondent avec la branche sur laquelle se tient le dépôt : rien à renseigner d'avance.
 
-  Réserver une tâche fait écrire au plugin une seule suggestion sur stderr, rien de plus : savoir si *cette* tâche veut une copie à elle est un jugement, et il reste à qui lit la suggestion. Le backlog reste lui aussi à amenbo — ce plugin lit une tâche pour voir où elle est travaillée, et n'écrit rien d'autre que git.
+  Réserver une tâche fait écrire au plugin une seule suggestion sur stderr, rien de plus : savoir si *cette* tâche veut une copie à elle est un jugement, et il reste à qui lit la suggestion. Le backlog reste lui aussi à Amenbo — ce plugin lit une tâche pour voir où elle est travaillée, et n'écrit rien d'autre que git.
 
   Nécessite git 2.31 ou plus récent.

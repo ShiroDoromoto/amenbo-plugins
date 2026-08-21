@@ -6,14 +6,14 @@ about: |
   - **Het kanaal is de instelling.** `webhook_url` hoort bij het project waarin die is gezet, dus die waarde *is* het kanaal waaraan dat project meldt. Twee projecten met twee webhooks melden aan twee kanalen; elk bericht noemt zijn project, dus samen op één kanaal leest ook.
   - **Welke gebeurtenissen, kies je zelf.** Dertien om aan te vinken, van een taak die is aangemaakt tot een deadline die aanbreekt. Standaard zes: een taak aangemaakt, van status veranderd, afgerond of verworpen, en een deadline bereikt of nog één dag weg.
 
-  Slack hoeft maar één Incoming Webhook-URL af te geven, en die wordt als geheime instelling bewaard — hij verlaat amenbo niet in een export, een log of een teruglezing. Berichten staan in de taal waarin je amenbo leest en noemen je AI bij de naam die je hem gaf.
+  Slack hoeft maar één Incoming Webhook-URL af te geven, en die wordt als geheime instelling bewaard — hij verlaat Amenbo niet in een export, een log of een teruglezing. Berichten staan in de taal waarin je Amenbo leest en noemen je AI bij de naam die je hem gaf.
 config:
   webhook_url:
     label: Slack-webhook-URL
     help: |-
-      Deze URL komt van Slack, niet van amenbo, en hij is het kanaal: een webhook voor het verkeerde kanaal meldt in de verkeerde ruimte, terwijl er verder niets fout staat.
+      Deze URL komt van Slack, niet van Amenbo, en hij is het kanaal: een webhook voor het verkeerde kanaal meldt in de verkeerde ruimte, terwijl er verder niets fout staat.
       Maak op api.slack.com/apps een app in de workspace die van dit project moet horen, zet Incoming Webhooks aan, voeg er een toe aan het kanaal waar het heen moet, en kopieer de URL die je terugkrijgt.
-      Hij wordt als geheime instelling bewaard — hij verlaat amenbo niet in een export, een log of een teruglezing.
+      Hij wordt als geheime instelling bewaard — hij verlaat Amenbo niet in een export, een log of een teruglezing.
   events:
     label: Wat er gemeld wordt
     help: |-

@@ -6,7 +6,7 @@ about: |
   <repo>/../<repo-name>-worktrees/<id>/    auf Branch task/<id>
   ```
 
-  Der Checkout liegt **außerhalb** des Repositories und ist damit eine reine Entwicklungsumgebung — nichts darin ist an amenbo gebunden, und nichts daran lässt sich für einen Teil des Projekts halten. So laufen mehrere Sitzungen gleichzeitig, ohne zu kollidieren: eine Aufgabe, ein Checkout, ein Branch.
+  Der Checkout liegt **außerhalb** des Repositories und ist damit eine reine Entwicklungsumgebung — nichts darin ist an Amenbo gebunden, und nichts daran lässt sich für einen Teil des Projekts halten. So laufen mehrere Sitzungen gleichzeitig, ohne zu kollidieren: eine Aufgabe, ein Checkout, ein Branch.
 
   ```sh
   eval "$(amenbo plugin run worktree start 123)"   # in PowerShell: iex (…)
@@ -16,6 +16,6 @@ about: |
 
   `start` gibt genau diese `cd`-Zeile zurück, sodass die Shell, in der Sie stehen, selbst in den worktree wechselt. `finish` läuft im Haupt-Repository und verweigert sich, solange der Checkout schmutzig ist oder der Branch noch Änderungen trägt, die die Basis nicht hat; `--force` übergeht beides. Gezählt wird die Änderung, nicht der Commit, der sie trägt — ein Squash- oder Rebase-Merge gilt damit ebenso als gemergt wie ein gewöhnlicher. Ohne `--base` antworten beide mit dem Branch, auf dem das Repository steht — vorher ist nichts einzutragen.
 
-  Eine reservierte Aufgabe lässt das Plugin einen einzigen Vorschlag auf stderr schreiben, mehr nicht: ob *diese* Aufgabe einen eigenen Checkout will, ist eine Ermessensfrage und bleibt bei dem, der den Vorschlag liest. Das Backlog bleibt ebenso bei amenbo — dieses Plugin liest eine Aufgabe, um zu sehen, wo sie bearbeitet wird, und schreibt nichts als git.
+  Eine reservierte Aufgabe lässt das Plugin einen einzigen Vorschlag auf stderr schreiben, mehr nicht: ob *diese* Aufgabe einen eigenen Checkout will, ist eine Ermessensfrage und bleibt bei dem, der den Vorschlag liest. Das Backlog bleibt ebenso bei Amenbo — dieses Plugin liest eine Aufgabe, um zu sehen, wo sie bearbeitet wird, und schreibt nichts als git.
 
   Braucht git 2.31 oder neuer.

@@ -5,7 +5,7 @@ about: |
   Viene segnalato solo ciò che ha scritto l'IA: a una modifica fatta da te c'eri già tu.
   Una scadenza che arriva non è la scrittura di nessuno, e arriva quando nessuno guarda:
   perciò viene segnalata anche quella. Quali eventi meritano un'e-mail lo scegli tu, fra i
-  tredici che amenbo emette.
+  tredici che Amenbo emette.
 
   Una raffica di eventi arriva in un solo messaggio invece che in una dozzina, e tutti i
   messaggi di un progetto finiscono nella stessa conversazione. Dove vengono spediti è
@@ -44,7 +44,7 @@ config:
   events:
     label: Che cosa segnalare
     help: |-
-      Tutto ciò che amenbo emette e che questo plugin può segnalare. Fra le scritture, qualunque cosa spunti, viene segnalato solo ciò che ha scritto la tua IA — a quello che hai fatto tu eri presente. Gli ultimi due non sono scritture: una volta al giorno amenbo segnala un’attività la cui scadenza è arrivata e una che scade domani. Non le ha scritte nessuno, quindi nulla le filtra. Non spuntare nulla è anch’essa una risposta: il plugin resta attivo e non segnala niente.
+      Tutto ciò che Amenbo emette e che questo plugin può segnalare. Fra le scritture, qualunque cosa spunti, viene segnalato solo ciò che ha scritto la tua IA — a quello che hai fatto tu eri presente. Gli ultimi due non sono scritture: una volta al giorno Amenbo segnala un’attività la cui scadenza è arrivata e una che scade domani. Non le ha scritte nessuno, quindi nulla le filtra. Non spuntare nulla è anch’essa una risposta: il plugin resta attivo e non segnala niente.
     options:
       task.created: Un'attività è stata creata
       task.status_changed: Lo stato di un'attività è cambiato

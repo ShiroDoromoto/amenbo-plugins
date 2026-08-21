@@ -5,7 +5,7 @@ about: |
   Solo se informa de lo que escribió la IA: un cambio hecho por ti es un cambio que
   presenciaste. Que llegue la fecha de vencimiento no lo escribió nadie, y llega cuando nadie
   mira, así que también se informa. Qué eventos merecen un correo lo eliges tú, entre los trece
-  que emite amenbo.
+  que emite Amenbo.
 
   Una ráfaga de eventos llega en un solo mensaje en lugar de una docena, y todos los mensajes
   de un proyecto se agrupan en la misma conversación. A dónde se envían es un ajuste del propio
@@ -44,7 +44,7 @@ config:
   events:
     label: Qué informar
     help: |-
-      Todo lo que amenbo emite y este complemento puede informar. De las escrituras solo se informa de las de tu IA, marques lo que marques: lo que hiciste tú, ahí estabas. Los dos últimos no son escrituras: amenbo avisa una vez al día de una tarea cuya fecha de vencimiento ha llegado, y de otra que vence mañana. No los escribió nadie, así que nada los filtra. No marcar nada también es una respuesta: el complemento sigue activo y no informa de nada.
+      Todo lo que Amenbo emite y este complemento puede informar. De las escrituras solo se informa de las de tu IA, marques lo que marques: lo que hiciste tú, ahí estabas. Los dos últimos no son escrituras: Amenbo avisa una vez al día de una tarea cuya fecha de vencimiento ha llegado, y de otra que vence mañana. No los escribió nadie, así que nada los filtra. No marcar nada también es una respuesta: el complemento sigue activo y no informa de nada.
     options:
       task.created: Se creó una tarea
       task.status_changed: Cambió el estado de una tarea

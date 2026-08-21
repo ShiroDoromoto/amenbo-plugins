@@ -6,14 +6,14 @@ about: |
   - **Kanal itu setelannya.** `webhook_url` milik proyek tempat ia ditulis, jadi nilai itulah kanal yang dilapori proyek tersebut. Dua proyek dengan dua webhook melapor ke dua kanal; tiap pesan menyebut proyeknya, jadi mengarahkan keduanya ke satu kanal pun tetap terbaca.
   - **Peristiwa mana, kamu yang pilih.** Tiga belas untuk dicentang, dari tugas dibuat sampai jatuh tempo tiba. Bawaannya enam: tugas dibuat, statusnya berubah, selesai, dibatalkan, jatuh tempo tiba, atau tinggal sehari.
 
-  Slack cukup memberi satu URL Incoming Webhook, dan itu disimpan sebagai setelan rahasia — ia tidak keluar dari amenbo lewat ekspor, log, maupun pembacaan ulang. Pesan ditulis dalam bahasa yang kamu pakai membaca amenbo, dan memanggil AI-mu dengan nama yang kamu berikan.
+  Slack cukup memberi satu URL Incoming Webhook, dan itu disimpan sebagai setelan rahasia — ia tidak keluar dari Amenbo lewat ekspor, log, maupun pembacaan ulang. Pesan ditulis dalam bahasa yang kamu pakai membaca Amenbo, dan memanggil AI-mu dengan nama yang kamu berikan.
 config:
   webhook_url:
     label: URL webhook Slack
     help: |-
-      URL ini dibuat Slack, bukan amenbo, dan URL itulah kanalnya: webhook untuk kanal yang salah akan melapor ke ruang yang salah meski selebihnya sudah benar.
+      URL ini dibuat Slack, bukan Amenbo, dan URL itulah kanalnya: webhook untuk kanal yang salah akan melapor ke ruang yang salah meski selebihnya sudah benar.
       Di api.slack.com/apps, buat aplikasi di workspace yang perlu tahu tentang proyek ini, nyalakan Incoming Webhooks, tambahkan satu untuk kanal tujuan, lalu salin URL yang diberikan.
-      URL itu disimpan sebagai setelan rahasia — tidak keluar dari amenbo lewat ekspor, log, maupun pembacaan ulang.
+      URL itu disimpan sebagai setelan rahasia — tidak keluar dari Amenbo lewat ekspor, log, maupun pembacaan ulang.
   events:
     label: Apa yang dilaporkan
     help: |-

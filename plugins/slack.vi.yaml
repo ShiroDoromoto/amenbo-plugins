@@ -6,14 +6,14 @@ about: |
   - **Kênh chính là thiết lập.** `webhook_url` thuộc về dự án nơi nó được ghi, nên giá trị đó *chính là* kênh mà dự án ấy báo về. Hai dự án với hai webhook báo về hai kênh; mỗi tin nhắn đều nêu tên dự án của nó, nên gộp cả hai vào một kênh vẫn đọc được.
   - **Báo những gì, bạn chọn.** Mười ba mục để tick, từ một việc được tạo đến một hạn chót đến ngày. Mặc định là sáu: việc được tạo, đổi trạng thái, hoàn thành, bị bỏ, đến hạn, hoặc còn một ngày.
 
-  Slack chỉ cần đưa ra một URL Incoming Webhook, và nó được giữ như một thiết lập bí mật — nó không rời amenbo qua bản xuất, nhật ký hay lần đọc lại nào. Tin nhắn được viết bằng ngôn ngữ bạn đang đọc amenbo, và gọi AI bằng cái tên bạn đã đặt.
+  Slack chỉ cần đưa ra một URL Incoming Webhook, và nó được giữ như một thiết lập bí mật — nó không rời Amenbo qua bản xuất, nhật ký hay lần đọc lại nào. Tin nhắn được viết bằng ngôn ngữ bạn đang đọc Amenbo, và gọi AI bằng cái tên bạn đã đặt.
 config:
   webhook_url:
     label: URL webhook của Slack
     help: |-
-      URL này do Slack tạo, không phải amenbo, và chính nó là kênh: một webhook lấy nhầm kênh sẽ báo vào phòng khác dù mọi thứ còn lại đều đúng.
+      URL này do Slack tạo, không phải Amenbo, và chính nó là kênh: một webhook lấy nhầm kênh sẽ báo vào phòng khác dù mọi thứ còn lại đều đúng.
       Tại api.slack.com/apps, tạo một app trong workspace cần biết về dự án này, bật Incoming Webhooks, thêm một cái cho kênh muốn gửi, rồi sao chép URL nhận được.
-      Nó được giữ như một thiết lập bí mật — không rời amenbo qua bản xuất, nhật ký hay lần đọc lại nào.
+      Nó được giữ như một thiết lập bí mật — không rời Amenbo qua bản xuất, nhật ký hay lần đọc lại nào.
   events:
     label: Báo những gì
     help: |-

@@ -1,42 +1,42 @@
 #!/usr/bin/env python3
 """Aggregate the reviewed manifests under `plugins/` into one `catalog.json`.
 
-amenbo has no server: discovery is served from a single static file. This script builds that file.
+Amenbo has no server: discovery is served from a single static file. This script builds that file.
 For every `plugins/<name>.yaml` it:
 
 1. checks the file name agrees with the manifest's `name`;
-2. validates the manifest with **amenbo's own validator** (`amenbo plugin validate`), so the catalog
+2. validates the manifest with **Amenbo's own validator** (`amenbo plugin validate`), so the catalog
    door and the client's install door can never disagree about what "valid" means;
-3. refuses an `official: true` claim from anyone outside the amenbo team — the badge is curation, never
+3. refuses an `official: true` claim from anyone outside the Amenbo team — the badge is curation, never
    self-declaration;
 4. downloads every distributable the manifest publishes and checks its SHA-256 against the declared
    `checksum`, so a manifest whose digest does not match what the URL actually serves never reaches a user;
-5. signs the downloaded bytes with the amenbo **catalog key** (`--sign-key`) and verifies the signature
+5. signs the downloaded bytes with the Amenbo **catalog key** (`--sign-key`) and verifies the signature
    back against the public key before trusting it — or, where the bytes are the ones already published,
    carries the signature already made over them ([carried_over]).
 
 A manifest publishes either one distributable for every platform it lists (`url` / `checksum`) or **one
 per platform** (`assets`, keyed `<os>` or `<os>-<arch>`); `assets` is what decides which, exactly as it does
-at amenbo's install door. Steps 4 and 5 run over each of them, because a checksum and a signature are claims
+at Amenbo's install door. Steps 4 and 5 run over each of them, because a checksum and a signature are claims
 about the bytes that will actually run — so their grain is the bytes', not the entry's. An entry is
 all-or-nothing: one platform's asset failing rejects the whole entry, since a listing that claims a platform
 it cannot serve is what the client refuses.
 
-The signature is what an amenbo client verifies at install time against the catalog public key it ships
+The signature is what an Amenbo client verifies at install time against the catalog public key it ships
 with. It does not say "the author signed this"; it says "these exact bytes went through this catalog's
 review". That is the whole trust root, so it is produced here and nowhere else — authors never hold a key.
 
 The catalog is published as **two kinds of document**. `catalog.json` holds one small entry per plugin —
 what a browse view draws — and everyone fetches it whole, once. `plugins/<name>.json` holds what an install
 needs, signature and digests included, and is fetched for the one plugin someone opened or is installing.
-Which half a field belongs in is amenbo's answer, not this script's: `plugin validate --json` hands back the
-manifest already split into `entry` and `detail`, and this script publishes them. A field amenbo grows is
+Which half a field belongs in is Amenbo's answer, not this script's: `plugin validate --json` hands back the
+manifest already split into `entry` and `detail`, and this script publishes them. A field Amenbo grows is
 carried without a change here, instead of being dropped from every install until someone notices; the one
 thing this script still names by hand is the distributable, which it does not copy but rebuilds around a
 signature (see [DISTRIBUTABLE_KEYS]).
 
 An author writes their plugin's description in other languages beside the manifest — `plugins/<name>.ja.yaml`
-and its siblings — and amenbo reads them with it, splitting them the same two ways. The detail half needs
+and its siblings — and Amenbo reads them with it, splitting them the same two ways. The detail half needs
 nothing here: it rides inside `detail`, every language at once, because a detail document is fetched one
 plugin at a time and read offline afterwards. The list half is what this script lays out, as **one
 `catalog.<lang>.json` per language** beside `catalog.json` ([language_documents]) — a thin `name → desc`
@@ -96,7 +96,7 @@ from pathlib import Path
 #: adding fields, which older clients ignore.
 CATALOG_V = 1
 
-#: GitHub owners whose plugins may carry `official: true` — i.e. the amenbo team. Official means the
+#: GitHub owners whose plugins may carry `official: true` — i.e. the Amenbo team. Official means the
 #: author is the team; being listed here at all is a separate, weaker thing (review, not endorsement).
 OFFICIAL_OWNERS = frozenset({"ShiroDoromoto"})
 
@@ -105,9 +105,9 @@ OFFICIAL_OWNERS = frozenset({"ShiroDoromoto"})
 #: are replaced with the catalog's own copy carrying the signature over the exact bytes served.
 #:
 #: This is the *only* schema this script still holds by name. Every other field a manifest declares rides
-#: through from amenbo's own reading of it (see [build_documents]) — the catalog keeps no whitelist of
-#: fields, and no opinion about which document each belongs in, to fall out of step with amenbo. A
-#: whitelist here is what drops a field amenbo adds from every install until somebody notices.
+#: through from Amenbo's own reading of it (see [build_documents]) — the catalog keeps no whitelist of
+#: fields, and no opinion about which document each belongs in, to fall out of step with Amenbo. A
+#: whitelist here is what drops a field Amenbo adds from every install until somebody notices.
 DISTRIBUTABLE_KEYS = frozenset({"url", "checksum", "assets"})
 
 #: The largest asset this catalog will fetch to hash and sign.
@@ -136,7 +136,7 @@ def is_overlay(path: Path) -> bool:
     `mail.yaml`.
 
     A plugin's name is lower-case letters, digits and hyphens, so a dot left in the stem is the language
-    token and nothing else. amenbo reads an overlay along with the manifest it sits beside, so aggregating
+    token and nothing else. Amenbo reads an overlay along with the manifest it sits beside, so aggregating
     one on its own would be validating a document that was never meant to stand up alone — every required
     field of a manifest missing at once.
     """
@@ -155,17 +155,17 @@ def base_manifest(path: Path) -> Path:
 
 
 def check_manifest(amenbo: str, path: Path) -> tuple[dict, dict, dict]:
-    """Run amenbo's validator over the manifest — and the translations beside it — and, on success, return
+    """Run Amenbo's validator over the manifest — and the translations beside it — and, on success, return
     what it split them into: `(entry, entry_i18n, detail)`. Every problem it reports is re-raised instead.
 
-    Publishing amenbo's own reading is what lets this script hold no list of fields to copy, and no idea of
-    which half each belongs in: a field amenbo grows rides through untouched, and one amenbo does not know
+    Publishing Amenbo's own reading is what lets this script hold no list of fields to copy, and no idea of
+    which half each belongs in: a field Amenbo grows rides through untouched, and one Amenbo does not know
     is not a field at all (its deserializer ignores unknown keys, the same forward-compatibility a client
-    relies on). An amenbo too old to split the manifest is refused rather than guessed around — a document
+    relies on). An Amenbo too old to split the manifest is refused rather than guessed around — a document
     built from a guess is the silent drop this arrangement exists to end.
 
     `entry_i18n` is the list half of the translations, one overlay per language; the detail half is already
-    inside `detail`. An amenbo old enough to split a manifest but not to read a translation answers without
+    inside `detail`. An Amenbo old enough to split a manifest but not to read a translation answers without
     the key, which reads as *nothing translated* — the plugin is still listed, in English, rather than held
     back.
     """
@@ -188,7 +188,7 @@ def check_manifest(amenbo: str, path: Path) -> tuple[dict, dict, dict]:
     entry, detail = report.get("entry"), report.get("detail")
     if not isinstance(entry, dict) or not isinstance(detail, dict):
         raise Rejected(
-            "amenbo plugin validate reported ok but returned no entry/detail — the amenbo CLI is too old "
+            "amenbo plugin validate reported ok but returned no entry/detail — the Amenbo CLI is too old "
             "(it needs the build that splits a manifest into the two documents the catalog serves)"
         )
     entry_i18n = report.get("entry_i18n")
@@ -203,7 +203,7 @@ def check_official(manifest: dict) -> None:
     owner = str(manifest.get("repo", "")).split("/", 1)[0]
     if owner not in OFFICIAL_OWNERS:
         raise Rejected(
-            f"official: true is catalog-authoritative and {owner or '(no owner)'} is not the amenbo team"
+            f"official: true is catalog-authoritative and {owner or '(no owner)'} is not the Amenbo team"
         )
 
 
@@ -281,7 +281,7 @@ def read_featured(path: Path) -> set[str]:
     """The plugins this catalog recommends, one name per line — the hand-curated "featured" axis.
 
     A flat list of names, not YAML: it has no structure to gain from one, and this script's only
-    dependency is the amenbo binary it validates with. Blank lines and `#` comments are ignored, and a
+    dependency is the Amenbo binary it validates with. Blank lines and `#` comments are ignored, and a
     missing file simply means nothing is recommended yet.
 
     The list is a set, not a ranking. It says *which* plugins are recommended and nothing about their
@@ -414,10 +414,10 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
     """Run one manifest through every check and return what the catalog publishes for it, or raise
     [Rejected].
 
-    The two documents are amenbo's own split of the manifest, with one thing rebuilt: [publish] replaces
+    The two documents are Amenbo's own split of the manifest, with one thing rebuilt: [publish] replaces
     the detail's `url` / `checksum` / `assets` with the catalog's copy, signed over the exact bytes served
     ([DISTRIBUTABLE_KEYS]). Everything else rides through untouched, which is the point — the catalog holds
-    no second copy of amenbo's schema, and no second opinion about which document a field belongs in. The
+    no second copy of Amenbo's schema, and no second opinion about which document a field belongs in. The
     translations ride through the same way: the detail half inside `detail`, so `detail_sum` is taken over
     the bytes a reader will actually read, translations and all.
     """
@@ -452,12 +452,12 @@ def build_documents(path: Path, args: argparse.Namespace) -> Published:
         detail.update(publish(manifest_detail, entry["name"], args, previous))
 
     # The digest is taken over the text that will be written, and written into the entry that points at it,
-    # so the pair is consistent by construction. amenbo compares this value and nothing else to notice a
+    # so the pair is consistent by construction. Amenbo compares this value and nothing else to notice a
     # plugin whose install information has moved.
     detail_text = encode(detail)
     entry["detail_sum"] = "sha256:" + hashlib.sha256(detail_text.encode("utf-8")).hexdigest()
     entry["added_at"] = added_at(path)
-    # Written here and nowhere else: whatever the manifest said about being recommended (amenbo does not
+    # Written here and nowhere else: whatever the manifest said about being recommended (Amenbo does not
     # even read such a key) is replaced by what the curation list says.
     entry["featured"] = entry["name"] in args.featured_names
     return Published(entry=entry, entry_i18n=entry_i18n, detail=detail, detail_text=detail_text)
@@ -467,8 +467,8 @@ def language_documents(published: list[Published]) -> dict[str, dict]:
     """The language documents to publish beside `catalog.json`, keyed by language.
 
     Each one is the whole catalog's list half in that language — `{"<plugin>": {"desc": "…"}}` — so a
-    reader fetches one document for the listing they are drawing, rather than one per plugin. What amenbo
-    handed back is keyed in as it stands: which fields the list half of a translation has is amenbo's
+    reader fetches one document for the listing they are drawing, rather than one per plugin. What Amenbo
+    handed back is keyed in as it stands: which fields the list half of a translation has is Amenbo's
     answer, exactly as it is for the base entry.
 
     Only the languages somebody translated get a document. An empty one would be nineteen fetches that
@@ -497,7 +497,7 @@ def main() -> int:
     parser.add_argument("--plugins-dir", type=Path, default=Path("plugins"), help="where the manifests live")
     parser.add_argument("--out", type=Path, default=Path("_site/catalog.json"), help="the catalog to write")
     parser.add_argument("--detail-dir", type=Path, help="where to write plugins/<name>.json; default: a plugins/ directory beside --out")
-    parser.add_argument("--amenbo", default=os.environ.get("AMENBO_BIN", "amenbo"), help="the amenbo CLI to validate with")
+    parser.add_argument("--amenbo", default=os.environ.get("AMENBO_BIN", "amenbo"), help="the Amenbo CLI to validate with")
     parser.add_argument("--sign-key", type=Path, help="the catalog signing key; without it, entries are unsigned")
     parser.add_argument("--public-key", type=Path, default=Path("catalog-key.pub"), help="the public half, to verify each signature")
     parser.add_argument("--published", help="where this catalog is served from (a base URL, or a directory holding a copy): an asset that has not changed keeps the signature published there, so a detail document only moves when the plugin does")
