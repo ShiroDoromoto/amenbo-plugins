@@ -1,0 +1,31 @@
+desc: Leia sua lista de tarefas no celular, de um lugar que é seu
+about: |
+  Sua lista de tarefas chega ao celular e o app Amenbo Viewer a lê por lá — as tarefas, o estado em que cada uma está e as decisões por trás delas — enquanto você está longe do computador.
+
+  Ninguém hospeda nada para você. O lugar é seu: uma pasta do iCloud privada do app em um Mac, ou um Worker do Cloudflare com seu banco de dados que o `setup` levanta na sua própria conta Cloudflare. Os registros viajam em uma só direção, e só conforme se movem.
+
+  Pela rota do Cloudflare eles viajam lacrados. O `qr` pareia um celular fora da rede — a câmera lê o endereço, o token e a chave. O `phones` diz quais celulares podem ler, e o `revoke` corta um deles.
+
+  Ao ativar, ele leva todo projeto desta máquina: um celular é um aparelho, não um projeto.
+config:
+  worker_url:
+    label: URL do seu próprio Cloudflare Worker
+    help: "setup preenche isto ao levantar o Worker. Não há nada para digitar."
+  auth_token:
+    label: Token com que o Worker aceita gravações
+    help: "setup gera isto. Não há nada para digitar."
+  encryption_key:
+    label: Chave com que os registros são criptografados
+    help: "setup gera isto. Não há nada para digitar — o telefone a recebe pelo QR, nunca pela rede."
+settings:
+  actions:
+    token:
+      label: 1. Obter um token de API
+    setup:
+      label: 2. Configurar a rota do Cloudflare
+      ask:
+        api_token: Token de API do Cloudflare
+    qr:
+      label: 3. Parear um telefone
+      ask:
+        label: Como chamar este telefone

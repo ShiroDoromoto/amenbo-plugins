@@ -1,0 +1,31 @@
+desc: Leggi il tuo elenco di attività sul telefono, da un posto che è tuo
+about: |
+  Il tuo elenco di attività arriva sul telefono e l'app Amenbo Viewer lo legge lì — le attività, lo stato di ciascuna e le decisioni che ci stanno dietro — mentre sei lontano dal computer.
+
+  Nulla viene ospitato per te. Il posto è tuo: una cartella iCloud privata dell'app su un Mac, oppure un Worker di Cloudflare con il suo database che `setup` mette in piedi nel tuo account Cloudflare. I record viaggiano in un solo senso, e solo man mano che si muovono.
+
+  Sulla via di Cloudflare viaggiano sigillati. `qr` accoppia un telefono fuori dalla rete — la fotocamera legge indirizzo, token e chiave. `phones` dice quali telefoni possono leggere, e `revoke` ne stacca uno.
+
+  Attivarlo porta ogni progetto di questa macchina: un telefono è un dispositivo, non un progetto.
+config:
+  worker_url:
+    label: URL del tuo Cloudflare Worker
+    help: "setup lo inserisce quando mette in piedi il Worker. Non c'è nulla da digitare."
+  auth_token:
+    label: Token con cui il Worker accetta le scritture
+    help: "setup lo genera. Non c'è nulla da digitare."
+  encryption_key:
+    label: Chiave con cui i record vengono cifrati
+    help: "setup la genera. Non c'è nulla da digitare — il telefono la riceve dal QR, mai dalla rete."
+settings:
+  actions:
+    token:
+      label: 1. Ottieni un token API
+    setup:
+      label: 2. Configura la via Cloudflare
+      ask:
+        api_token: Token API di Cloudflare
+    qr:
+      label: 3. Abbina un telefono
+      ask:
+        label: Come chiamare questo telefono

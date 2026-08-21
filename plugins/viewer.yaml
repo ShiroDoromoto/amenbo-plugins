@@ -1,0 +1,101 @@
+name: viewer
+desc: Read your backlog on your phone, from a place you own
+author: Amenbo
+repo: ShiroDoromoto/amenbo-plugin-viewer
+os:
+  - macos
+  - windows
+  - linux
+category: integration
+scope: machine
+assets:
+  macos-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-macos-arm64.tar.gz
+    checksum: sha256:bcf17fc7f4744c876469f507bb3ba07a83e4dbd786d984653486f23c75d8cae8
+  macos-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-macos-x64.tar.gz
+    checksum: sha256:0cd4c7af4e940a9cd8cc0d949f4dcfa1f9ca6968dc42f3c29365126df2a2a165
+  linux-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-linux-x64.tar.gz
+    checksum: sha256:4e787254dd0e1361b89d9ffdd9dba00fec0063bead3d6a789d362d7957f59aaf
+  linux-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-linux-arm64.tar.gz
+    checksum: sha256:d044e5bad1830aca371e2448f2decae500fc6d2960cfbca350b6543ea10a1982
+  windows-x64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-windows-x64.tar.gz
+    checksum: sha256:e8c9c7829421937d6d9173668a5ddf4be54b701cee4b85f1f1facbabc0a66fc3
+  windows-arm64:
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-windows-arm64.tar.gz
+    checksum: sha256:9c80f1cc7c6446061c58210c799751f82e83a6e1f2aff64de110c66573e1a291
+official: true
+payload_v: 1
+min_amenbo: 13.0.0
+about: |
+  Your backlog reaches your phone, and the Amenbo Viewer app reads it there — the tasks, the state each one is in, and the decisions behind them — while you are away from the PC.
+
+  Nothing is hosted for you. The place is one you own: an app-private iCloud folder on a Mac, or a Cloudflare Worker and database that `setup` stands up in your own Cloudflare account. Records travel one way, and only as they move.
+
+  On the Cloudflare route they travel sealed. `qr` pairs a phone off the network — the camera reads the endpoint, the token and the key. `phones` says which phones may read, and `revoke` cuts one of them off.
+
+  Enabling it carries every project on this machine: a phone is one device, not one project.
+config:
+  - key: worker_url
+    label: Your Cloudflare Worker's URL
+    help: setup writes this when it stands the Worker up. There is nothing to type.
+    required: false
+    readonly: true
+  - key: auth_token
+    label: Token the Worker lets writes in with
+    help: setup generates this. There is nothing to type.
+    secret: true
+    required: false
+    readonly: true
+  - key: encryption_key
+    label: Key the records are encrypted with
+    help: setup generates this. There is nothing to type - the phone is given it by the QR, never over the network.
+    secret: true
+    required: false
+    readonly: true
+settings:
+  actions:
+    - cmd: token
+      label: 1. Get a Cloudflare API token
+    - cmd: setup
+      label: 2. Set up the Cloudflare route
+      ask:
+        - key: api_token
+          label: Cloudflare API token
+          secret: true
+    - cmd: qr
+      label: 3. Pair a phone
+      ask:
+        - key: label
+          label: What to call this phone
+events:
+  - task.created
+  - task.status_changed
+  - task.done
+  - task.rejected
+  - task.assigned
+  - task.moved
+  - task.deleted
+  - decision.accepted
+  - decision.rejected
+  - comment.added
+  - comment.removed
+  - store.changed
+agent:
+  when: Setting up the phone viewer, pairing a phone with it, or carrying by hand what has not reached one yet
+  commands:
+    - cmd: token
+      does: Opens Cloudflare's token screen in the browser, with the three permissions setup needs already ticked, and ends there. Asks nothing and keeps nothing — the token the page makes is pasted into setup
+    - cmd: setup
+      does: Stands up the Worker and its database in the user's own Cloudflare account, and generates the token and key. Takes a Cloudflare API token from the settings screen, a terminal or CLOUDFLARE_API_TOKEN
+    - cmd: push
+      does: Carries by hand what has not reached the phone yet, encrypting a record at a time, over every route that is configured. The hook does this per write, so this is for what was left behind
+    - cmd: phones
+      does: Lists the phones that may read and when each was paired. Reads nothing over the network — the store compares hashes and does not answer what it holds
+    - cmd: revoke
+      does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument
+    - cmd: qr
+      does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label or the settings screen box names it; --terminal draws it here"
