@@ -8,26 +8,25 @@ os:
   - linux
 category: integration
 scope: machine
-# Every url and checksum below is a placeholder until the release tag is cut.
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-macos-arm64.tar.gz
-    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-macos-arm64.tar.gz
+    checksum: sha256:0fa4e64b6a1c300ec47ca2ccd19fc916964d0c74e7b1d3934e08721b3f4ef09d
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-macos-x64.tar.gz
-    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-macos-x64.tar.gz
+    checksum: sha256:4247fb0e92d0c08620fef019be23a77f62822c4afbe678005175e7a4476690be
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-linux-x64.tar.gz
-    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-linux-x64.tar.gz
+    checksum: sha256:3ee68045821a670239248859de208f82d033c6e058a7145c89f3ee33b11cf8e0
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-linux-arm64.tar.gz
-    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-linux-arm64.tar.gz
+    checksum: sha256:e162fa0260a2dd7c91eda916beb03b8603a97c13bc12d8ab61bc46f1a6acbe45
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-windows-x64.tar.gz
-    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-windows-x64.tar.gz
+    checksum: sha256:53f23f2483159945166256b1f958ea8c8aa002e6f7fd35816e238c3b0bad613b
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-windows-arm64.tar.gz
-    checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v1/viewer-v1-windows-arm64.tar.gz
+    checksum: sha256:a8f715df31bab5bc34471e027466c99efbefde0bc6ad14548c7d18bb2a03c709
 official: true
 payload_v: 1
 min_amenbo: 13.0.0
