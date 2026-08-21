@@ -28,7 +28,9 @@ assets:
   windows-arm64:
     url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v0/viewer-v0-windows-arm64.tar.gz
     checksum: sha256:0000000000000000000000000000000000000000000000000000000000000000
+official: true
 payload_v: 1
+min_amenbo: 13.0.0
 about: |
   Your backlog reaches your phone, and the Amenbo Viewer app reads it there — the tasks, the state each one is in, and the decisions behind them — while you are away from the PC.
 
