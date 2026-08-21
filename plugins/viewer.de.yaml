@@ -9,11 +9,14 @@ about: |
   Eingeschaltet trägt es jedes Projekt dieses Rechners: ein Handy ist ein Gerät, kein Projekt.
 config:
   worker_url:
-    label: URL Ihres eigenen Cloudflare Workers (trägt setup ein)
+    label: URL Ihres eigenen Cloudflare Workers
+    help: "setup trägt dies ein, wenn es den Worker aufsetzt. Sie müssen nichts eintippen."
   auth_token:
-    label: Token, mit dem der Worker Schreibzugriffe zulässt (trägt setup ein)
+    label: Token, mit dem der Worker Schreibzugriffe zulässt
+    help: "setup erzeugt dies. Sie müssen nichts eintippen."
   encryption_key:
-    label: Schlüssel, mit dem die Einträge verschlüsselt werden (trägt setup ein)
+    label: Schlüssel, mit dem die Einträge verschlüsselt werden
+    help: "setup erzeugt dies. Sie müssen nichts eintippen — das Telefon bekommt ihn über den QR-Code, nie über das Netz."
 settings:
   actions:
     setup:

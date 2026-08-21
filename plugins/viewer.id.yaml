@@ -9,11 +9,14 @@ about: |
   Begitu diaktifkan, yang dibawa adalah seluruh proyek di mesin ini: ponsel adalah satu perangkat, bukan satu proyek.
 config:
   worker_url:
-    label: URL Cloudflare Worker Anda sendiri (diisi oleh setup)
+    label: URL Cloudflare Worker Anda sendiri
+    help: "setup mengisinya saat menyiapkan Worker. Tidak ada yang perlu diketik."
   auth_token:
-    label: Token yang dipakai Worker untuk menerima tulisan (diisi oleh setup)
+    label: Token yang dipakai Worker untuk menerima tulisan
+    help: "setup membuatnya. Tidak ada yang perlu diketik."
   encryption_key:
-    label: Kunci untuk mengenkripsi catatan (diisi oleh setup)
+    label: Kunci untuk mengenkripsi catatan
+    help: "setup membuatnya. Tidak ada yang perlu diketik — ponsel menerimanya lewat QR, tidak pernah lewat jaringan."
 settings:
   actions:
     setup:

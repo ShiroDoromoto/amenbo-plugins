@@ -9,11 +9,14 @@ about: |
   Attivarlo porta ogni progetto di questa macchina: un telefono è un dispositivo, non un progetto.
 config:
   worker_url:
-    label: URL del tuo Cloudflare Worker (lo inserisce setup)
+    label: URL del tuo Cloudflare Worker
+    help: "setup lo inserisce quando mette in piedi il Worker. Non c'è nulla da digitare."
   auth_token:
-    label: Token con cui il Worker accetta le scritture (lo inserisce setup)
+    label: Token con cui il Worker accetta le scritture
+    help: "setup lo genera. Non c'è nulla da digitare."
   encryption_key:
-    label: Chiave con cui i record vengono cifrati (la inserisce setup)
+    label: Chiave con cui i record vengono cifrati
+    help: "setup la genera. Non c'è nulla da digitare — il telefono la riceve dal QR, mai dalla rete."
 settings:
   actions:
     setup:

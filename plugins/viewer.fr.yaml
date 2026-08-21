@@ -9,11 +9,14 @@ about: |
   L'activer emporte tous les projets de cette machine : un téléphone est un appareil, pas un projet.
 config:
   worker_url:
-    label: URL de votre propre Cloudflare Worker (renseignée par setup)
+    label: URL de votre propre Cloudflare Worker
+    help: "setup le renseigne lors de la mise en place du Worker. Vous n'avez rien à saisir."
   auth_token:
-    label: Jeton avec lequel le Worker accepte les écritures (renseigné par setup)
+    label: Jeton avec lequel le Worker accepte les écritures
+    help: "setup le génère. Vous n'avez rien à saisir."
   encryption_key:
-    label: Clé avec laquelle les enregistrements sont chiffrés (renseignée par setup)
+    label: Clé avec laquelle les enregistrements sont chiffrés
+    help: "setup la génère. Vous n'avez rien à saisir — le téléphone la reçoit par le QR, jamais par le réseau."
 settings:
   actions:
     setup:

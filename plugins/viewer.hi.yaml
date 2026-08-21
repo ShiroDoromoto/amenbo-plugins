@@ -9,11 +9,14 @@ about: |
   चालू करने पर यह इस मशीन की सारी परियोजनाएँ ले जाता है: फ़ोन एक उपकरण है, एक परियोजना नहीं।
 config:
   worker_url:
-    label: आपके अपने Cloudflare Worker का URL (setup भर देता है)
+    label: आपके अपने Cloudflare Worker का URL
+    help: "Worker खड़ा करते समय setup इसे भर देता है। आपको कुछ लिखना नहीं है।"
   auth_token:
-    label: जिस टोकन से Worker लिखने देता है (setup भर देता है)
+    label: जिस टोकन से Worker लिखने देता है
+    help: "setup इसे बनाता है। आपको कुछ लिखना नहीं है।"
   encryption_key:
-    label: जिस कुंजी से रिकॉर्ड एन्क्रिप्ट होते हैं (setup भर देता है)
+    label: जिस कुंजी से रिकॉर्ड एन्क्रिप्ट होते हैं
+    help: "setup इसे बनाता है। आपको कुछ लिखना नहीं है — फ़ोन को यह QR से मिलती है, नेटवर्क से कभी नहीं।"
 settings:
   actions:
     setup:

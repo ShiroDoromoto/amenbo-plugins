@@ -9,11 +9,14 @@ about: |
   一旦启用，送出的是这台电脑上的全部项目——手机是一台设备，不是一个项目。
 config:
   worker_url:
-    label: 你自己的 Cloudflare Worker 的 URL（由 setup 填入）
+    label: 你自己的 Cloudflare Worker 的 URL
+    help: "立起 Worker 时由 setup 写入。这里没有要输入的东西。"
   auth_token:
-    label: Worker 放行写入所用的令牌（由 setup 填入）
+    label: Worker 放行写入所用的令牌
+    help: "由 setup 生成。这里没有要输入的东西。"
   encryption_key:
-    label: 加密记录所用的密钥（由 setup 填入）
+    label: 加密记录所用的密钥
+    help: "由 setup 生成。这里没有要输入的东西——手机通过二维码拿到，不经过网络。"
 settings:
   actions:
     setup:

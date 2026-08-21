@@ -9,11 +9,14 @@ about: |
   Al activarlo se lleva todo proyecto de este ordenador: un móvil es un dispositivo, no un proyecto.
 config:
   worker_url:
-    label: URL de tu propio Cloudflare Worker (la rellena setup)
+    label: URL de tu propio Cloudflare Worker
+    help: "setup lo rellena al levantar el Worker. No hay nada que escribir."
   auth_token:
-    label: Token con el que el Worker admite escrituras (lo rellena setup)
+    label: Token con el que el Worker admite escrituras
+    help: "setup lo genera. No hay nada que escribir."
   encryption_key:
-    label: Clave con la que se cifran los registros (la rellena setup)
+    label: Clave con la que se cifran los registros
+    help: "setup la genera. No hay nada que escribir; el teléfono la recibe por el QR, nunca por la red."
 settings:
   actions:
     setup:

@@ -9,11 +9,14 @@ about: |
   켜면 이 PC의 모든 프로젝트가 실려 간다——휴대폰은 기기 한 대이지, 프로젝트 하나가 아니다.
 config:
   worker_url:
-    label: 내 Cloudflare Worker의 URL(setup이 채운다)
+    label: 내 Cloudflare Worker의 URL
+    help: "Worker를 세울 때 setup이 써 넣습니다. 입력할 것은 없습니다."
   auth_token:
-    label: Worker가 쓰기를 받아들이는 토큰(setup이 채운다)
+    label: Worker가 쓰기를 받아들이는 토큰
+    help: "setup이 만들어 냅니다. 입력할 것은 없습니다."
   encryption_key:
-    label: 기록을 암호화하는 키(setup이 채운다)
+    label: 기록을 암호화하는 키
+    help: "setup이 만들어 냅니다. 입력할 것은 없습니다 — 휴대폰에는 QR로 건네지며, 네트워크로는 나가지 않습니다."
 settings:
   actions:
     setup:

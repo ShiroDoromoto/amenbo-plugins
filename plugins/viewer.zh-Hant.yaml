@@ -9,11 +9,14 @@ about: |
   一旦啟用，送出的是這台電腦上的全部專案——手機是一台裝置，不是一個專案。
 config:
   worker_url:
-    label: 你自己的 Cloudflare Worker 的 URL（由 setup 填入）
+    label: 你自己的 Cloudflare Worker 的 URL
+    help: "立起 Worker 時由 setup 寫入。這裡沒有要輸入的東西。"
   auth_token:
-    label: Worker 放行寫入所用的權杖（由 setup 填入）
+    label: Worker 放行寫入所用的權杖
+    help: "由 setup 產生。這裡沒有要輸入的東西。"
   encryption_key:
-    label: 加密紀錄所用的金鑰（由 setup 填入）
+    label: 加密紀錄所用的金鑰
+    help: "由 setup 產生。這裡沒有要輸入的東西——手機透過 QR 取得，不經過網路。"
 settings:
   actions:
     setup:

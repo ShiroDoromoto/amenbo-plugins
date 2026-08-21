@@ -9,11 +9,14 @@ about: |
   Увімкнений, він несе всі проєкти цієї машини: телефон — це один пристрій, а не один проєкт.
 config:
   worker_url:
-    label: URL вашого власного Cloudflare Worker (заповнює setup)
+    label: URL вашого власного Cloudflare Worker
+    help: "setup вписує це, коли піднімає Worker. Вводити нічого не треба."
   auth_token:
-    label: Токен, з яким Worker пропускає запис (заповнює setup)
+    label: Токен, з яким Worker пропускає запис
+    help: "setup створює це. Вводити нічого не треба."
   encryption_key:
-    label: Ключ, яким шифруються записи (заповнює setup)
+    label: Ключ, яким шифруються записи
+    help: "setup створює це. Вводити нічого не треба — на телефон він потрапляє через QR, а не мережею."
 settings:
   actions:
     setup:

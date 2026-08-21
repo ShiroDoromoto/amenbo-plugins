@@ -9,11 +9,14 @@ about: |
   Ao ativar, ele leva todo projeto desta máquina: um celular é um aparelho, não um projeto.
 config:
   worker_url:
-    label: URL do seu próprio Cloudflare Worker (preenchida pelo setup)
+    label: URL do seu próprio Cloudflare Worker
+    help: "setup preenche isto ao levantar o Worker. Não há nada para digitar."
   auth_token:
-    label: Token com que o Worker aceita gravações (preenchido pelo setup)
+    label: Token com que o Worker aceita gravações
+    help: "setup gera isto. Não há nada para digitar."
   encryption_key:
-    label: Chave com que os registros são criptografados (preenchida pelo setup)
+    label: Chave com que os registros são criptografados
+    help: "setup gera isto. Não há nada para digitar — o telefone a recebe pelo QR, nunca pela rede."
 settings:
   actions:
     setup:

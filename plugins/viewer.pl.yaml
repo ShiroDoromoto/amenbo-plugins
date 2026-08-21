@@ -9,11 +9,14 @@ about: |
   Po włączeniu niesie każdy projekt z tej maszyny: telefon to jedno urządzenie, a nie jeden projekt.
 config:
   worker_url:
-    label: Adres URL twojego własnego Cloudflare Workera (wypełnia setup)
+    label: Adres URL twojego własnego Cloudflare Workera
+    help: "setup wpisuje to, gdy stawia Workera. Nie ma tu nic do wpisania."
   auth_token:
-    label: Token, którym Worker przepuszcza zapisy (wypełnia setup)
+    label: Token, którym Worker przepuszcza zapisy
+    help: "setup to generuje. Nie ma tu nic do wpisania."
   encryption_key:
-    label: Klucz, którym szyfrowane są wpisy (wypełnia setup)
+    label: Klucz, którym szyfrowane są wpisy
+    help: "setup go generuje. Nie ma tu nic do wpisania — telefon dostaje go z kodu QR, nigdy przez sieć."
 settings:
   actions:
     setup:

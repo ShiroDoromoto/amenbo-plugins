@@ -9,11 +9,14 @@ about: |
   Bật lên là mang theo mọi dự án trên máy này: điện thoại là một thiết bị, không phải một dự án.
 config:
   worker_url:
-    label: URL Cloudflare Worker của chính bạn (setup điền vào)
+    label: URL Cloudflare Worker của chính bạn
+    help: "setup điền vào khi dựng Worker. Không có gì để gõ."
   auth_token:
-    label: Token để Worker cho phép ghi (setup điền vào)
+    label: Token để Worker cho phép ghi
+    help: "setup tạo ra. Không có gì để gõ."
   encryption_key:
-    label: Khóa dùng để mã hóa bản ghi (setup điền vào)
+    label: Khóa dùng để mã hóa bản ghi
+    help: "setup tạo ra. Không có gì để gõ — điện thoại nhận qua QR, không bao giờ qua mạng."
 settings:
   actions:
     setup:

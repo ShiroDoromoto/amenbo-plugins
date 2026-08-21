@@ -9,11 +9,14 @@ about: |
   เมื่อเปิดใช้ มันจะพาทุกโปรเจกต์บนเครื่องนี้ไปด้วย: มือถือคืออุปกรณ์หนึ่งเครื่อง ไม่ใช่โปรเจกต์หนึ่งโปรเจกต์
 config:
   worker_url:
-    label: URL ของ Cloudflare Worker ของคุณเอง (setup เติมให้)
+    label: URL ของ Cloudflare Worker ของคุณเอง
+    help: "setup เติมให้เมื่อสร้าง Worker ขึ้นมา ไม่มีอะไรต้องพิมพ์"
   auth_token:
-    label: โทเคนที่ Worker ใช้อนุญาตการเขียน (setup เติมให้)
+    label: โทเคนที่ Worker ใช้อนุญาตการเขียน
+    help: "setup สร้างขึ้นให้ ไม่มีอะไรต้องพิมพ์"
   encryption_key:
-    label: กุญแจที่ใช้เข้ารหัสระเบียน (setup เติมให้)
+    label: กุญแจที่ใช้เข้ารหัสระเบียน
+    help: "setup สร้างขึ้นให้ ไม่มีอะไรต้องพิมพ์ — โทรศัพท์รับผ่าน QR ไม่เคยผ่านเครือข่าย"
 settings:
   actions:
     setup:

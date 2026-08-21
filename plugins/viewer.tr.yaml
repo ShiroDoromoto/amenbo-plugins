@@ -9,11 +9,14 @@ about: |
   Etkinleştirdiğinizde bu makinedeki her projeyi taşır: telefon bir cihazdır, bir proje değil.
 config:
   worker_url:
-    label: Kendi Cloudflare Worker'ınızın URL'si (setup doldurur)
+    label: Kendi Cloudflare Worker'ınızın URL'si
+    help: "Worker'ı kurarken setup bunu yazar. Yazmanız gereken bir şey yok."
   auth_token:
-    label: Worker'ın yazmaya izin verdiği belirteç (setup doldurur)
+    label: Worker'ın yazmaya izin verdiği belirteç
+    help: "setup bunu üretir. Yazmanız gereken bir şey yok."
   encryption_key:
-    label: Kayıtların şifrelendiği anahtar (setup doldurur)
+    label: Kayıtların şifrelendiği anahtar
+    help: "setup bunu üretir. Yazmanız gereken bir şey yok — telefona QR ile geçer, ağ üzerinden asla."
 settings:
   actions:
     setup:

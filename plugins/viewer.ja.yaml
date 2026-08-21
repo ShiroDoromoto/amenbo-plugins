@@ -9,11 +9,14 @@ about: |
   有効にすると、運ぶのはこの端末の全プロジェクトになる——スマートフォンは1台であって、1プロジェクトではない。
 config:
   worker_url:
-    label: 自分の Cloudflare Worker の URL（setup が入れる）
+    label: 自分の Cloudflare Worker の URL
+    help: "setup が Worker を立てるときに書き込みます。打つものはありません。"
   auth_token:
-    label: Worker が書き込みを受け入れるトークン（setup が入れる）
+    label: Worker が書き込みを受け入れるトークン
+    help: "setup が生成します。打つものはありません。"
   encryption_key:
-    label: 記録を暗号化する鍵（setup が入れる）
+    label: 記録を暗号化する鍵
+    help: "setup が生成します。打つものはありません——端末へは QR で渡り、ネットワークには出ません。"
 settings:
   actions:
     setup:

@@ -9,11 +9,14 @@ about: |
   Aanzetten draagt elk project op deze machine mee: een telefoon is één apparaat, niet één project.
 config:
   worker_url:
-    label: URL van je eigen Cloudflare Worker (vult setup in)
+    label: URL van je eigen Cloudflare Worker
+    help: "setup vult dit in bij het opzetten van de Worker. Je hoeft niets te typen."
   auth_token:
-    label: Token waarmee de Worker schrijfacties toelaat (vult setup in)
+    label: Token waarmee de Worker schrijfacties toelaat
+    help: "setup genereert dit. Je hoeft niets te typen."
   encryption_key:
-    label: Sleutel waarmee de records versleuteld worden (vult setup in)
+    label: Sleutel waarmee de records versleuteld worden
+    help: "setup genereert deze. Je hoeft niets te typen — de telefoon krijgt hem via de QR, nooit via het netwerk."
 settings:
   actions:
     setup:
