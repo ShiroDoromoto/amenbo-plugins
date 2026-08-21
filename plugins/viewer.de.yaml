@@ -8,6 +8,13 @@ about: |
 
   Eingeschaltet trägt es jedes Projekt dieses Rechners: ein Handy ist ein Gerät, kein Projekt.
 config:
+  routes:
+    label: Wohin getragen wird
+    help: |-
+      Wohin dies tragen darf. Orte lassen sich hier nur wegnehmen: ein angekreuzter Ort muss trotzdem erst existieren, bevor ihn etwas erreicht — der iCloud-Ordner erscheint, sobald Sie Amenbo Viewer einmal auf einem Telefon geöffnet haben (die Schaltfläche „App aufs Telefon holen“ legt dessen App-Store-Seite auf einen Code), und den bei Cloudflare stellt setup auf. Nichts anzukreuzen ist auch eine Antwort und wird respektiert: Das Plugin bleibt eingeschaltet und trägt nirgendwohin.
+    options:
+      icloud: Der app-eigene iCloud-Ordner
+      cloudflare: Ihr eigener Cloudflare Worker
   worker_url:
     label: URL Ihres eigenen Cloudflare Workers
     help: "setup trägt dies ein, wenn es den Worker aufsetzt. Sie müssen nichts eintippen."
@@ -19,13 +26,15 @@ config:
     help: "setup erzeugt dies. Sie müssen nichts eintippen — das Telefon bekommt ihn über den QR-Code, nie über das Netz."
 settings:
   actions:
+    app:
+      label: 1. App aufs Telefon holen
     token:
-      label: 1. Cloudflare-API-Token holen
+      label: 2. Cloudflare-API-Token holen
     setup:
-      label: 2. Cloudflare-Weg aufstellen
+      label: 3. Cloudflare-Weg aufstellen
       ask:
         api_token: Cloudflare-API-Token
     qr:
-      label: 3. Telefon koppeln
+      label: 4. Telefon koppeln
       ask:
         label: Name für dieses Telefon

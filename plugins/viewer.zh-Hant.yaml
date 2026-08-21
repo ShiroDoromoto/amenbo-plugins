@@ -8,6 +8,13 @@ about: |
 
   一旦啟用，送出的是這台電腦上的全部專案——手機是一台裝置，不是一個專案。
 config:
+  routes:
+    label: 送往哪裡
+    help: |-
+      這個可以送往哪些地方。這裡只能減去地方：勾起來的地方也得先真的存在，才會有東西送到——iCloud 資料夾要等你在手機上開過一次 Amenbo Viewer 才會出現（「把 App 裝到手機上」這個按鈕會把它的 App Store 頁面放到一個碼上），Cloudflare 那邊則由 setup 立起來。一個都不勾也是一種回答，並會被照辦：外掛仍然啟用，但哪裡都不送。
+    options:
+      icloud: App 專屬的 iCloud 資料夾
+      cloudflare: 你自己的 Cloudflare Worker
   worker_url:
     label: 你自己的 Cloudflare Worker 的 URL
     help: "立起 Worker 時由 setup 寫入。這裡沒有要輸入的東西。"
@@ -19,13 +26,15 @@ config:
     help: "由 setup 產生。這裡沒有要輸入的東西——手機透過 QR 取得，不經過網路。"
 settings:
   actions:
+    app:
+      label: 1. 把 App 裝到手機上
     token:
-      label: 1. 取得 API 權杖
+      label: 2. 取得 API 權杖
     setup:
-      label: 2. 建立 Cloudflare 通道
+      label: 3. 建立 Cloudflare 通道
       ask:
         api_token: Cloudflare API 權杖
     qr:
-      label: 3. 配對手機
+      label: 4. 配對手機
       ask:
         label: 這台手機的名稱

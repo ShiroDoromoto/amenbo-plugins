@@ -8,6 +8,13 @@ about: |
 
   一旦启用，送出的是这台电脑上的全部项目——手机是一台设备，不是一个项目。
 config:
+  routes:
+    label: 送往哪里
+    help: |-
+      这个可以送往哪些地方。这里只能减去地方：勾上的地方也得先真的存在，才会有东西送到——iCloud 文件夹要等你在手机上打开过一次 Amenbo Viewer 才出现（“把 App 装到手机上”这个按钮会把它的 App Store 页面放到一个码上），Cloudflare 那边则由 setup 立起来。一个都不勾也是一种回答，并会被照办：插件仍然启用，但哪儿都不送。
+    options:
+      icloud: App 专属的 iCloud 文件夹
+      cloudflare: 你自己的 Cloudflare Worker
   worker_url:
     label: 你自己的 Cloudflare Worker 的 URL
     help: "立起 Worker 时由 setup 写入。这里没有要输入的东西。"
@@ -19,13 +26,15 @@ config:
     help: "由 setup 生成。这里没有要输入的东西——手机通过二维码拿到，不经过网络。"
 settings:
   actions:
+    app:
+      label: 1. 把 App 装到手机上
     token:
-      label: 1. 获取 API 令牌
+      label: 2. 获取 API 令牌
     setup:
-      label: 2. 搭建 Cloudflare 通道
+      label: 3. 搭建 Cloudflare 通道
       ask:
         api_token: Cloudflare API 令牌
     qr:
-      label: 3. 配对手机
+      label: 4. 配对手机
       ask:
         label: 这台手机的名称

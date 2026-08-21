@@ -8,6 +8,13 @@ about: |
 
   Bật lên là mang theo mọi dự án trên máy này: điện thoại là một thiết bị, không phải một dự án.
 config:
+  routes:
+    label: Chuyển tới đâu
+    help: |-
+      Những nơi cái này được phép chuyển tới. Ở đây chỉ có thể bớt nơi đi: nơi bạn tick vẫn phải tồn tại trước đã thì mới có gì đến được — thư mục iCloud xuất hiện khi bạn đã mở Amenbo Viewer trên điện thoại một lần (nút “Cài ứng dụng điện thoại” đặt trang App Store của nó lên một mã), còn nơi ở Cloudflare là do setup dựng lên. Không tick mục nào cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không chuyển đi đâu cả.
+    options:
+      icloud: Thư mục iCloud riêng của ứng dụng
+      cloudflare: Cloudflare Worker của riêng bạn
   worker_url:
     label: URL Cloudflare Worker của chính bạn
     help: "setup điền vào khi dựng Worker. Không có gì để gõ."
@@ -19,13 +26,15 @@ config:
     help: "setup tạo ra. Không có gì để gõ — điện thoại nhận qua QR, không bao giờ qua mạng."
 settings:
   actions:
+    app:
+      label: 1. Cài ứng dụng điện thoại
     token:
-      label: 1. Lấy token API
+      label: 2. Lấy token API
     setup:
-      label: 2. Dựng tuyến Cloudflare
+      label: 3. Dựng tuyến Cloudflare
       ask:
         api_token: Token API Cloudflare
     qr:
-      label: 3. Ghép nối điện thoại
+      label: 4. Ghép nối điện thoại
       ask:
         label: Tên của điện thoại này

@@ -8,6 +8,13 @@ about: |
 
   चालू करने पर यह इस मशीन की सारी परियोजनाएँ ले जाता है: फ़ोन एक उपकरण है, एक परियोजना नहीं।
 config:
+  routes:
+    label: कहाँ तक ले जाना है
+    help: |-
+      यह किन जगहों तक ले जा सकता है। यहाँ से जगह सिर्फ़ हटाई जा सकती है: जिस जगह पर आप निशान लगाते हैं, उसका भी पहले से होना ज़रूरी है — iCloud फ़ोल्डर तब दिखता है जब आप किसी फ़ोन पर Amenbo Viewer एक बार खोल चुके हों (‘ऐप लें’ बटन उसका App Store पेज एक कोड पर रख देता है), और Cloudflare वाली जगह setup खड़ी करता है। एक भी न चुनना भी एक जवाब है और वैसा ही माना जाता है: प्लगइन चालू रहता है और कहीं नहीं ले जाता।
+    options:
+      icloud: ऐप का अपना iCloud फ़ोल्डर
+      cloudflare: आपका अपना Cloudflare Worker
   worker_url:
     label: आपके अपने Cloudflare Worker का URL
     help: "Worker खड़ा करते समय setup इसे भर देता है। आपको कुछ लिखना नहीं है।"
@@ -19,13 +26,15 @@ config:
     help: "setup इसे बनाता है। आपको कुछ लिखना नहीं है — फ़ोन को यह QR से मिलती है, नेटवर्क से कभी नहीं।"
 settings:
   actions:
+    app:
+      label: 1. ऐप लें
     token:
-      label: 1. API टोकन लें
+      label: 2. API टोकन लें
     setup:
-      label: 2. Cloudflare सेटअप
+      label: 3. Cloudflare सेटअप
       ask:
         api_token: Cloudflare का API टोकन
     qr:
-      label: 3. फ़ोन जोड़ें
+      label: 4. फ़ोन जोड़ें
       ask:
         label: इस फ़ोन का नाम

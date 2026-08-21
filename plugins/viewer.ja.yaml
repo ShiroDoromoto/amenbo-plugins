@@ -8,6 +8,13 @@ about: |
 
   有効にすると、運ぶのはこの端末の全プロジェクトになる——スマートフォンは1台であって、1プロジェクトではない。
 config:
+  routes:
+    label: どこへ運ぶか
+    help: |-
+      運んでよい置き場です。ここで選べるのは減らすことだけで、選んだ置き場もそこへ届くより先に実在している必要があります——iCloud のフォルダは Amenbo Viewer を端末で一度開くと現れ（「アプリを端末に入れる」のボタンが App Store のページを QR に載せます）、Cloudflare の置き場は setup が立てます。1つも選ばないことも答えで、そのまま尊重されます——有効なまま、どこへも運びません。
+    options:
+      icloud: アプリ専用の iCloud フォルダ
+      cloudflare: 自分の Cloudflare Worker
   worker_url:
     label: 自分の Cloudflare Worker の URL
     help: "setup が Worker を立てるときに書き込みます。打つものはありません。"
@@ -19,13 +26,15 @@ config:
     help: "setup が生成します。打つものはありません——端末へは QR で渡り、ネットワークには出ません。"
 settings:
   actions:
+    app:
+      label: 1. アプリを端末に入れる
     token:
-      label: 1. API トークンを取る
+      label: 2. API トークンを取る
     setup:
-      label: 2. Cloudflare 経路を立てる
+      label: 3. Cloudflare 経路を立てる
       ask:
         api_token: Cloudflare の API トークン
     qr:
-      label: 3. 端末をペアリング
+      label: 4. 端末をペアリング
       ask:
         label: この端末の名前

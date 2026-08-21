@@ -8,6 +8,13 @@ about: |
 
   Etkinleştirdiğinizde bu makinedeki her projeyi taşır: telefon bir cihazdır, bir proje değil.
 config:
+  routes:
+    label: Nereye taşınsın
+    help: |-
+      Bunun nereye taşıyabileceği. Buradan yer yalnızca çıkarılabilir: işaretlediğiniz bir yerin de bir şey ulaşmadan önce var olması gerekir — iCloud klasörü, Amenbo Viewer'ı bir telefonda bir kez açtığınızda belirir (“Uygulamayı telefona kur” düğmesi uygulamanın App Store sayfasını bir koda koyar), Cloudflare'daki yeri ise setup ayağa kaldırır. Hiçbirini işaretlememek de bir cevaptır ve öylece kabul edilir: eklenti açık kalır ve hiçbir yere taşımaz.
+    options:
+      icloud: Uygulamanın kendi iCloud klasörü
+      cloudflare: Kendi Cloudflare Worker'ınız
   worker_url:
     label: Kendi Cloudflare Worker'ınızın URL'si
     help: "Worker'ı kurarken setup bunu yazar. Yazmanız gereken bir şey yok."
@@ -19,13 +26,15 @@ config:
     help: "setup bunu üretir. Yazmanız gereken bir şey yok — telefona QR ile geçer, ağ üzerinden asla."
 settings:
   actions:
+    app:
+      label: 1. Uygulamayı telefona kur
     token:
-      label: 1. API belirteci al
+      label: 2. API belirteci al
     setup:
-      label: 2. Cloudflare yolunu kur
+      label: 3. Cloudflare yolunu kur
       ask:
         api_token: Cloudflare API belirteci
     qr:
-      label: 3. Telefon eşle
+      label: 4. Telefon eşle
       ask:
         label: Bu telefonun adı

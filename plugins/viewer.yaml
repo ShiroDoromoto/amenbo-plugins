@@ -39,6 +39,18 @@ about: |
 
   Enabling it carries every project on this machine: a phone is one device, not one project.
 config:
+  - key: routes
+    label: Where to carry
+    help: |-
+      Which places this may carry to. It can only take places away: a place you tick still needs to exist before anything reaches it — the iCloud folder appears once you have opened Amenbo Viewer on a phone (the "Get the app on your phone" button puts its App Store page on a code), and the Cloudflare one is what setup stands up. Ticking none is an answer and it is honoured: the plugin stays enabled and carries nowhere.
+    type: multi
+    options:
+      - value: icloud
+        label: The app's own iCloud folder
+      - value: cloudflare
+        label: Your own Cloudflare Worker
+    default: icloud,cloudflare
+    required: false
   - key: worker_url
     label: Your Cloudflare Worker's URL
     help: setup writes this when it stands the Worker up. There is nothing to type.
@@ -57,17 +69,20 @@ config:
     required: false
     readonly: true
 settings:
+  check: check
   actions:
+    - cmd: app
+      label: 1. Get the app on your phone
     - cmd: token
-      label: 1. Get a Cloudflare API token
+      label: 2. Get a Cloudflare API token
     - cmd: setup
-      label: 2. Set up the Cloudflare route
+      label: 3. Set up the Cloudflare route
       ask:
         - key: api_token
           label: Cloudflare API token
           secret: true
     - cmd: qr
-      label: 3. Pair a phone
+      label: 4. Pair a phone
       ask:
         - key: label
           label: What to call this phone
@@ -87,6 +102,8 @@ events:
 agent:
   when: Setting up the phone viewer, pairing a phone with it, or carrying by hand what has not reached one yet
   commands:
+    - cmd: app
+      does: Puts the App Store page for Amenbo Viewer on a QR the phone's camera reads, so the address does not have to be carried from this screen to the phone by hand. Asks nothing and keeps nothing
     - cmd: token
       does: Opens Cloudflare's token screen in the browser, with the three permissions setup needs already ticked, and ends there. Asks nothing and keeps nothing — the token the page makes is pasted into setup
     - cmd: setup
@@ -99,3 +116,5 @@ agent:
       does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument
     - cmd: qr
       does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label or the settings screen box names it; --terminal draws it here"
+    - cmd: check
+      does: Says where records are reaching right now — the places ticked under 'Where to carry' that also exist. Reads nothing over the network; the settings screen raises it, and a terminal may too
