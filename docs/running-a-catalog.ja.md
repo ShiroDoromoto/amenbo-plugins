@@ -2,14 +2,14 @@
 
 [English](running-a-catalog.md) · 日本語
 
-amenbo のプラグインカタログは、**静的ファイルを3つ置くだけ**です。プラグインの説明文を複数の言語で
+Amenbo のプラグインカタログは、**静的ファイルを3つ置くだけ**です。プラグインの説明文を複数の言語で
 書くなら、そこに言語ごとの小さな1本が加わります。サーバは要りません。公開する気のないプラグインを
 社内に配る、というのがいちばん多い建て方です。
 
 この文書は、その**カタログを建てる側**に向けたものです。プラグインそのものの書き方は
 [プラグインを作る](writing-a-plugin.ja.md)にあります。
 
-> 第三者カタログの登録は amenbo 2.0.0 から使えます。手元で `amenbo plugin catalog --help` が応えるか
+> 第三者カタログの登録は Amenbo 2.0.0 から使えます。手元で `amenbo plugin catalog --help` が応えるか
 > 確かめてください。
 
 ## 利用者から見えるもの
@@ -20,7 +20,7 @@ amenbo のプラグインカタログは、**静的ファイルを3つ置くだ�
 amenbo plugin catalog add https://plugins.example.com/catalog.json --name "社内カタログ"
 ```
 
-このとき amenbo は、その隣にある `catalog-key.pub` を取りに行き、**指紋を見せて同意を取り、その鍵を
+このとき Amenbo は、その隣にある `catalog-key.pub` を取りに行き、**指紋を見せて同意を取り、その鍵を
 pin します**。以後、そのカタログから入れるプラグインは**その鍵でだけ**検証されます。
 
 ```
@@ -34,7 +34,7 @@ https://plugins.example.com/catalog.json publishes a signing key:
 
 ## 置くファイル
 
-同じディレクトリに並べます。amenbo は `catalog.json` の URL から、残りを相対で導きます。
+同じディレクトリに並べます。Amenbo は `catalog.json` の URL から、残りを相対で導きます。
 
 | ファイル | 中身 | 誰がいつ取るか |
 | --- | --- | --- |
@@ -72,22 +72,22 @@ https://plugins.example.com/catalog.json publishes a signing key:
 }
 ```
 
-- `catalog_v` は**封筒のバージョン**で、今は `1` です。amenbo は知らないバージョンのカタログを丸ごと拒否します。
-  エントリにフィールドが増えるだけなら上がりません（古い amenbo は知らないキーを読み飛ばします）。
+- `catalog_v` は**封筒のバージョン**で、今は `1` です。Amenbo は知らないバージョンのカタログを丸ごと拒否します。
+  エントリにフィールドが増えるだけなら上がりません（古い Amenbo は知らないキーを読み飛ばします）。
 - `generated_at` は任意です。
 - エントリが1件でも壊れていれば、**その1件だけ**が落ちます。カタログ全体は使えるままです。
 
 **どの項目が一覧に行き、どれが詳細に行くかを、あなたが決める必要はありません。** `amenbo plugin validate`
 に `--json` を付けると、manifest を `entry` と `detail` の2つに割って返します。集約はそれをそのまま
-publish するだけです——この形なら、amenbo が後からフィールドを増やしても、あなたのスクリプトは直りません。
+publish するだけです——この形なら、Amenbo が後からフィールドを増やしても、あなたのスクリプトは直りません。
 訳された欄は、その元になった欄と同じ面へ乗ります。だから同じ呼び出しが `entry_i18n`——一覧側の、言語ごとの
 1件——も一緒に返します。
 
-3つだけ、**カタログの持ち物**があります。amenbo は空で返すので、埋めるのは集約の側です。
+3つだけ、**カタログの持ち物**があります。Amenbo は空で返すので、埋めるのは集約の側です。
 
 | 項目 | 埋め方 |
 | --- | --- |
-| `detail_sum` | 書き出した詳細文書の SHA-256（`sha256:<hex>`）。**必須です**——利用者の amenbo は、一覧のこの値だけを見て「更新があるか」を判定します |
+| `detail_sum` | 書き出した詳細文書の SHA-256（`sha256:<hex>`）。**必須です**——利用者の Amenbo は、一覧のこの値だけを見て「更新があるか」を判定します |
 | `added_at` | そのプラグインが載った日。一覧の「新着」の軸で、無ければ「不明」として扱われます（git 履歴から採るのが素直です） |
 | `featured` | そのカタログのおすすめ。使わないなら `false` のままで結構です |
 
@@ -114,7 +114,7 @@ publish するだけです——この形なら、amenbo が後からフィー�
   乗るので、install 済みのプラグインの設定画面は通信なしで読者の言語に追随します。作者が書く側は
   [プラグインを作る](writing-a-plugin.ja.md#他の言語で書く)にあります。
 
-**置き場所そのものが、この仕組みが第三者カタログでも効く理由**です。amenbo は言語別文書の在り処を、詳細
+**置き場所そのものが、この仕組みが第三者カタログでも効く理由**です。Amenbo は言語別文書の在り処を、詳細
 文書と同じ規則で導きます——利用者が登録した `catalog.json` と同じ基点の下で、名前に言語が入っているもの。
 公式カタログだけの特別扱いは1つもありません。
 
@@ -141,7 +141,7 @@ install に要るものです。`name` だけが一覧と重複していて、�
 
 ## 鍵を作る
 
-署名するのは**あなたの CI** で、amenbo ではありません。amenbo 側に秘密鍵を触る面はありません。
+署名するのは**あなたの CI** で、Amenbo ではありません。Amenbo 側に秘密鍵を触る面はありません。
 
 ```sh
 minisign -G -p catalog-key.pub -s catalog.key
@@ -156,14 +156,14 @@ minisign -G -p catalog-key.pub -s catalog.key
 
 ## 集約スクリプト
 
-`plugins/*.yaml` を読み、`_site/` にファイルを書き出す最小の形です。依存は amenbo と minisign
+`plugins/*.yaml` を読み、`_site/` にファイルを書き出す最小の形です。依存は Amenbo と minisign
 だけで、`amenbo plugin validate --json` が返したものをそのまま publish します。このリポジトリ自身の
 [`scripts/aggregate.py`](../scripts/aggregate.py) は、これが育ったものです（おすすめの一覧・署名の
 持ち越し・ジョブサマリ）。この形で足りなくなったら読んでみてください。
 
 ```python
 #!/usr/bin/env python3
-"""plugins/ の manifest から、署名済みの amenbo プラグインカタログを作る。"""
+"""plugins/ の manifest から、署名済みの Amenbo プラグインカタログを作る。"""
 
 import argparse
 import hashlib
@@ -180,10 +180,10 @@ CATALOG_V = 1
 
 
 def documents(amenbo, manifest):
-    """manifest を amenbo に読ませ、割られた文書を受け取る。
+    """manifest を Amenbo に読ませ、割られた文書を受け取る。
 
-    どのフィールドがどちらの文書に行くかを決めるのは amenbo で、このスクリプトではない。
-    amenbo が後からフィールドを増やしても、ここは直さずに済む。manifest の隣にある訳も
+    どのフィールドがどちらの文書に行くかを決めるのは Amenbo で、このスクリプトではない。
+    Amenbo が後からフィールドを増やしても、ここは直さずに済む。manifest の隣にある訳も
     一緒に読まれ、同じように割られて返る——`entry_i18n` が一覧側の言語ごとの1件で、詳細側は
     すでに `detail` の中に入っている。
     """
@@ -242,7 +242,7 @@ def main():
         if "." in manifest.stem:
             continue
         entry, entry_i18n, detail = documents(args.amenbo, manifest)
-        # 公式バッジは amenbo チームのカタログのもの。ここで付けられるものではない。
+        # 公式バッジは Amenbo チームのカタログのもの。ここで付けられるものではない。
         entry["official"] = False
         if detail.get("assets"):
             detail["assets"] = {
@@ -253,7 +253,7 @@ def main():
             detail.update(signed(detail, entry["name"], args.key, password))
         text = encode(detail)
         (args.out / "plugins" / f"{entry['name']}.json").write_text(text)
-        # 書き出した詳細文書の digest。利用者の amenbo が「別のビルドだ」と気づく唯一の材料。
+        # 書き出した詳細文書の digest。利用者の Amenbo が「別のビルドだ」と気づく唯一の材料。
         entry["detail_sum"] = "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest()
         for lang, line in entry_i18n.items():
             languages.setdefault(lang, {})[entry["name"]] = line
@@ -284,7 +284,7 @@ if __name__ == "__main__":
 ## 同じバイト列は、二度目も同じに publish する
 
 minisign の署名には、署名した時刻が入る。同じアセットを署名し直せば署名は別物になり、詳細ファイルも
-`detail_sum` も動く。そして `detail_sum` は、利用者の amenbo が「このプラグインは新しいビルドになった」と
+`detail_sum` も動く。そして `detail_sum` は、利用者の Amenbo が「このプラグインは新しいビルドになった」と
 判断する唯一の材料になっている。publish のたびに全部を署名し直すカタログは、**何かを1つ載せるたびに、
 全プラグインに更新が出たと全利用者へ言う**ことになる。
 
@@ -323,7 +323,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # manifest の規則は amenbo 本体が持っているので、CI にも amenbo が要ります。
+      # manifest の規則は Amenbo 本体が持っているので、CI にも Amenbo が要ります。
       # `plugin validate` はまだリリース版に入っていないため、ソースから建てます。
       - uses: actions/checkout@v7
         with:
@@ -384,23 +384,23 @@ amenbo plugin install <name>
 
 ## 鍵を替えるとき
 
-**利用者に再登録を求めることになります。** 登録時と違う鍵で署名された配布物を、amenbo は黙って
+**利用者に再登録を求めることになります。** 登録時と違う鍵で署名された配布物を、Amenbo は黙って
 受け入れません。
 
 ```
 Error: https://plugins.example.com/catalog.json now publishes a different key
-(32701CC140855BC6, pinned: 2F09ABE300368325). amenbo will not accept it on the old
+(32701CC140855BC6, pinned: 2F09ABE300368325). Amenbo will not accept it on the old
 consent — unregister the catalog and register it again to trust the new key.
 ```
 
 `amenbo plugin catalog remove <url>` してから `add` し直す——その1往復で、新しい指紋が**決める人の前に
 出ます**。だから鍵の交換は、静かに済ませられる作業ではありません。**新しい指紋を先に告知してください。**
 
-## amenbo がしないこと
+## Amenbo がしないこと
 
-- **カタログを作る道具は持ちません。** amenbo が持つのは検証だけで、秘密鍵を触る面はありません。
+- **カタログを作る道具は持ちません。** Amenbo が持つのは検証だけで、秘密鍵を触る面はありません。
   利用者の端末で動く配布物に、署名する機能は入れない、という線です。
 - **鍵の保管と失効に関与しません。** pin が守るのは「登録したときの鍵と同じか」だけです。その鍵が
   漏れていないことは、カタログを建てた側の責任です。
-- **公式バッジは公式カタログのものです。** 第三者のカタログから来たプラグインは、amenbo の画面では
+- **公式バッジは公式カタログのものです。** 第三者のカタログから来たプラグインは、Amenbo の画面では
   **そのカタログの名前**で出ます。利用者が登録のときに付けた名前です。

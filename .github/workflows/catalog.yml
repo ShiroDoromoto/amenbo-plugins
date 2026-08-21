@@ -1,7 +1,7 @@
 # Build the catalog, and publish it.
 #
-# amenbo has no server: its plugin browser fetches ONE static file and does everything else locally. This
-# workflow is what makes that file. For every reviewed manifest it validates the manifest with amenbo's
+# Amenbo has no server: its plugin browser fetches ONE static file and does everything else locally. This
+# workflow is what makes that file. For every reviewed manifest it validates the manifest with Amenbo's
 # own validator, downloads each distributable it publishes — one for every OS, where the plugin is built
 # per platform — checks it against the declared digest, signs those exact bytes with the catalog key, and
 # publishes to GitHub Pages: the aggregated `catalog.json` everyone fetches, a `plugins/<name>.json` per
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     # As on the pull-request gate: the CLI installed below asks whether a newer release is out, and the
     # file that answers is an asset of that release, so each publish would read as one more person taking
-    # amenbo. Set on the job to cover every step that reaches for the binary.
+    # Amenbo. Set on the job to cover every step that reaches for the binary.
     env:
       AMENBO_UPDATE_CHECK: "0"
     steps:
@@ -45,11 +45,11 @@ jobs:
           # the browser's "new" axis and exists nowhere else (a client holds the catalog, not the repo).
           fetch-depth: 0
 
-      # The manifest rules live in exactly one place — amenbo's validator — so this runs the real binary
+      # The manifest rules live in exactly one place — Amenbo's validator — so this runs the real binary
       # rather than a second implementation of the rules, which would drift from the client's install
       # door. The binary is the published release, installed the way a person installs it: the door this
       # catalog guards is the one clients actually hold, and a rule that has not been released yet is a
-      # rule no client enforces. It follows that a rule tightened in amenbo reaches this door when it
+      # rule no client enforces. It follows that a rule tightened in Amenbo reaches this door when it
       # reaches everyone else's — on the release, not on the commit.
       - id: release
         name: Resolve the release that would be installed
@@ -57,7 +57,7 @@ jobs:
           set -euo pipefail
           # `latest` answers with a redirect naming the tag, and reading that redirect is a page request
           # rather than a download of a release asset — which is the whole point: the two assets the
-          # install below fetches are each counted as somebody taking amenbo, and knowing the tag is what
+          # install below fetches are each counted as somebody taking Amenbo, and knowing the tag is what
           # lets a run skip fetching them. It resolves the same `latest` the installer is fetched from, so
           # the key below can never name a release other than the one that would be installed.
           location=$(curl -fsSI https://github.com/ShiroDoromoto/amenbo/releases/latest \
@@ -65,14 +65,14 @@ jobs:
           tag="${location##*/}"
           case "$tag" in
             v*) ;;
-            *) echo "::error::could not resolve amenbo's latest release (redirected to '${location:-nothing}')"; exit 1 ;;
+            *) echo "::error::could not resolve Amenbo's latest release (redirected to '${location:-nothing}')"; exit 1 ;;
           esac
-          echo "resolved amenbo $tag"
+          echo "resolved Amenbo $tag"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "AMENBO_BIN=$HOME/.local/bin/amenbo" >> "$GITHUB_ENV"
 
       # As on the pull-request gate: installing the CLI fetches two release assets, each counted as
-      # somebody taking amenbo, so the tag resolved above keys them to once per release rather than once
+      # somebody taking Amenbo, so the tag resolved above keys them to once per release rather than once
       # per publish. A new release is a new key, which is a miss, so this never serves a build older than
       # the one `latest` names.
       - uses: actions/cache@v6
@@ -82,7 +82,7 @@ jobs:
 
       # Gated on the binary running rather than on the cache reporting a hit, so an unusable entry heals
       # itself here.
-      - name: Install the amenbo CLI (its manifest validator), unless the cache had it
+      - name: Install the Amenbo CLI (its manifest validator), unless the cache had it
         run: |
           set -euo pipefail
           if [ -x "$AMENBO_BIN" ] && "$AMENBO_BIN" --version; then

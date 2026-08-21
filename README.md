@@ -1,6 +1,6 @@
 # amenbo-plugins
 
-The public plugin catalog for [**amenbo**](https://github.com/ShiroDoromoto/amenbo) — a local-first
+The public plugin catalog for [**Amenbo**](https://github.com/ShiroDoromoto/amenbo) — a local-first
 task & project manager where an AI and a human collaborate on one machine.
 
 **Documentation** — the contracts an author is held to, in English and Japanese:
@@ -15,18 +15,18 @@ Each plugin is one manifest under [`plugins/`](plugins/): a small YAML file desc
 enough to **list it, judge it, and fetch it** — without any central server. Add yours by opening a pull
 request (see **[CONTRIBUTING.md](CONTRIBUTING.md)**).
 
-This repository is about **being listed**. Writing the plugin itself — the JSON amenbo hands it, what its
+This repository is about **being listed**. Writing the plugin itself — the JSON Amenbo hands it, what its
 output means, the manifest fields, enabling, signatures — is
 **[Writing a plugin](docs/writing-a-plugin.md)** ([日本語](docs/writing-a-plugin.ja.md)). That document is
 the canon; what follows here is the catalog's side of it.
 
 ## How the catalog works
 
-amenbo has no server. Discovery is served entirely from static files and from GitHub's own numbers:
+Amenbo has no server. Discovery is served entirely from static files and from GitHub's own numbers:
 
 - The reviewed manifests in `plugins/` are aggregated into a single `catalog.json` and served statically.
   It holds one small entry per plugin: what a list has to draw, and nothing an install needs.
-- amenbo's in-app plugin browser fetches that **one file once**, then filters, searches, sorts, and pages
+- Amenbo's in-app plugin browser fetches that **one file once**, then filters, searches, sorts, and pages
   it **locally** — it never queries GitHub once per plugin.
 - What an install needs — the signature, the digests, the settings and events a plugin declares — is a
   second document per plugin, `plugins/<name>.json`, fetched **only** for the one plugin being opened or
@@ -63,18 +63,18 @@ repository: `plugins/` stays the reviewed truth, and everything served is derive
 
 ## Signatures — what a merge into this catalog means
 
-Every asset in the catalog is signed by the catalog's CI, and amenbo verifies that signature (plus the
+Every asset in the catalog is signed by the catalog's CI, and Amenbo verifies that signature (plus the
 declared SHA-256) before it will install anything.
 
 - **Authors hold no keys and sign nothing.** The private key exists only as a secret of this repository's
-  CI; the public half is [`catalog-key.pub`](catalog-key.pub), which ships inside amenbo.
+  CI; the public half is [`catalog-key.pub`](catalog-key.pub), which ships inside Amenbo.
 - **The signature says the bytes went through this catalog** — reviewed, downloaded, digest-checked — not
   that the author personally vouched for them. That is the same shape as trusting a Homebrew maintainer's
   review of a formula rather than the upstream author's signature.
 - **Signing happens at merge, never on a pull request.** A submitter's branch never runs with the key.
 
 An asset outside this catalog carries no signature of *ours*, which is the **free** tier's trade: you may
-point amenbo at any catalog, and this repository vouches for nothing you point it at. It is still signed
+point Amenbo at any catalog, and this repository vouches for nothing you point it at. It is still signed
 and verified — against the key that catalog publishes, which its users are shown and agree to when they
 register it. Running one is **[Running a catalog](docs/running-a-catalog.md)**
 ([日本語](docs/running-a-catalog.ja.md)): three static files, no server, and a key of your own.
@@ -83,21 +83,21 @@ register it. Running one is **[Running a catalog](docs/running-a-catalog.md)**
 
 | Tier | Who builds it | How | Label |
 |---|---|---|---|
-| **Official** | the amenbo team | built by the team and curated into this catalog | official badge (`official: true`) |
+| **Official** | the Amenbo team | built by the team and curated into this catalog | official badge (`official: true`) |
 | **Listed (reviewed)** | anyone | manifest opened as a PR here, reviewed, and merged | listed / reviewed (**not** official; `official: false`) |
 | **Free** | anyone | your own catalog URL / manifest URL / a local file | not involved with this catalog |
 
-- **Official** and **listed** are different axes. *Official* means the author is the amenbo team; *listed*
+- **Official** and **listed** are different axes. *Official* means the author is the Amenbo team; *listed*
   means the manifest lives in this catalog. Every official plugin is also listed.
 - **`official` is decided by curation here, never self-declared.** A pull request setting `official: true`
   on a third-party plugin will not be merged with that flag.
-- The **free** tier needs nothing from this repository: point amenbo at any manifest or catalog URL, or a
+- The **free** tier needs nothing from this repository: point Amenbo at any manifest or catalog URL, or a
   local file. This catalog takes no position on those; what stands behind a registered catalog is the key
   that catalog publishes, not ours.
 
 ### Featured — a third axis, and not a tier
 
-amenbo's plugin browser leads with a **featured** view: the plugins this catalog recommends. That is a
+Amenbo's plugin browser leads with a **featured** view: the plugins this catalog recommends. That is a
 separate question from both of the above — a listed third-party plugin can be featured, and an official
 one need not be.
 
@@ -108,7 +108,7 @@ plugin, which nothing in a pull request could establish. Changing what is featur
 act, and arrives as its own diff.
 
 The list is a set, not a ranking — it says which plugins are recommended, and leaves their order to the
-client. amenbo also ignores the flag on any catalog but this one, so a third-party catalog cannot
+client. Amenbo also ignores the flag on any catalog but this one, so a third-party catalog cannot
 recommend its own entries into that view.
 
 ## Getting listed

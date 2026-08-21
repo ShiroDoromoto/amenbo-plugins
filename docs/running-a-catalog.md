@@ -2,14 +2,14 @@
 
 English · [日本語](running-a-catalog.ja.md)
 
-An amenbo plugin catalog is **three static files** — plus one small one per language, once your plugins are
+An Amenbo plugin catalog is **three static files** — plus one small one per language, once your plugins are
 described in more than one. There is no server to run. The most common reason to stand one up is a closed
 shelf: plugins you have no intention of publishing, handed to people inside your own company.
 
 This document is for whoever is **running the catalog**. Writing the plugins themselves is
 [Writing a plugin](writing-a-plugin.md).
 
-> Registering a third-party catalog is available from amenbo 2.0.0. Check whether
+> Registering a third-party catalog is available from Amenbo 2.0.0. Check whether
 > `amenbo plugin catalog --help` answers on your machine.
 
 ## What your users see
@@ -20,7 +20,7 @@ A user registers you by the URL of your `catalog.json`.
 amenbo plugin catalog add https://plugins.example.com/catalog.json --name "Example Corp"
 ```
 
-amenbo fetches the `catalog-key.pub` sitting beside it, **shows the fingerprint, takes the user's consent,
+Amenbo fetches the `catalog-key.pub` sitting beside it, **shows the fingerprint, takes the user's consent,
 and pins that key**. From then on, a plugin installed from your catalog is verified against **that key**
 and nothing else.
 
@@ -35,7 +35,7 @@ can still be registered, but it can only be browsed: nothing on it installs.
 
 ## The files
 
-They sit in one directory. amenbo derives every one of them from the URL of `catalog.json`.
+They sit in one directory. Amenbo derives every one of them from the URL of `catalog.json`.
 
 | File | What is in it | Who fetches it, and when |
 | --- | --- | --- |
@@ -74,26 +74,26 @@ The envelope, and one entry per plugin.
 }
 ```
 
-- `catalog_v` versions the **envelope**, and is `1` today. amenbo refuses a catalog whose version it does
-  not know, whole. Entries growing a field does not move it — an older amenbo skips keys it does not know.
+- `catalog_v` versions the **envelope**, and is `1` today. Amenbo refuses a catalog whose version it does
+  not know, whole. Entries growing a field does not move it — an older Amenbo skips keys it does not know.
 - `generated_at` is optional.
 - One broken entry is dropped **on its own**. The rest of the catalog stays usable.
 
-**Which fields belong in the listing and which in the detail is not yours to decide.** `amenbo plugin
+**Which fields belong in the listing and which in the detail is not yours to decide.** `Amenbo plugin
 validate --json` hands the manifest back already split into `entry` and `detail`, and aggregation just
-publishes the two. That way a field amenbo adds later rides through without a change on your side. A
+publishes the two. That way a field Amenbo adds later rides through without a change on your side. A
 translated field follows the base field it translates, so the same call answers with `entry_i18n` beside
 them — the listing half, one entry per language.
 
-Three values are the **catalog's own**. amenbo returns them empty, and aggregation fills them in.
+Three values are the **catalog's own**. Amenbo returns them empty, and aggregation fills them in.
 
 | Field | How to fill it |
 | --- | --- |
-| `detail_sum` | the SHA-256 of the detail document you wrote (`sha256:<hex>`). **Required** — this is the only thing a user's amenbo compares to notice that a plugin has a different build |
+| `detail_sum` | the SHA-256 of the detail document you wrote (`sha256:<hex>`). **Required** — this is the only thing a user's Amenbo compares to notice that a plugin has a different build |
 | `added_at` | the day the plugin was listed. It is the "new" axis of the browser, and missing reads as unknown (git history is the natural source) |
 | `featured` | your recommendation. Leave it `false` if you have no use for it |
 
-`official` is **the amenbo team's badge**. Do not set it on your entries.
+`official` is **the Amenbo team's badge**. Do not set it on your entries.
 
 ## `catalog.<lang>.json`
 
@@ -119,7 +119,7 @@ plugin name.
   no network — see [Writing a plugin](writing-a-plugin.md#writing-it-in-other-languages) for what an
   author writes.
 
-The **placement is what makes this work for you at all**. amenbo resolves a language document the same way
+The **placement is what makes this work for you at all**. Amenbo resolves a language document the same way
 it resolves a detail document: the same base URL as the `catalog.json` a user registered, with the language
 in the name. Nothing about it is special-cased for the official catalog.
 
@@ -146,7 +146,7 @@ The URL of `catalog.json` itself may be http, which is what makes a local rehear
 
 ## Making the key
 
-**Your CI signs, not amenbo.** amenbo has no surface that touches a private key.
+**Your CI signs, not Amenbo.** Amenbo has no surface that touches a private key.
 
 ```sh
 minisign -G -p catalog-key.pub -s catalog.key
@@ -162,13 +162,13 @@ minisign -G -p catalog-key.pub -s catalog.key
 ## The aggregation script
 
 The smallest thing that reads `plugins/*.yaml` and writes the files into `_site/`. Its only dependencies
-are amenbo and minisign, and it publishes what `amenbo plugin validate --json` returned. This repository's
+are Amenbo and minisign, and it publishes what `amenbo plugin validate --json` returned. This repository's
 own [`scripts/aggregate.py`](../scripts/aggregate.py) is the same script grown up — a curation list, a
 carried-over signature, a job summary — and it is worth reading once you outgrow this one.
 
 ```python
 #!/usr/bin/env python3
-"""Build a signed amenbo plugin catalog out of the manifests in plugins/."""
+"""Build a signed Amenbo plugin catalog out of the manifests in plugins/."""
 
 import argparse
 import hashlib
@@ -185,10 +185,10 @@ CATALOG_V = 1
 
 
 def documents(amenbo, manifest):
-    """Hand the manifest to amenbo and take back the documents it splits into.
+    """Hand the manifest to Amenbo and take back the documents it splits into.
 
-    Which field belongs in which document is amenbo's answer, never this script's, so a
-    field amenbo grows later rides through without a change here. The translations beside
+    Which field belongs in which document is Amenbo's answer, never this script's, so a
+    field Amenbo grows later rides through without a change here. The translations beside
     the manifest are read with it and come back split the same way: `entry_i18n` is the
     list half, one entry per language, and the detail half is already inside `detail`.
     """
@@ -249,7 +249,7 @@ def main():
         if "." in manifest.stem:
             continue
         entry, entry_i18n, detail = documents(args.amenbo, manifest)
-        # The official badge belongs to the amenbo team's own catalog. Yours grants none.
+        # The official badge belongs to the Amenbo team's own catalog. Yours grants none.
         entry["official"] = False
         if detail.get("assets"):
             detail["assets"] = {
@@ -292,7 +292,7 @@ whole catalog becomes the worse failure — change it to drop that one entry wit
 
 A minisign signature carries the moment it was made. Sign the same asset again and you get a different
 signature, a different detail document, and a different `detail_sum` — which is the one thing a user's
-amenbo compares to decide a plugin has a new build. A catalog that re-signs everything on every publish
+Amenbo compares to decide a plugin has a new build. A catalog that re-signs everything on every publish
 therefore tells every user that every plugin was updated, every time anything at all was listed.
 
 So **carry the signature over when the bytes have not changed**: before signing, read what you currently
@@ -331,7 +331,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # The manifest rules live in amenbo itself, so CI needs an amenbo too. `plugin validate`
+      # The manifest rules live in Amenbo itself, so CI needs an Amenbo too. `plugin validate`
       # is not in a released build yet, so this builds it from source.
       - uses: actions/checkout@v7
         with:
@@ -394,12 +394,12 @@ the question.
 
 ## Rotating the key
 
-**It costs your users a re-registration.** amenbo does not quietly accept a distributable signed by a key
+**It costs your users a re-registration.** Amenbo does not quietly accept a distributable signed by a key
 other than the one pinned.
 
 ```
 Error: https://plugins.example.com/catalog.json now publishes a different key
-(32701CC140855BC6, pinned: 2F09ABE300368325). amenbo will not accept it on the old
+(32701CC140855BC6, pinned: 2F09ABE300368325). Amenbo will not accept it on the old
 consent — unregister the catalog and register it again to trust the new key.
 ```
 
@@ -407,11 +407,11 @@ consent — unregister the catalog and register it again to trust the new key.
 **in front of the person deciding**. Which is why rotating a key is not a quiet piece of maintenance:
 **announce the new fingerprint first.**
 
-## What amenbo does not do
+## What Amenbo does not do
 
-- **It ships no tool for building a catalog.** amenbo verifies; it has no surface that touches a private
+- **It ships no tool for building a catalog.** Amenbo verifies; it has no surface that touches a private
   key. Nothing that runs on a user's machine gets the ability to sign.
 - **It takes no part in keeping or revoking your key.** A pin only ever answers "is this the key that was
   registered?". That the key has not leaked is yours to guarantee.
-- **The official badge stays the amenbo team's.** A plugin from your catalog shows up under **your
+- **The official badge stays the Amenbo team's.** A plugin from your catalog shows up under **your
   catalog's name** — the one the user gave it when they registered you.

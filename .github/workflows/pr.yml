@@ -3,21 +3,21 @@ name: PR
 # The gate on a listing pull request: is every manifest well-formed, and does the one being submitted
 # describe the bytes it points at?
 #
-# Whether a manifest is well-formed is amenbo's judgment, not this repository's. The rules are the ones
-# its install door enforces, so this runs amenbo's real validator rather than a second implementation of
+# Whether a manifest is well-formed is Amenbo's judgment, not this repository's. The rules are the ones
+# its install door enforces, so this runs Amenbo's real validator rather than a second implementation of
 # them — restate them here and the two drift, and the drift shows up as a manifest this repo accepted and
 # every client then refuses.
 #
 # The shape is checked over every listed manifest; the assets behind it only for the manifests this pull
-# request touches. Those two scopes differ on purpose. A rule tightened in amenbo should surface against
+# request touches. Those two scopes differ on purpose. A rule tightened in Amenbo should surface against
 # the entries already listed, and costs nothing to check. An asset is a third party's to keep alive, and
 # fetching all of them on every pull request would both grow without bound and let one rotted URL block
 # submitters who never touched it — that rot is the catalog build's to handle, by dropping the entry.
 #
-# The validator is amenbo's published release, installed the way a person installs it, rather than a
+# The validator is Amenbo's published release, installed the way a person installs it, rather than a
 # build of its `main`: the rules this door holds submitters to are the ones every client already
 # enforces, and a rule that has not been released yet is one no client enforces. A rule tightened in
-# amenbo reaches this door on its release, with nothing to update here.
+# Amenbo reaches this door on its release, with nothing to update here.
 #
 # Nothing here needs a secret, which is what lets the asset check run on a pull request from a fork at
 # all: downloading bytes and hashing them is unprivileged. Signing those bytes is not, and stays on
@@ -27,7 +27,7 @@ name: PR
 # and a check that is never reported is not one that passes — it is a pull request left waiting for a
 # verdict nobody will give. A path filter here would be exactly that for anything touching only the
 # documentation, so what this workflow costs such a pull request is the price of the branch having a gate at
-# all. Little of it is wasted: the listed manifests are worth checking against the current amenbo whatever
+# all. Little of it is wasted: the listed manifests are worth checking against the current Amenbo whatever
 # the pull request touched, and the asset check below scopes itself to the manifests actually submitted, so
 # it fetches nothing when none were.
 on:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     # The CLI below asks whether a newer release is out, and the file that answers is an asset of that
     # release. A runner carries no answer over from a previous run, so every job that runs the binary
-    # would ask again, and each ask reads as one more person taking amenbo. Nobody here wants the answer
+    # would ask again, and each ask reads as one more person taking Amenbo. Nobody here wants the answer
     # either: this door deliberately holds submitters to whatever the published release is. Set on the
     # job, so every step that reaches for the binary is covered — the aggregation below, which calls it
     # once per manifest, included.
@@ -60,11 +60,11 @@ jobs:
           # and the shallow checkout a pull request gets by default cannot reach that far back.
           fetch-depth: 0
 
-      # The manifest rules live in exactly one place — amenbo's validator — so this runs the real binary
+      # The manifest rules live in exactly one place — Amenbo's validator — so this runs the real binary
       # rather than a second implementation of the rules, which would drift from the client's install
       # door. The binary is the published release, installed the way a person installs it: the door this
       # catalog guards is the one clients actually hold, and a rule that has not been released yet is a
-      # rule no client enforces. It follows that a rule tightened in amenbo reaches this door when it
+      # rule no client enforces. It follows that a rule tightened in Amenbo reaches this door when it
       # reaches everyone else's — on the release, not on the commit.
       - id: release
         name: Resolve the release that would be installed
@@ -72,7 +72,7 @@ jobs:
           set -euo pipefail
           # `latest` answers with a redirect naming the tag, and reading that redirect is a page request
           # rather than a download of a release asset — which is the whole point: the two assets the
-          # install below fetches are each counted as somebody taking amenbo, and knowing the tag is what
+          # install below fetches are each counted as somebody taking Amenbo, and knowing the tag is what
           # lets a run skip fetching them. It resolves the same `latest` the installer is fetched from, so
           # the key below can never name a release other than the one that would be installed.
           location=$(curl -fsSI https://github.com/ShiroDoromoto/amenbo/releases/latest \
@@ -80,14 +80,14 @@ jobs:
           tag="${location##*/}"
           case "$tag" in
             v*) ;;
-            *) echo "::error::could not resolve amenbo's latest release (redirected to '${location:-nothing}')"; exit 1 ;;
+            *) echo "::error::could not resolve Amenbo's latest release (redirected to '${location:-nothing}')"; exit 1 ;;
           esac
-          echo "resolved amenbo $tag"
+          echo "resolved Amenbo $tag"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "AMENBO_BIN=$HOME/.local/bin/amenbo" >> "$GITHUB_ENV"
 
       # Installing the CLI fetches two release assets — the installer, and the archive it unpacks — and
-      # GitHub counts each as somebody taking amenbo, with no way to tell this repository's own CI back
+      # GitHub counts each as somebody taking Amenbo, with no way to tell this repository's own CI back
       # out of the numbers afterwards. Keyed by the tag resolved above, that fetch happens once per
       # release rather than once per run. It cannot serve a build older than the one `latest` names: a
       # new release is a new key, which is a miss. And it needs no secret, so a pull request from a fork
@@ -100,7 +100,7 @@ jobs:
       # Gated on the binary actually running rather than on the cache reporting a hit: an entry that is
       # truncated or otherwise unusable heals itself here, instead of failing every job that restores it
       # until it ages out.
-      - name: Install the amenbo CLI (its manifest validator), unless the cache had it
+      - name: Install the Amenbo CLI (its manifest validator), unless the cache had it
         run: |
           set -euo pipefail
           if [ -x "$AMENBO_BIN" ] && "$AMENBO_BIN" --version; then
@@ -109,7 +109,7 @@ jobs:
           curl -fsSL https://github.com/ShiroDoromoto/amenbo/releases/latest/download/install.sh | sh
           "$AMENBO_BIN" --version
 
-      # Every manifest, not only the ones this pull request touched: a rule tightened in amenbo should
+      # Every manifest, not only the ones this pull request touched: a rule tightened in Amenbo should
       # surface against the entries already listed too, and validating the whole catalog is cheap.
       #
       # `plugin validate` reports every problem in a manifest rather than the first, and the loop keeps

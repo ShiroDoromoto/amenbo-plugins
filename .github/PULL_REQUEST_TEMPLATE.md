@@ -12,7 +12,7 @@
 - [ ] The distributable is written in exactly one form: `url` + `checksum`, or `assets` whose keys (`<os>` or `<os>-<arch>`) answer for every OS in `os` and for no other.
 - [ ] Every `url` points at a real, downloadable release asset, and its `checksum` is that asset's real digest.
 - [ ] `repo` is the plugin's own repository, not this catalog.
-- [ ] I did **not** set `official: true` (unless I am the amenbo team).
+- [ ] I did **not** set `official: true` (unless I am the Amenbo team).
 
 ## Notes for reviewers
 

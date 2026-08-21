@@ -1,4 +1,4 @@
-# The plugins this catalog recommends — the "featured" list amenbo's plugin browser leads with.
+# The plugins this catalog recommends — the "featured" list Amenbo's plugin browser leads with.
 #
 # One plugin name per line, matching a `plugins/<name>.yaml`. Blank lines and `#` comments are ignored,
 # and the order carries no meaning: this says *which* plugins are recommended, not how they rank.

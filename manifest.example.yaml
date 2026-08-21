@@ -4,7 +4,7 @@
 
 name: worktree
 desc: Isolate each task in its own git worktree
-author: amenbo
+author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-worktree
 os:
   - macos
@@ -45,17 +45,17 @@ about: |
 
 # official: true   # set by catalog curation, not by submitters
 # payload_v: 1     # the payload contract version the plugin reads (default: 1)
-# min_amenbo: 1.8.0  # minimum amenbo version the plugin needs (default: none)
+# min_amenbo: 1.8.0  # minimum Amenbo version the plugin needs (default: none)
 
 # What the plugin says for itself where an AI reads how to work in a folder (`amenbo agent --json`).
-# Optional, and relayed in whatever language it is written in — amenbo has no words of its own for what
+# Optional, and relayed in whatever language it is written in — Amenbo has no words of its own for what
 # someone else's plugin is for.
 #
-# `cmd` holds this plugin's own command face and nothing more: amenbo puts `amenbo plugin run <name> ` in
+# `cmd` holds this plugin's own command face and nothing more: Amenbo puts `amenbo plugin run <name> ` in
 # front of it, from the name it read, so a reader gets a line they can type. A plugin whose whole surface
 # is observation hooks writes `when` alone and no `commands`.
 #
-# `steps` is where in amenbo's own working cycle a call is a tool, each step named by id (`<run>.<step>`,
+# `steps` is where in Amenbo's own working cycle a call is a tool, each step named by id (`<run>.<step>`,
 # read off `amenbo agent --json`). The line to type is hung there; the sentences above stay here. Omit it
 # and the call is a tool for no step in particular.
 agent:
@@ -106,7 +106,7 @@ agent:
 #         task.done: タスクが完了した
 #
 # Not translatable: everything else here, `agent.when` and each `does` included — an AI reads those, and
-# they stay in one language. The languages are the 19 amenbo itself is read in: en, ja, zh-Hans, zh-Hant,
+# they stay in one language. The languages are the 19 Amenbo itself is read in: en, ja, zh-Hans, zh-Hant,
 # ko, es, pt-BR, fr, de, it, ru, hi, id, vi, th, tr, pl, nl, uk.
 #
 # `amenbo plugin validate plugins/<name>.yaml` reads whatever is beside the manifest along with it, so one
