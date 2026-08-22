@@ -12,7 +12,7 @@ config:
     label: Slack Webhook URL
     help: |-
       이 URL을 만드는 곳은 Amenbo가 아니라 Slack이고, 그 URL이 곧 채널입니다. 채널을 잘못 고른 Webhook은 다른 설정이 모두 맞아도 엉뚱한 방으로 보냅니다.
-      api.slack.com/apps에서 이 프로젝트의 보고를 받을 워크스페이스에 앱을 만들고, Incoming Webhooks를 켜고, 보낼 채널에 하나 추가한 뒤 돌려받은 URL을 복사합니다.
+      이 프로젝트의 보고를 받을 워크스페이스에 앱을 만들고, Incoming Webhooks를 켜고, 보낼 채널에 하나 추가한 뒤 돌려받은 URL을 복사합니다.
       비밀 설정으로 보관되므로 내보내기에도, 로그에도, 되읽기에도 나오지 않습니다.
   events:
     label: 무엇을 보고할지

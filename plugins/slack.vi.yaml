@@ -12,7 +12,7 @@ config:
     label: URL webhook của Slack
     help: |-
       URL này do Slack tạo, không phải Amenbo, và chính nó là kênh: một webhook lấy nhầm kênh sẽ báo vào phòng khác dù mọi thứ còn lại đều đúng.
-      Tại api.slack.com/apps, tạo một app trong workspace cần biết về dự án này, bật Incoming Webhooks, thêm một cái cho kênh muốn gửi, rồi sao chép URL nhận được.
+      Tạo một app trong workspace cần biết về dự án này, bật Incoming Webhooks, thêm một cái cho kênh muốn gửi, rồi sao chép URL nhận được.
       Nó được giữ như một thiết lập bí mật — không rời Amenbo qua bản xuất, nhật ký hay lần đọc lại nào.
   events:
     label: Báo những gì

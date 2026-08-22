@@ -12,7 +12,7 @@ config:
     label: Slack webhook adresi
     help: |-
       Bu adresi Amenbo değil Slack üretir ve adres kanalın kendisidir: yanlış kanal için alınmış bir webhook, başka hiçbir şey yanlış olmasa da yanlış odaya bildirir.
-      api.slack.com/apps adresinde, bu projeyi duyması gereken çalışma alanında bir uygulama oluştur, Incoming Webhooks'u aç, bildirimin gideceği kanala bir tane ekle ve dönen adresi kopyala.
+      Bu projeyi duyması gereken çalışma alanında bir uygulama oluştur, Incoming Webhooks'u aç, bildirimin gideceği kanala bir tane ekle ve dönen adresi kopyala.
       Gizli ayar olarak tutulur — dışa aktarmaya da, günlüğe de, geri okumaya da çıkmaz.
   events:
     label: Ne bildirilsin
