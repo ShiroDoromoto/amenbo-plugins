@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Kata sandi
     help: |-
-      Kata sandi yang boleh dipakai sebuah program pada akun itu, yang tidak selalu sama dengan kata sandi masuk Anda. Gmail menolak kata sandinya sendiri: nyalakan Verifikasi 2 Langkah, buat sandi aplikasi, lalu masukkan enam belas karakternya tanpa spasi — jarak yang tampil di layar bukan bagian darinya.
+      Kata sandi yang boleh dipakai sebuah program pada akun itu, yang tidak selalu sama dengan kata sandi masuk Anda. Gmail menolak kata sandinya sendiri dan meminta sandi aplikasi: tombol di atas membuatkannya, asalkan Verifikasi 2 Langkah sudah menyala pada akun itu. Masukkan enam belas karakternya tanpa spasi — jarak yang tampil di layar bukan bagian darinya.
   from:
     label: Pengirim
     help: |-

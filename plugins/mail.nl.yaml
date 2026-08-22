@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Wachtwoord
     help: |-
-      Het wachtwoord dat dit account een programma laat gebruiken, en dat niet altijd het wachtwoord is waarmee je inlogt. Gmail weigert zijn eigen wachtwoord: zet verificatie in twee stappen aan, maak een app-wachtwoord en voer de zestien tekens aaneengesloten in — de spaties die het scherm toont horen er niet bij.
+      Het wachtwoord dat dit account een programma laat gebruiken, en dat niet altijd het wachtwoord is waarmee je inlogt. Gmail weigert zijn eigen wachtwoord en wil een app-wachtwoord: de knop hierboven maakt er een, mits verificatie in twee stappen al aanstaat voor het account. Voer de zestien tekens aaneengesloten in — de spaties die het scherm toont horen er niet bij.
   from:
     label: Afzender
     help: |-

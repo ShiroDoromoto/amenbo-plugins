@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Mot de passe
     help: |-
-      Le mot de passe que ce compte autorise un programme à utiliser, qui n'est pas toujours celui de votre connexion. Gmail refuse le sien : activez la validation en deux étapes, créez un mot de passe d'application et saisissez ses seize caractères d'affilée — les espaces affichés à l'écran n'en font pas partie.
+      Le mot de passe que ce compte autorise un programme à utiliser, qui n'est pas toujours celui de votre connexion. Gmail refuse le sien et demande un mot de passe d'application : le bouton ci-dessus en crée un, à condition que la validation en deux étapes soit déjà activée sur le compte. Saisissez ses seize caractères d'affilée — les espaces affichés à l'écran n'en font pas partie.
   from:
     label: Expéditeur
     help: |-

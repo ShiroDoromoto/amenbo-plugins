@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Senha
     help: |-
-      A senha que essa conta permite a um programa usar, que nem sempre é a mesma com que você entra. O Gmail recusa a própria: ative a verificação em duas etapas, crie uma senha de app e digite seus dezesseis caracteres emendados — os espaços que a tela mostra não fazem parte dela.
+      A senha que essa conta permite a um programa usar, que nem sempre é a mesma com que você entra. O Gmail recusa a própria e pede uma senha de app: o botão acima cria uma, desde que a conta já tenha a verificação em duas etapas ativada. Digite seus dezesseis caracteres emendados — os espaços que a tela mostra não fazem parte dela.
   from:
     label: Remetente
     help: |-

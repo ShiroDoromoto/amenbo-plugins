@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Password
     help: |-
-      La password che quell’account concede a un programma, che non è sempre quella con cui accedi. Gmail rifiuta la propria: attiva la verifica in due passaggi, crea una password per le app e inserisci i suoi sedici caratteri di seguito — gli spazi mostrati sullo schermo non ne fanno parte.
+      La password che quell’account concede a un programma, che non è sempre quella con cui accedi. Gmail rifiuta la propria e vuole invece una password per le app: il pulsante qui sopra ne crea una, purché sull’account sia già attiva la verifica in due passaggi. Inserisci i suoi sedici caratteri di seguito — gli spazi mostrati sullo schermo non ne fanno parte.
   from:
     label: Mittente
     help: |-

@@ -45,7 +45,7 @@ about: |
   https://github.com/ShiroDoromoto/amenbo-plugin-mail#gmail
 official: true
 payload_v: 1
-min_amenbo: 13.0.0
+min_amenbo: 14.2.0
 config:
   - key: smtp_host
     label: SMTP server
@@ -62,10 +62,13 @@ config:
     help: |-
       The account to authenticate as, written out in full — the whole address, not the part before the @. Leave it and the password empty for a relay that asks for neither.
     placeholder: you@gmail.com
+  - link:
+      url: https://myaccount.google.com/apppasswords
+      label: Create a Gmail app password
   - key: smtp_password
     label: Password
     help: |-
-      The password that account lets a program use, which is not always the one you sign in with. Gmail refuses its own: turn on 2-Step Verification, create an app password, and enter its sixteen characters run together — the spaces the screen shows them in are not part of it.
+      The password that account lets a program use, which is not always the one you sign in with. Gmail refuses its own and wants an app password instead — the button above creates one, for an account that already has 2-Step Verification turned on. Enter its sixteen characters run together: the spaces the screen shows them in are not part of it.
     secret: true
   - key: from
     label: From

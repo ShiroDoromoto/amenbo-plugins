@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Hasło
     help: |-
-      Hasło, które to konto udostępnia programowi, nie zawsze to samo, którym się logujesz. Gmail odrzuca własne: włącz weryfikację dwuetapową, utwórz hasło do aplikacji i wpisz jego szesnaście znaków bez przerw — odstępy widoczne na ekranie nie są jego częścią.
+      Hasło, które to konto udostępnia programowi, nie zawsze to samo, którym się logujesz. Gmail odrzuca własne i wymaga hasła do aplikacji: przycisk powyżej je tworzy, o ile na koncie włączona jest już weryfikacja dwuetapowa. Wpisz jego szesnaście znaków bez przerw — odstępy widoczne na ekranie nie są jego częścią.
   from:
     label: Nadawca
     help: |-
