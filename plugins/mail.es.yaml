@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Contraseña
     help: |-
-      La contraseña que esa cuenta permite usar a un programa, que no siempre es con la que inicias sesión. Gmail rechaza la suya propia: activa la verificación en dos pasos, crea una contraseña de aplicación e introduce sus dieciséis caracteres seguidos — los espacios que muestra la pantalla no forman parte de ella.
+      La contraseña que esa cuenta permite usar a un programa, que no siempre es con la que inicias sesión. Gmail rechaza la suya propia y pide una contraseña de aplicación: el botón de arriba crea una, siempre que la cuenta ya tenga activada la verificación en dos pasos. Introduce sus dieciséis caracteres seguidos — los espacios que muestra la pantalla no forman parte de ella.
   from:
     label: Remitente
     help: |-

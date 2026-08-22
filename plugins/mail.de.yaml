@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Passwort
     help: |-
-      Das Passwort, das dieses Konto einem Programm erlaubt — nicht immer dasselbe, mit dem Sie sich anmelden. Gmail lehnt sein eigenes ab: Schalten Sie die Bestätigung in zwei Schritten ein, erstellen Sie ein App-Passwort und geben Sie dessen sechzehn Zeichen ohne Leerzeichen ein — die Abstände auf dem Bildschirm gehören nicht dazu.
+      Das Passwort, das dieses Konto einem Programm erlaubt — nicht immer dasselbe, mit dem Sie sich anmelden. Gmail lehnt sein eigenes ab und verlangt stattdessen ein App-Passwort: Die Schaltfläche darüber erstellt eines, sofern für das Konto die Bestätigung in zwei Schritten bereits eingeschaltet ist. Geben Sie dessen sechzehn Zeichen ohne Leerzeichen ein — die Abstände auf dem Bildschirm gehören nicht dazu.
   from:
     label: Absender
     help: |-

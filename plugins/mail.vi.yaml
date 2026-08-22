@@ -31,7 +31,7 @@ config:
   smtp_password:
     label: Mật khẩu
     help: |-
-      Mật khẩu mà tài khoản đó cho phép một chương trình dùng, không phải lúc nào cũng là mật khẩu bạn đăng nhập. Gmail từ chối mật khẩu của chính nó: hãy bật Xác minh 2 bước, tạo mật khẩu ứng dụng, rồi nhập mười sáu ký tự liền nhau — các khoảng trắng hiện trên màn hình không thuộc về nó.
+      Mật khẩu mà tài khoản đó cho phép một chương trình dùng, không phải lúc nào cũng là mật khẩu bạn đăng nhập. Gmail từ chối mật khẩu của chính nó và đòi mật khẩu ứng dụng: nút phía trên sẽ tạo một mật khẩu như vậy, miễn là tài khoản đã bật Xác minh 2 bước. Nhập mười sáu ký tự liền nhau — các khoảng trắng hiện trên màn hình không thuộc về nó.
   from:
     label: Người gửi
     help: |-

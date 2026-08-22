@@ -32,7 +32,7 @@ config:
   smtp_password:
     label: Parola
     help: |-
-      O hesabın bir programa kullandırdığı parola; her zaman oturum açtığınız parola değildir. Gmail kendi parolasını kabul etmez: 2 Adımlı Doğrulama'yı açın, bir uygulama parolası oluşturun ve on altı karakterini bitişik girin — ekranda görünen boşluklar parolanın parçası değildir.
+      O hesabın bir programa kullandırdığı parola; her zaman oturum açtığınız parola değildir. Gmail kendi parolasını kabul etmez, bunun yerine bir uygulama parolası ister: yukarıdaki düğme bir tane oluşturur, yeter ki hesapta 2 Adımlı Doğrulama açık olsun. On altı karakterini bitişik girin — ekranda görünen boşluklar parolanın parçası değildir.
   from:
     label: Gönderen
     help: |-
