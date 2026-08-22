@@ -12,7 +12,7 @@ config:
     label: Slack Webhook 位址
     help: |-
       這個位址由 Slack 產生，不是 Amenbo，而它就是頻道：webhook 選錯頻道，其他都設定對了也會發到錯的房間。
-      在 api.slack.com/apps 裡，為需要知道這個專案的工作區建立一個應用程式，打開 Incoming Webhooks，為要發訊息的頻道新增一條，再複製回傳的位址。
+      為需要知道這個專案的工作區建立一個應用程式，打開 Incoming Webhooks，為要發訊息的頻道新增一條，再複製回傳的位址。
       它以機密設定的形式保存——不會隨匯出、記錄或回讀離開 Amenbo。
   events:
     label: 報告哪些事

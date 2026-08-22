@@ -12,7 +12,7 @@ config:
     label: Adres URL webhooka Slacka
     help: |-
       Ten adres tworzy Slack, nie Amenbo, i to on jest kanałem: webhook wystawiony na zły kanał raportuje do złego pokoju, choć poza tym wszystko jest ustawione dobrze.
-      Na api.slack.com/apps utwórz aplikację w przestrzeni, która ma słyszeć o tym projekcie, włącz Incoming Webhooks, dodaj jeden do wybranego kanału i skopiuj zwrócony adres.
+      Utwórz aplikację w przestrzeni, która ma słyszeć o tym projekcie, włącz Incoming Webhooks, dodaj jeden do wybranego kanału i skopiuj zwrócony adres.
       Jest trzymany jako tajne ustawienie — nie opuszcza Amenbo ani w eksporcie, ani w dzienniku, ani przy odczycie zwrotnym.
   events:
     label: Co zgłaszać

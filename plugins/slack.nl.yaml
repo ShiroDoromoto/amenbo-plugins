@@ -12,7 +12,7 @@ config:
     label: Slack-webhook-URL
     help: |-
       Deze URL komt van Slack, niet van Amenbo, en hij is het kanaal: een webhook voor het verkeerde kanaal meldt in de verkeerde ruimte, terwijl er verder niets fout staat.
-      Maak op api.slack.com/apps een app in de workspace die van dit project moet horen, zet Incoming Webhooks aan, voeg er een toe aan het kanaal waar het heen moet, en kopieer de URL die je terugkrijgt.
+      Maak een app in de workspace die van dit project moet horen, zet Incoming Webhooks aan, voeg er een toe aan het kanaal waar het heen moet, en kopieer de URL die je terugkrijgt.
       Hij wordt als geheime instelling bewaard — hij verlaat Amenbo niet in een export, een log of een teruglezing.
   events:
     label: Wat er gemeld wordt

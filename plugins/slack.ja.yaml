@@ -12,7 +12,7 @@ config:
     label: Slack の Webhook URL
     help: |-
       これを作るのは Amenbo ではなく Slack で、URL がそのままチャンネルです。宛先を間違えた Webhook は、ほかが全部合っていても別の部屋へ流れます。
-      api.slack.com/apps で、このプロジェクトの報告を受けるワークスペースにアプリを作り、Incoming Webhooks を有効にして、流したいチャンネルへ1本追加し、返ってきた URL をコピーします。
+      このプロジェクトの報告を受けるワークスペースにアプリを作り、Incoming Webhooks を有効にして、流したいチャンネルへ1本追加し、返ってきた URL をコピーします。
       秘密の設定として持つので、エクスポートにもログにも読み返しにも出ません。
   events:
     label: 何を報告するか
