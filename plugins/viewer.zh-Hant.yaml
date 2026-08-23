@@ -1,28 +1,31 @@
-desc: 在手機上讀你的待辦，資料存在你自己的地方
+desc: 在手機上讀你的任務，資料存在你自己的伺服器上
 about: |
-  離開電腦時，待辦也會送到手機上，用 Amenbo Viewer 就能讀——有哪些任務、每一件現在處於什麼狀態，以及當初為什麼這麼定。
+  離開電腦時，任務也會送到手機上，用 Amenbo Viewer 就能讀——有哪些任務、每一件現在處於什麼狀態，以及當初為什麼這麼定。
 
-  沒有誰替你代管。地方是你自己的：`setup` 在你自己的 Cloudflare 帳戶裡立起來的 Worker 和資料庫。紀錄單向送出，只送動過的那些。
+  沒有誰替你代管。伺服器是你自己的：「3. 在 Cloudflare 上建立伺服器」會在你自己的 Cloudflare 帳戶裡連同資料庫一起建好。動過的那些單向送出，也只送動過的部分。
 
-  紀錄是封好的。`qr` 不經過網路就能配對手機——相機讀走位址、權杖和金鑰。`phones` 列出哪些手機可讀，`revoke` 單獨切斷其中一台。
+  送出時是封好的。「4. 配對手機」不經過網路就能配對一台手機——相機讀走伺服器的 URL、讀取用的 API 權杖和加密金鑰。「5. 檢視已配對的手機」列出哪些手機可讀，「6. 解除手機配對」單獨切斷其中一台。
 
   一旦啟用，送出的是這台電腦上的全部專案——手機是一台裝置，不是一個專案。
 config:
   routes:
     label: 送往哪裡
     help: |-
-      這個可不可以送到你自己的 Cloudflare Worker。這裡只能把地方減去：勾起來了，Worker 也得先真的存在才會有東西送到，而立起它的是 setup。一個都不勾也是一種回答，並會被照辦：外掛仍然啟用，但哪裡都不送。
+      這個可不可以送到你自己在 Cloudflare 上的伺服器。這裡只能把地方減去：勾起來了，伺服器也得先真的存在才會有東西送到，而建立它的是「3. 在 Cloudflare 上建立伺服器」。一個都不勾也是一種回答，並會被照辦：外掛仍然啟用，但哪裡都不送。
     options:
-      cloudflare: 你自己的 Cloudflare Worker
+      cloudflare: 你自己在 Cloudflare 上的伺服器
   worker_url:
-    label: 你自己的 Cloudflare Worker 的 URL
-    help: "立起 Worker 時由 setup 寫入。這裡沒有要輸入的東西。"
+    label: 你在 Cloudflare 上的伺服器的 URL
+    help: |-
+      建立伺服器時由「3. 在 Cloudflare 上建立伺服器」寫入。這裡沒有要輸入的東西。
   auth_token:
-    label: Worker 放行寫入所用的權杖
-    help: "由 setup 產生。這裡沒有要輸入的東西。"
+    label: 伺服器放行寫入所用的 API 權杖
+    help: |-
+      由「3. 在 Cloudflare 上建立伺服器」產生。這裡沒有要輸入的東西。
   encryption_key:
-    label: 加密紀錄所用的金鑰
-    help: "由 setup 產生。這裡沒有要輸入的東西——手機透過 QR 取得，不經過網路。"
+    label: 加密你的任務所用的金鑰
+    help: |-
+      由「3. 在 Cloudflare 上建立伺服器」產生。這裡沒有要輸入的東西——手機透過 QR 取得，不經過網路。
 settings:
   actions:
     app:
@@ -30,10 +33,16 @@ settings:
     token:
       label: 2. 取得 API 權杖
     setup:
-      label: 3. 建立 Cloudflare 通道
+      label: 3. 在 Cloudflare 上建立伺服器
       ask:
         api_token: Cloudflare API 權杖
     qr:
       label: 4. 配對手機
       ask:
         label: 這台手機的名稱
+    phones:
+      label: 5. 檢視已配對的手機
+    revoke:
+      label: 6. 解除手機配對
+      ask:
+        phone: 要解除配對的手機名稱

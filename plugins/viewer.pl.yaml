@@ -1,28 +1,31 @@
-desc: Czytaj swoją listę zadań na telefonie, z miejsca, które należy do ciebie
+desc: Czytaj swoje zadania na telefonie, z serwera, który należy do ciebie
 about: |
-  Twoja lista zadań trafia na telefon, a aplikacja Amenbo Viewer czyta ją tam — zadania, stan każdego z nich i decyzje, które za nimi stoją — kiedy jesteś z dala od komputera.
+  Twoje zadania trafiają na telefon, a aplikacja Amenbo Viewer czyta je tam — zadania, stan każdego z nich i decyzje, które za nimi stoją — kiedy jesteś z dala od komputera.
 
-  Nikt niczego dla ciebie nie hostuje. Miejsce należy do ciebie: Cloudflare Worker wraz z bazą danych, którego `setup` stawia na twoim własnym koncie Cloudflare. Wpisy jadą w jedną stronę i tylko w takiej ilości, w jakiej się zmieniły.
+  Nikt niczego dla ciebie nie hostuje. Serwer należy do ciebie: „3. Utwórz serwer w Cloudflare” stawia go wraz z bazą danych na twoim własnym koncie Cloudflare. To, co się zmieniło, jedzie w jedną stronę i tylko w takiej ilości, w jakiej się zmieniło.
 
-  Jadą zapieczętowane. `qr` paruje telefon bez wychodzenia do sieci — aparat odczytuje adres, token i klucz. `phones` mówi, które telefony mogą czytać, a `revoke` odcina jeden z nich.
+  Jedzie zapieczętowane. „4. Sparuj telefon” paruje jeden bez wychodzenia do sieci — aparat odczytuje URL serwera, token API do odczytu i klucz szyfrowania. „5. Zobacz sparowane telefony” mówi, które telefony mogą czytać, a „6. Odłącz telefon” odcina jeden z nich.
 
   Po włączeniu niesie każdy projekt z tej maszyny: telefon to jedno urządzenie, a nie jeden projekt.
 config:
   routes:
     label: Dokąd przenosić
     help: |-
-      Czy to może przenosić do twojego Cloudflare Workera. Miejsce da się tu tylko odjąć: zaznaczenie nie wystarczy — Worker i tak musi już istnieć, zanim cokolwiek do niego dotrze, a stawia go setup. Niezaznaczenie niczego też jest odpowiedzią i jest respektowane: wtyczka pozostaje włączona i nigdzie nie przenosi.
+      Czy to może przenosić na twój serwer w Cloudflare. Miejsce da się tu tylko odjąć: zaznaczenie nie wystarczy — serwer i tak musi już istnieć, zanim cokolwiek do niego dotrze, a stawia go „3. Utwórz serwer w Cloudflare”. Niezaznaczenie niczego też jest odpowiedzią i jest respektowane: wtyczka pozostaje włączona i nigdzie nie przenosi.
     options:
-      cloudflare: Twój własny Cloudflare Worker
+      cloudflare: Twój własny serwer w Cloudflare
   worker_url:
-    label: Adres URL twojego własnego Cloudflare Workera
-    help: "setup wpisuje to, gdy stawia Workera. Nie ma tu nic do wpisania."
+    label: Adres URL twojego serwera w Cloudflare
+    help: |-
+      „3. Utwórz serwer w Cloudflare” wpisuje to, gdy stawia serwer. Nie ma tu nic do wpisania.
   auth_token:
-    label: Token, którym Worker przepuszcza zapisy
-    help: "setup to generuje. Nie ma tu nic do wpisania."
+    label: Token API, którym serwer przepuszcza zapisy
+    help: |-
+      „3. Utwórz serwer w Cloudflare” to generuje. Nie ma tu nic do wpisania.
   encryption_key:
-    label: Klucz, którym szyfrowane są wpisy
-    help: "setup go generuje. Nie ma tu nic do wpisania — telefon dostaje go z kodu QR, nigdy przez sieć."
+    label: Klucz, którym szyfrowane są twoje zadania
+    help: |-
+      „3. Utwórz serwer w Cloudflare” go generuje. Nie ma tu nic do wpisania — telefon dostaje go z kodu QR, nigdy przez sieć.
 settings:
   actions:
     app:
@@ -30,10 +33,16 @@ settings:
     token:
       label: 2. Pobierz token API
     setup:
-      label: 3. Skonfiguruj trasę Cloudflare
+      label: 3. Utwórz serwer w Cloudflare
       ask:
         api_token: Token API Cloudflare
     qr:
       label: 4. Sparuj telefon
       ask:
         label: Nazwa tego telefonu
+    phones:
+      label: 5. Zobacz sparowane telefony
+    revoke:
+      label: 6. Odłącz telefon
+      ask:
+        phone: Nazwa telefonu do odłączenia

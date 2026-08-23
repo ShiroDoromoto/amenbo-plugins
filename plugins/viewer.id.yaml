@@ -1,28 +1,31 @@
-desc: Baca daftar tugas Anda di ponsel, dari tempat milik Anda sendiri
+desc: Baca tugas Anda di ponsel, dari server milik Anda sendiri
 about: |
-  Daftar tugas Anda sampai ke ponsel, dan aplikasi Amenbo Viewer membacanya di sana — tugasnya, keadaan tiap tugas saat ini, dan keputusan di baliknya — selagi Anda jauh dari PC.
+  Tugas Anda sampai ke ponsel, dan aplikasi Amenbo Viewer membacanya di sana — tugasnya, keadaan tiap tugas saat ini, dan keputusan di baliknya — selagi Anda jauh dari PC.
 
-  Tidak ada yang dihosting untuk Anda. Tempatnya milik Anda sendiri: Cloudflare Worker beserta basis datanya yang didirikan `setup` di akun Cloudflare Anda sendiri. Catatan berjalan satu arah, dan hanya sebanyak yang berubah.
+  Tidak ada yang dihosting untuk Anda. Servernya milik Anda sendiri: “3. Buat server di Cloudflare” mendirikannya, beserta basis datanya, di akun Cloudflare Anda sendiri. Yang sudah berubah berjalan satu arah, dan hanya sebanyak yang berubah.
 
-  Catatan berjalan tersegel. `qr` memasangkan ponsel tanpa melalui jaringan — kamera membaca alamat, token, dan kuncinya. `phones` menyebut ponsel mana saja yang boleh membaca, dan `revoke` memutus salah satunya.
+  Perjalanannya tersegel. “4. Pasangkan ponsel” memasangkan satu ponsel tanpa melalui jaringan — kamera membaca URL server, token API baca, dan kunci enkripsi. “5. Lihat ponsel yang dipasangkan” menyebut ponsel mana saja yang boleh membaca, dan “6. Lepaskan ponsel” memutus salah satunya.
 
   Begitu diaktifkan, yang dibawa adalah seluruh proyek di mesin ini: ponsel adalah satu perangkat, bukan satu proyek.
 config:
   routes:
     label: Ke mana dibawa
     help: |-
-      Apakah ini boleh membawa ke Cloudflare Worker Anda. Dari sini tempat hanya bisa dikurangi: dicentang pun Worker tetap harus sudah ada sebelum ada yang sampai ke sana, dan setup-lah yang mendirikannya. Tidak mencentang juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak membawa ke mana pun.
+      Apakah ini boleh membawa ke server Anda di Cloudflare. Dari sini tempat hanya bisa dikurangi: dicentang pun server tetap harus sudah ada sebelum ada yang sampai ke sana, dan “3. Buat server di Cloudflare”-lah yang mendirikannya. Tidak mencentang juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak membawa ke mana pun.
     options:
-      cloudflare: Cloudflare Worker milik Anda
+      cloudflare: Server milik Anda sendiri di Cloudflare
   worker_url:
-    label: URL Cloudflare Worker Anda sendiri
-    help: "setup mengisinya saat menyiapkan Worker. Tidak ada yang perlu diketik."
+    label: URL server Anda di Cloudflare
+    help: |-
+      “3. Buat server di Cloudflare” mengisinya saat mendirikan server. Tidak ada yang perlu diketik.
   auth_token:
-    label: Token yang dipakai Worker untuk menerima tulisan
-    help: "setup membuatnya. Tidak ada yang perlu diketik."
+    label: Token API yang dipakai server untuk menerima tulisan
+    help: |-
+      “3. Buat server di Cloudflare” membuatnya. Tidak ada yang perlu diketik.
   encryption_key:
-    label: Kunci untuk mengenkripsi catatan
-    help: "setup membuatnya. Tidak ada yang perlu diketik — ponsel menerimanya lewat QR, tidak pernah lewat jaringan."
+    label: Kunci untuk mengenkripsi tugas Anda
+    help: |-
+      “3. Buat server di Cloudflare” membuatnya. Tidak ada yang perlu diketik — ponsel menerimanya lewat QR, tidak pernah lewat jaringan.
 settings:
   actions:
     app:
@@ -30,10 +33,16 @@ settings:
     token:
       label: 2. Ambil token API
     setup:
-      label: 3. Siapkan jalur Cloudflare
+      label: 3. Buat server di Cloudflare
       ask:
         api_token: Token API Cloudflare
     qr:
       label: 4. Pasangkan ponsel
       ask:
         label: Nama untuk ponsel ini
+    phones:
+      label: 5. Lihat ponsel yang dipasangkan
+    revoke:
+      label: 6. Lepaskan ponsel
+      ask:
+        phone: Nama ponsel yang dilepas

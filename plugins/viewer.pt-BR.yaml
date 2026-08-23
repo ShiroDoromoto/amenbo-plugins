@@ -1,28 +1,31 @@
-desc: Leia sua lista de tarefas no celular, de um lugar que é seu
+desc: Leia suas tarefas no celular, de um servidor que é seu
 about: |
-  Sua lista de tarefas chega ao celular e o app Amenbo Viewer a lê por lá — as tarefas, o estado em que cada uma está e as decisões por trás delas — enquanto você está longe do computador.
+  Suas tarefas chegam ao celular e o app Amenbo Viewer as lê por lá — as tarefas, o estado em que cada uma está e as decisões por trás delas — enquanto você está longe do computador.
 
-  Ninguém hospeda nada para você. O lugar é seu: um Worker do Cloudflare com seu banco de dados que o `setup` levanta na sua própria conta Cloudflare. Os registros viajam em uma só direção, e só conforme se movem.
+  Ninguém hospeda nada para você. O servidor é seu: “3. Criar o servidor no Cloudflare” o levanta, com seu banco de dados, na sua própria conta Cloudflare. O que se moveu viaja em uma só direção, e só conforme se move.
 
-  Eles viajam lacrados. O `qr` pareia um celular fora da rede — a câmera lê o endereço, o token e a chave. O `phones` diz quais celulares podem ler, e o `revoke` corta um deles.
+  Viaja lacrado. “4. Parear um telefone” pareia um fora da rede — a câmera lê a URL do servidor, o token de API de leitura e a chave de criptografia. “5. Ver os celulares pareados” diz quais celulares podem ler, e “6. Desparear um celular” corta um deles.
 
   Ao ativar, ele leva todo projeto desta máquina: um celular é um aparelho, não um projeto.
 config:
   routes:
     label: Para onde levar
     help: |-
-      Se isto pode levar ao seu Worker do Cloudflare. Aqui só dá para tirar o lugar: marcá-lo não basta, o Worker precisa existir antes que algo chegue nele, e é o setup que o levanta. Não marcar nada também é uma resposta e é respeitada: o plugin continua ativo e não leva a lugar nenhum.
+      Se isto pode levar ao seu servidor no Cloudflare. Aqui só dá para tirar o lugar: marcá-lo não basta, o servidor precisa existir antes que algo chegue nele, e é “3. Criar o servidor no Cloudflare” que o levanta. Não marcar nada também é uma resposta e é respeitada: o plugin continua ativo e não leva a lugar nenhum.
     options:
-      cloudflare: Seu próprio Worker do Cloudflare
+      cloudflare: Seu próprio servidor no Cloudflare
   worker_url:
-    label: URL do seu próprio Cloudflare Worker
-    help: "setup preenche isto ao levantar o Worker. Não há nada para digitar."
+    label: URL do seu servidor no Cloudflare
+    help: |-
+      “3. Criar o servidor no Cloudflare” preenche isto ao levantar o servidor. Não há nada para digitar.
   auth_token:
-    label: Token com que o Worker aceita gravações
-    help: "setup gera isto. Não há nada para digitar."
+    label: Token de API com que o servidor aceita gravações
+    help: |-
+      “3. Criar o servidor no Cloudflare” gera isto. Não há nada para digitar.
   encryption_key:
-    label: Chave com que os registros são criptografados
-    help: "setup gera isto. Não há nada para digitar — o telefone a recebe pelo QR, nunca pela rede."
+    label: Chave com que suas tarefas são criptografadas
+    help: |-
+      “3. Criar o servidor no Cloudflare” gera isto. Não há nada para digitar — o telefone a recebe pelo QR, nunca pela rede.
 settings:
   actions:
     app:
@@ -30,10 +33,16 @@ settings:
     token:
       label: 2. Obter um token de API
     setup:
-      label: 3. Configurar a rota do Cloudflare
+      label: 3. Criar o servidor no Cloudflare
       ask:
         api_token: Token de API do Cloudflare
     qr:
       label: 4. Parear um telefone
       ask:
         label: Como chamar este telefone
+    phones:
+      label: 5. Ver os celulares pareados
+    revoke:
+      label: 6. Desparear um celular
+      ask:
+        phone: Nome do celular a desparear

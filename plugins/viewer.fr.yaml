@@ -1,28 +1,31 @@
-desc: Lisez votre liste de tâches sur votre téléphone, depuis un endroit qui vous appartient
+desc: Lisez vos tâches sur votre téléphone, depuis un serveur qui vous appartient
 about: |
-  Votre liste de tâches arrive sur votre téléphone et l'app Amenbo Viewer l'y lit — les tâches, l'état de chacune et les décisions qui les motivent — pendant que vous êtes loin de l'ordinateur.
+  Vos tâches arrivent sur votre téléphone et l'app Amenbo Viewer les y lit — les tâches, l'état de chacune et les décisions qui les motivent — pendant que vous êtes loin de l'ordinateur.
 
-  Rien n'est hébergé pour vous. L'endroit est le vôtre : un Worker Cloudflare et sa base de données que `setup` met en place dans votre propre compte Cloudflare. Les enregistrements circulent dans un seul sens, et seulement à mesure qu'ils bougent.
+  Rien n'est hébergé pour vous. Le serveur est le vôtre : « 3. Créer le serveur sur Cloudflare » le crée, avec sa base de données, dans votre propre compte Cloudflare. Ce qui a bougé circule dans un seul sens, et seulement à mesure que cela bouge.
 
-  Ils circulent scellés. `qr` appaire un téléphone hors réseau — l'appareil photo lit l'adresse, le jeton et la clé. `phones` dit quels téléphones peuvent lire, et `revoke` en coupe un.
+  Cela circule scellé. « 4. Associer un téléphone » en associe un hors réseau — l'appareil photo lit l'URL du serveur, le jeton d'API de lecture et la clé de chiffrement. « 5. Voir les téléphones associés » dit quels téléphones peuvent lire, et « 6. Dissocier un téléphone » en coupe un.
 
   L'activer emporte tous les projets de cette machine : un téléphone est un appareil, pas un projet.
 config:
   routes:
     label: Où porter
     help: |-
-      Si ceci peut porter vers votre Worker Cloudflare. On ne peut ici que retirer l'endroit : le cocher n'y suffit pas, le Worker doit exister avant que quoi que ce soit y arrive, et c'est setup qui le dresse. Ne rien cocher est aussi une réponse, et elle est respectée : le plugin reste activé et ne porte nulle part.
+      Si ceci peut porter vers votre serveur sur Cloudflare. On ne peut ici que retirer l'endroit : le cocher n'y suffit pas, le serveur doit exister avant que quoi que ce soit y arrive, et c'est « 3. Créer le serveur sur Cloudflare » qui le crée. Ne rien cocher est aussi une réponse, et elle est respectée : le plugin reste activé et ne porte nulle part.
     options:
-      cloudflare: Votre propre Worker Cloudflare
+      cloudflare: Votre propre serveur sur Cloudflare
   worker_url:
-    label: URL de votre propre Cloudflare Worker
-    help: "setup le renseigne lors de la mise en place du Worker. Vous n'avez rien à saisir."
+    label: URL de votre serveur sur Cloudflare
+    help: |-
+      « 3. Créer le serveur sur Cloudflare » le renseigne au moment de créer le serveur. Vous n'avez rien à saisir.
   auth_token:
-    label: Jeton avec lequel le Worker accepte les écritures
-    help: "setup le génère. Vous n'avez rien à saisir."
+    label: Jeton d'API avec lequel le serveur accepte les écritures
+    help: |-
+      « 3. Créer le serveur sur Cloudflare » le génère. Vous n'avez rien à saisir.
   encryption_key:
-    label: Clé avec laquelle les enregistrements sont chiffrés
-    help: "setup la génère. Vous n'avez rien à saisir — le téléphone la reçoit par le QR, jamais par le réseau."
+    label: Clé avec laquelle vos tâches sont chiffrées
+    help: |-
+      « 3. Créer le serveur sur Cloudflare » la génère. Vous n'avez rien à saisir — le téléphone la reçoit par le QR, jamais par le réseau.
 settings:
   actions:
     app:
@@ -30,10 +33,16 @@ settings:
     token:
       label: 2. Obtenir un jeton d'API
     setup:
-      label: 3. Configurer la voie Cloudflare
+      label: 3. Créer le serveur sur Cloudflare
       ask:
         api_token: Jeton d'API Cloudflare
     qr:
       label: 4. Associer un téléphone
       ask:
         label: Nom de ce téléphone
+    phones:
+      label: 5. Voir les téléphones associés
+    revoke:
+      label: 6. Dissocier un téléphone
+      ask:
+        phone: Nom du téléphone à dissocier
