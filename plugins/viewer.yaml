@@ -1,6 +1,6 @@
 name: viewer
 title: Amenbo Viewer
-desc: Read your backlog on your phone, from a place you own
+desc: Read your tasks on your phone, from a server you own
 author: Amenbo
 repo: ShiroDoromoto/amenbo-plugin-viewer
 os:
@@ -11,59 +11,62 @@ category: integration
 scope: machine
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v3/viewer-v3-macos-arm64.tar.gz
-    checksum: sha256:17ae59113276fd8844517f7a25c1f1f9f7815bee8b89532ae64f62c2b9045456
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v4/viewer-v4-macos-arm64.tar.gz
+    checksum: sha256:41d59a3c323778cf7504165c42d053bbd47ca1ceff0736a936fedefaf7458273
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v3/viewer-v3-macos-x64.tar.gz
-    checksum: sha256:7b345fe3255033577ef270edddbf3054b480f7fc724a127746807862a4bc98a2
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v4/viewer-v4-macos-x64.tar.gz
+    checksum: sha256:fe114126f0f0e5ea26a7363a7707f8081b8a7b00e205907015be9d1bb948323c
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v3/viewer-v3-linux-x64.tar.gz
-    checksum: sha256:37c5912ebc224eeeefebb8da3904e12c2b75e02c30675bea609fefc4d7526540
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v4/viewer-v4-linux-x64.tar.gz
+    checksum: sha256:4f2003e25f31a3fd2ad59a625fdf81b76830a1c92d82773844b3f716abd46f45
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v3/viewer-v3-linux-arm64.tar.gz
-    checksum: sha256:873b4d4c73967dcf9df9e3ee3c64048fb38e2006761ee8f5fd747e3a21a84dd2
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v4/viewer-v4-linux-arm64.tar.gz
+    checksum: sha256:b17dbdfa0785f1ce560873d8811049746e166241d314e2fe9d4baf3e3fd4b27c
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v3/viewer-v3-windows-x64.tar.gz
-    checksum: sha256:2becb8acbe732e25368a10958bc1e15ea6b43156ecde347193b704dedbdb3681
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v4/viewer-v4-windows-x64.tar.gz
+    checksum: sha256:8ea2671fb6890c3d9aabf7b640a756825db489b2ee7e8de0903b90d620596fb8
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v3/viewer-v3-windows-arm64.tar.gz
-    checksum: sha256:fe825c1315561201431f75d8649424c0d7321c1acec7d19bc69f265ea5fb7776
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v4/viewer-v4-windows-arm64.tar.gz
+    checksum: sha256:df277dafec618677c89f06215b0b155f90823263e905e53f41280769ee69b871
 official: true
 payload_v: 1
-min_amenbo: 13.0.0
+min_amenbo: 15.1.0
 about: |
-  Your backlog reaches your phone, and the Amenbo Viewer app reads it there — the tasks, the state each one is in, and the decisions behind them — while you are away from the PC.
+  Your tasks reach your phone, and the Amenbo Viewer app reads them there — the tasks, the state each one is in, and the decisions behind them — while you are away from the PC.
 
-  Nothing is hosted for you. The place is one you own: a Cloudflare Worker and database that `setup` stands up in your own Cloudflare account. Records travel one way, and only as they move.
+  Nothing is hosted for you. The server is one you own: a server and a database that "3. Set up the server on Cloudflare" makes in your own Cloudflare account. Tasks travel one way, and only as they move.
 
-  They travel sealed. `qr` pairs a phone off the network — the camera reads the endpoint, the token and the key. `phones` says which phones may read, and `revoke` cuts one of them off.
+  They travel sealed. "4. Pair a phone" pairs a phone off the network — the camera reads the server's URL, the read API token and the encryption key. "5. See the phones that are paired" says which phones may read, and "6. Unpair a phone" cuts one of them off.
 
   Enabling it carries every project on this machine: a phone is one device, not one project.
 config:
   - key: routes
     label: Where to carry
     help: |-
-      Whether this may carry to your Cloudflare Worker. It can only take the place away: ticking it still needs the Worker to exist before anything reaches it, and setup is what stands one up. Ticking nothing is an answer and it is honoured: the plugin stays enabled and carries nowhere.
+      Whether this may carry to your own server on Cloudflare. It can only take the place away: ticking it still needs the server to exist before anything reaches it, and "3. Set up the server on Cloudflare" is what makes one. Ticking nothing is an answer and it is honoured: the plugin stays enabled and carries nowhere.
     type: multi
     options:
       - value: cloudflare
-        label: Your own Cloudflare Worker
+        label: Your own server on Cloudflare
     default: cloudflare
     required: false
   - key: worker_url
-    label: Your Cloudflare Worker's URL
-    help: setup writes this when it stands the Worker up. There is nothing to type.
+    label: Your server's URL on Cloudflare
+    help: |-
+      "3. Set up the server on Cloudflare" writes this when it makes the server. There is nothing to type.
     required: false
     readonly: true
   - key: auth_token
-    label: Token the Worker lets writes in with
-    help: setup generates this. There is nothing to type.
+    label: API token the server takes writes with
+    help: |-
+      "3. Set up the server on Cloudflare" generates this. There is nothing to type.
     secret: true
     required: false
     readonly: true
   - key: encryption_key
-    label: Key the records are encrypted with
-    help: setup generates this. There is nothing to type - the phone is given it by the QR, never over the network.
+    label: Key your tasks are encrypted with
+    help: |-
+      "3. Set up the server on Cloudflare" generates this. There is nothing to type - the phone is given it by the QR, never over the network.
     secret: true
     required: false
     readonly: true
@@ -75,7 +78,7 @@ settings:
     - cmd: token
       label: 2. Get a Cloudflare API token
     - cmd: setup
-      label: 3. Set up the Cloudflare route
+      label: 3. Set up the server on Cloudflare
       ask:
         - key: api_token
           label: Cloudflare API token
@@ -85,6 +88,13 @@ settings:
       ask:
         - key: label
           label: What to call this phone
+    - cmd: phones
+      label: 5. See the phones that are paired
+    - cmd: revoke
+      label: 6. Unpair a phone
+      ask:
+        - key: phone
+          label: The name of the phone to unpair
 events:
   - task.created
   - task.status_changed
@@ -112,7 +122,7 @@ agent:
     - cmd: phones
       does: Lists the phones that may read and when each was paired. Reads nothing over the network — the store compares hashes and does not answer what it holds
     - cmd: revoke
-      does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument
+      does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument, or out of the settings screen's box
     - cmd: qr
       does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label or the settings screen box names it; --terminal draws it here"
     - cmd: check

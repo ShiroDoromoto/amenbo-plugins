@@ -1,39 +1,45 @@
-desc: Leggi il tuo elenco di attività sul telefono, da un posto che è tuo
+desc: Leggi le tue attività sul telefono, da un server che è tuo
 about: |
-  Il tuo elenco di attività arriva sul telefono e l'app Amenbo Viewer lo legge lì — le attività, lo stato di ciascuna e le decisioni che ci stanno dietro — mentre sei lontano dal computer.
+  Le tue attività arrivano sul telefono e l'app Amenbo Viewer le legge lì — le attività, lo stato di ciascuna e le decisioni che ci stanno dietro — mentre sei lontano dal computer.
 
-  Nulla viene ospitato per te. Il posto è tuo: un Worker di Cloudflare con il suo database che `setup` mette in piedi nel tuo account Cloudflare. I record viaggiano in un solo senso, e solo man mano che si muovono.
+  Nulla viene ospitato per te. Il server è tuo: un server con il suo database che «3. Crea il server su Cloudflare» crea nel tuo account Cloudflare. Le attività viaggiano in un solo senso, e solo man mano che si muovono.
 
-  Viaggiano sigillati. `qr` accoppia un telefono fuori dalla rete — la fotocamera legge indirizzo, token e chiave. `phones` dice quali telefoni possono leggere, e `revoke` ne stacca uno.
+  Viaggiano sigillate. «4. Abbina un telefono» abbina un telefono fuori dalla rete — la fotocamera legge l'URL del server, il token API di lettura e la chiave di cifratura. «5. Vedi i telefoni abbinati» dice quali telefoni possono leggere, e «6. Scollega un telefono» ne stacca uno.
 
   Attivarlo porta ogni progetto di questa macchina: un telefono è un dispositivo, non un progetto.
 config:
   routes:
-    label: Dove portare
+    label: Dove portarlo
     help: |-
-      Se questo può portare al tuo Worker di Cloudflare. Qui il luogo si può solo togliere: spuntarlo non basta, il Worker deve esistere prima che qualcosa ci arrivi, ed è setup a tirarlo su. Non spuntare nulla è anch'essa una risposta e viene rispettata: il plugin resta attivo e non porta da nessuna parte.
+      Se questo può portare al tuo server su Cloudflare. Qui il luogo si può solo togliere: spuntarlo non basta, il server deve esistere prima che qualcosa ci arrivi, ed è «3. Crea il server su Cloudflare» a crearlo. Non spuntare nulla è anch'essa una risposta e viene rispettata: il plugin resta attivo e non porta da nessuna parte.
     options:
-      cloudflare: Il tuo Worker Cloudflare
+      cloudflare: Il tuo server su Cloudflare
   worker_url:
-    label: URL del tuo Cloudflare Worker
-    help: "setup lo inserisce quando mette in piedi il Worker. Non c'è nulla da digitare."
+    label: URL del tuo server su Cloudflare
+    help: "«3. Crea il server su Cloudflare» lo inserisce quando crea il server. Non c'è nulla da digitare."
   auth_token:
-    label: Token con cui il Worker accetta le scritture
-    help: "setup lo genera. Non c'è nulla da digitare."
+    label: Token API con cui il server accetta le scritture
+    help: "«3. Crea il server su Cloudflare» lo genera. Non c'è nulla da digitare."
   encryption_key:
-    label: Chiave con cui i record vengono cifrati
-    help: "setup la genera. Non c'è nulla da digitare — il telefono la riceve dal QR, mai dalla rete."
+    label: Chiave con cui le tue attività vengono cifrate
+    help: "«3. Crea il server su Cloudflare» la genera. Non c'è nulla da digitare — il telefono la riceve dal QR, mai dalla rete."
 settings:
   actions:
     app:
       label: 1. Installa l'app sul telefono
     token:
-      label: 2. Ottieni un token API
+      label: 2. Ottieni un token API Cloudflare
     setup:
-      label: 3. Configura la via Cloudflare
+      label: 3. Crea il server su Cloudflare
       ask:
         api_token: Token API di Cloudflare
     qr:
       label: 4. Abbina un telefono
       ask:
         label: Come chiamare questo telefono
+    phones:
+      label: 5. Vedi i telefoni abbinati
+    revoke:
+      label: 6. Scollega un telefono
+      ask:
+        phone: Nome del telefono da scollegare

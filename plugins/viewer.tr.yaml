@@ -1,39 +1,45 @@
-desc: Görev listenizi telefonunuzdan, size ait bir yerden okuyun
+desc: Görevlerinizi telefonunuzdan, size ait bir sunucudan okuyun
 about: |
-  Bilgisayarınızdan uzaktayken görev listeniz telefonunuza ulaşır ve Amenbo Viewer uygulaması onu orada okur — görevleri, her birinin hangi durumda olduğunu ve arkalarındaki kararları.
+  Bilgisayarınızdan uzaktayken görevleriniz telefonunuza ulaşır ve Amenbo Viewer uygulaması onları orada okur — görevleri, her birinin hangi durumda olduğunu ve arkalarındaki kararları.
 
-  Sizin için hiçbir şey barındırılmaz. Yer sizindir: `setup`'ın kendi Cloudflare hesabınızda ayağa kaldırdığı bir Cloudflare Worker ve veritabanı. Kayıtlar tek yöne, yalnızca değiştikleri kadar gider.
+  Sizin için hiçbir şey barındırılmaz. Sunucu sizindir: «3. Cloudflare'de sunucu oluştur»un kendi Cloudflare hesabınızda oluşturduğu bir sunucu ve veritabanı. Görevler tek yöne, yalnızca değiştikleri kadar gider.
 
-  Mühürlü giderler. `qr` bir telefonu ağa çıkmadan eşleştirir — kamera adresi, belirteci ve anahtarı okur. `phones` hangi telefonların okuyabildiğini söyler, `revoke` ise birini keser.
+  Mühürlü giderler. «4. Telefon eşle» bir telefonu ağa çıkmadan eşleştirir — kamera sunucunun URL'sini, okuma için API belirtecini ve şifreleme anahtarını okur. «5. Eşleşen telefonları gör» hangi telefonların okuyabildiğini söyler, «6. Telefon eşleşmesini kaldır» ise birini keser.
 
   Etkinleştirdiğinizde bu makinedeki her projeyi taşır: telefon bir cihazdır, bir proje değil.
 config:
   routes:
-    label: Nereye taşınsın
+    label: Nereye taşınacak
     help: |-
-      Bunun Cloudflare Worker'ınıza taşıyıp taşıyamayacağı. Buradan yer yalnızca çıkarılabilir: işaretlemek yetmez, bir şey ulaşmadan önce Worker'ın var olması gerekir, onu da setup ayağa kaldırır. Hiçbir şey işaretlememek de bir cevaptır ve öylece kabul edilir: eklenti açık kalır ve hiçbir yere taşımaz.
+      Bunun Cloudflare'deki kendi sunucunuza taşıyıp taşıyamayacağı. Buradan yer yalnızca çıkarılabilir: işaretlemek yetmez, bir şey ulaşmadan önce sunucunun var olması gerekir, onu da «3. Cloudflare'de sunucu oluştur» oluşturur. Hiçbir şey işaretlememek de bir cevaptır ve öylece kabul edilir: eklenti açık kalır ve hiçbir yere taşımaz.
     options:
-      cloudflare: Kendi Cloudflare Worker'ınız
+      cloudflare: Cloudflare'deki kendi sunucunuz
   worker_url:
-    label: Kendi Cloudflare Worker'ınızın URL'si
-    help: "Worker'ı kurarken setup bunu yazar. Yazmanız gereken bir şey yok."
+    label: Cloudflare'deki sunucunuzun URL'si
+    help: "«3. Cloudflare'de sunucu oluştur» sunucuyu oluştururken bunu yazar. Yazmanız gereken bir şey yok."
   auth_token:
-    label: Worker'ın yazmaya izin verdiği belirteç
-    help: "setup bunu üretir. Yazmanız gereken bir şey yok."
+    label: Sunucunun yazmaya izin verdiği API belirteci
+    help: "«3. Cloudflare'de sunucu oluştur» bunu üretir. Yazmanız gereken bir şey yok."
   encryption_key:
-    label: Kayıtların şifrelendiği anahtar
-    help: "setup bunu üretir. Yazmanız gereken bir şey yok — telefona QR ile geçer, ağ üzerinden asla."
+    label: Görevlerinizin şifrelendiği anahtar
+    help: "«3. Cloudflare'de sunucu oluştur» bunu üretir. Yazmanız gereken bir şey yok — telefona QR ile geçer, ağ üzerinden asla."
 settings:
   actions:
     app:
       label: 1. Uygulamayı telefona kur
     token:
-      label: 2. API belirteci al
+      label: 2. Cloudflare API belirteci al
     setup:
-      label: 3. Cloudflare yolunu kur
+      label: 3. Cloudflare'de sunucu oluştur
       ask:
         api_token: Cloudflare API belirteci
     qr:
       label: 4. Telefon eşle
       ask:
         label: Bu telefonun adı
+    phones:
+      label: 5. Eşleşen telefonları gör
+    revoke:
+      label: 6. Telefon eşleşmesini kaldır
+      ask:
+        phone: Eşleşmesi kaldırılacak telefonun adı

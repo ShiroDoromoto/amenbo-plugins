@@ -1,39 +1,45 @@
-desc: Đọc danh sách việc của bạn trên điện thoại, từ nơi thuộc về bạn
+desc: Đọc việc của bạn trên điện thoại, từ máy chủ thuộc về bạn
 about: |
-  Danh sách việc đến điện thoại của bạn, và ứng dụng Amenbo Viewer đọc nó ở đó — các việc, trạng thái hiện tại của từng việc, và những quyết định đằng sau chúng — trong lúc bạn rời khỏi máy tính.
+  Việc của bạn đến điện thoại, và ứng dụng Amenbo Viewer đọc nó ở đó — các việc, trạng thái hiện tại của từng việc, và những quyết định đằng sau chúng — trong lúc bạn rời khỏi máy tính.
 
-  Không ai lưu trữ hộ bạn cả. Nơi lưu là của chính bạn: một Cloudflare Worker cùng cơ sở dữ liệu mà `setup` dựng lên trong tài khoản Cloudflare của bạn. Bản ghi đi một chiều, và chỉ đi phần đã thay đổi.
+  Không ai lưu trữ hộ bạn cả. Máy chủ là của chính bạn: một máy chủ cùng cơ sở dữ liệu mà «3. Tạo máy chủ trên Cloudflare» tạo trong tài khoản Cloudflare của bạn. Việc đi một chiều, và chỉ đi phần đã thay đổi.
 
-  Chúng đi trong phong bì niêm kín. `qr` ghép đôi một điện thoại mà không qua mạng — máy ảnh đọc địa chỉ, token và khóa. `phones` cho biết những điện thoại nào được đọc, còn `revoke` cắt một chiếc trong số đó.
+  Chúng đi trong phong bì niêm kín. «4. Ghép nối điện thoại» ghép nối một điện thoại mà không qua mạng — máy ảnh đọc URL của máy chủ, token API để đọc và khóa mã hóa. «5. Xem điện thoại đã ghép nối» cho biết những điện thoại nào được đọc, còn «6. Hủy ghép nối điện thoại» cắt một chiếc trong số đó.
 
   Bật lên là mang theo mọi dự án trên máy này: điện thoại là một thiết bị, không phải một dự án.
 config:
   routes:
     label: Chuyển tới đâu
     help: |-
-      Cái này có được phép chuyển tới Cloudflare Worker của bạn hay không. Ở đây chỉ có thể bớt nơi đi: tick rồi thì Worker vẫn phải tồn tại trước đã thì mới có gì đến được, và dựng nó lên là việc của setup. Không tick cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không chuyển đi đâu cả.
+      Cái này có được phép chuyển tới máy chủ của bạn trên Cloudflare hay không. Ở đây chỉ có thể bớt nơi đi: tick rồi thì máy chủ vẫn phải tồn tại trước đã thì mới có gì đến được, và tạo nó là việc của «3. Tạo máy chủ trên Cloudflare». Không tick cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không chuyển đi đâu cả.
     options:
-      cloudflare: Cloudflare Worker của riêng bạn
+      cloudflare: Máy chủ của riêng bạn trên Cloudflare
   worker_url:
-    label: URL Cloudflare Worker của chính bạn
-    help: "setup điền vào khi dựng Worker. Không có gì để gõ."
+    label: URL máy chủ của bạn trên Cloudflare
+    help: "«3. Tạo máy chủ trên Cloudflare» điền vào khi tạo máy chủ. Không có gì để gõ."
   auth_token:
-    label: Token để Worker cho phép ghi
-    help: "setup tạo ra. Không có gì để gõ."
+    label: Token API để máy chủ nhận ghi
+    help: "«3. Tạo máy chủ trên Cloudflare» tạo ra. Không có gì để gõ."
   encryption_key:
-    label: Khóa dùng để mã hóa bản ghi
-    help: "setup tạo ra. Không có gì để gõ — điện thoại nhận qua QR, không bao giờ qua mạng."
+    label: Khóa dùng để mã hóa việc của bạn
+    help: "«3. Tạo máy chủ trên Cloudflare» tạo ra. Không có gì để gõ — điện thoại nhận qua QR, không bao giờ qua mạng."
 settings:
   actions:
     app:
       label: 1. Cài ứng dụng điện thoại
     token:
-      label: 2. Lấy token API
+      label: 2. Lấy token API Cloudflare
     setup:
-      label: 3. Dựng tuyến Cloudflare
+      label: 3. Tạo máy chủ trên Cloudflare
       ask:
         api_token: Token API Cloudflare
     qr:
       label: 4. Ghép nối điện thoại
       ask:
         label: Tên của điện thoại này
+    phones:
+      label: 5. Xem điện thoại đã ghép nối
+    revoke:
+      label: 6. Hủy ghép nối điện thoại
+      ask:
+        phone: Tên điện thoại cần hủy ghép nối
