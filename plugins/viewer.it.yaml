@@ -2,18 +2,17 @@ desc: Leggi il tuo elenco di attività sul telefono, da un posto che è tuo
 about: |
   Il tuo elenco di attività arriva sul telefono e l'app Amenbo Viewer lo legge lì — le attività, lo stato di ciascuna e le decisioni che ci stanno dietro — mentre sei lontano dal computer.
 
-  Nulla viene ospitato per te. Il posto è tuo: una cartella iCloud privata dell'app su un Mac, oppure un Worker di Cloudflare con il suo database che `setup` mette in piedi nel tuo account Cloudflare. I record viaggiano in un solo senso, e solo man mano che si muovono.
+  Nulla viene ospitato per te. Il posto è tuo: un Worker di Cloudflare con il suo database che `setup` mette in piedi nel tuo account Cloudflare. I record viaggiano in un solo senso, e solo man mano che si muovono.
 
-  Sulla via di Cloudflare viaggiano sigillati. `qr` accoppia un telefono fuori dalla rete — la fotocamera legge indirizzo, token e chiave. `phones` dice quali telefoni possono leggere, e `revoke` ne stacca uno.
+  Viaggiano sigillati. `qr` accoppia un telefono fuori dalla rete — la fotocamera legge indirizzo, token e chiave. `phones` dice quali telefoni possono leggere, e `revoke` ne stacca uno.
 
   Attivarlo porta ogni progetto di questa macchina: un telefono è un dispositivo, non un progetto.
 config:
   routes:
     label: Dove portare
     help: |-
-      Verso quali luoghi questo può portare. Qui i luoghi si possono solo togliere: uno che spunti deve comunque esistere prima che qualcosa ci arrivi — la cartella iCloud compare una volta che hai aperto Amenbo Viewer su un telefono (il pulsante «Installa l'app sul telefono» mette la sua pagina dell'App Store su un codice), e quello su Cloudflare lo tira su setup. Non spuntare nulla è anch'essa una risposta e viene rispettata: il plugin resta attivo e non porta da nessuna parte.
+      Se questo può portare al tuo Worker di Cloudflare. Qui il luogo si può solo togliere: spuntarlo non basta, il Worker deve esistere prima che qualcosa ci arrivi, ed è setup a tirarlo su. Non spuntare nulla è anch'essa una risposta e viene rispettata: il plugin resta attivo e non porta da nessuna parte.
     options:
-      icloud: La cartella iCloud dell'app
       cloudflare: Il tuo Worker Cloudflare
   worker_url:
     label: URL del tuo Cloudflare Worker
