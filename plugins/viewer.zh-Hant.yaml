@@ -2,18 +2,17 @@ desc: 在手機上讀你的待辦，資料存在你自己的地方
 about: |
   離開電腦時，待辦也會送到手機上，用 Amenbo Viewer 就能讀——有哪些任務、每一件現在處於什麼狀態，以及當初為什麼這麼定。
 
-  沒有誰替你代管。地方是你自己的：在 mac 上是 App 專屬的 iCloud 資料夾，否則就是 `setup` 在你自己的 Cloudflare 帳戶裡立起來的 Worker 和資料庫。紀錄單向送出，只送動過的那些。
+  沒有誰替你代管。地方是你自己的：`setup` 在你自己的 Cloudflare 帳戶裡立起來的 Worker 和資料庫。紀錄單向送出，只送動過的那些。
 
-  走 Cloudflare 這條路時，紀錄是封好的。`qr` 不經過網路就能配對手機——相機讀走位址、權杖和金鑰。`phones` 列出哪些手機可讀，`revoke` 單獨切斷其中一台。
+  紀錄是封好的。`qr` 不經過網路就能配對手機——相機讀走位址、權杖和金鑰。`phones` 列出哪些手機可讀，`revoke` 單獨切斷其中一台。
 
   一旦啟用，送出的是這台電腦上的全部專案——手機是一台裝置，不是一個專案。
 config:
   routes:
     label: 送往哪裡
     help: |-
-      這個可以送往哪些地方。這裡只能減去地方：勾起來的地方也得先真的存在，才會有東西送到——iCloud 資料夾要等你在手機上開過一次 Amenbo Viewer 才會出現（「把 App 裝到手機上」這個按鈕會把它的 App Store 頁面放到一個碼上），Cloudflare 那邊則由 setup 立起來。一個都不勾也是一種回答，並會被照辦：外掛仍然啟用，但哪裡都不送。
+      這個可不可以送到你自己的 Cloudflare Worker。這裡只能把地方減去：勾起來了，Worker 也得先真的存在才會有東西送到，而立起它的是 setup。一個都不勾也是一種回答，並會被照辦：外掛仍然啟用，但哪裡都不送。
     options:
-      icloud: App 專屬的 iCloud 資料夾
       cloudflare: 你自己的 Cloudflare Worker
   worker_url:
     label: 你自己的 Cloudflare Worker 的 URL

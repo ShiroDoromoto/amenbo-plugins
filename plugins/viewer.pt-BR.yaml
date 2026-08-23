@@ -2,18 +2,17 @@ desc: Leia sua lista de tarefas no celular, de um lugar que é seu
 about: |
   Sua lista de tarefas chega ao celular e o app Amenbo Viewer a lê por lá — as tarefas, o estado em que cada uma está e as decisões por trás delas — enquanto você está longe do computador.
 
-  Ninguém hospeda nada para você. O lugar é seu: uma pasta do iCloud privada do app em um Mac, ou um Worker do Cloudflare com seu banco de dados que o `setup` levanta na sua própria conta Cloudflare. Os registros viajam em uma só direção, e só conforme se movem.
+  Ninguém hospeda nada para você. O lugar é seu: um Worker do Cloudflare com seu banco de dados que o `setup` levanta na sua própria conta Cloudflare. Os registros viajam em uma só direção, e só conforme se movem.
 
-  Pela rota do Cloudflare eles viajam lacrados. O `qr` pareia um celular fora da rede — a câmera lê o endereço, o token e a chave. O `phones` diz quais celulares podem ler, e o `revoke` corta um deles.
+  Eles viajam lacrados. O `qr` pareia um celular fora da rede — a câmera lê o endereço, o token e a chave. O `phones` diz quais celulares podem ler, e o `revoke` corta um deles.
 
   Ao ativar, ele leva todo projeto desta máquina: um celular é um aparelho, não um projeto.
 config:
   routes:
     label: Para onde levar
     help: |-
-      Para quais lugares isto pode levar. Aqui só dá para tirar lugares: um que você marque ainda precisa existir antes que algo chegue nele — a pasta do iCloud aparece depois que você abre o Amenbo Viewer uma vez em um telefone (o botão “Instalar o app no telefone” põe a página dele na App Store em um código), e o do Cloudflare é o que o setup levanta. Não marcar nada também é uma resposta e é respeitada: o plugin continua ativo e não leva a lugar nenhum.
+      Se isto pode levar ao seu Worker do Cloudflare. Aqui só dá para tirar o lugar: marcá-lo não basta, o Worker precisa existir antes que algo chegue nele, e é o setup que o levanta. Não marcar nada também é uma resposta e é respeitada: o plugin continua ativo e não leva a lugar nenhum.
     options:
-      icloud: A pasta iCloud do próprio app
       cloudflare: Seu próprio Worker do Cloudflare
   worker_url:
     label: URL do seu próprio Cloudflare Worker

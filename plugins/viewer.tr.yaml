@@ -2,18 +2,17 @@ desc: Görev listenizi telefonunuzdan, size ait bir yerden okuyun
 about: |
   Bilgisayarınızdan uzaktayken görev listeniz telefonunuza ulaşır ve Amenbo Viewer uygulaması onu orada okur — görevleri, her birinin hangi durumda olduğunu ve arkalarındaki kararları.
 
-  Sizin için hiçbir şey barındırılmaz. Yer sizindir: Mac'te uygulamaya özel bir iCloud klasörü, değilse `setup`'ın kendi Cloudflare hesabınızda ayağa kaldırdığı bir Cloudflare Worker ve veritabanı. Kayıtlar tek yöne, yalnızca değiştikleri kadar gider.
+  Sizin için hiçbir şey barındırılmaz. Yer sizindir: `setup`'ın kendi Cloudflare hesabınızda ayağa kaldırdığı bir Cloudflare Worker ve veritabanı. Kayıtlar tek yöne, yalnızca değiştikleri kadar gider.
 
-  Cloudflare yolunda mühürlü giderler. `qr` bir telefonu ağa çıkmadan eşleştirir — kamera adresi, belirteci ve anahtarı okur. `phones` hangi telefonların okuyabildiğini söyler, `revoke` ise birini keser.
+  Mühürlü giderler. `qr` bir telefonu ağa çıkmadan eşleştirir — kamera adresi, belirteci ve anahtarı okur. `phones` hangi telefonların okuyabildiğini söyler, `revoke` ise birini keser.
 
   Etkinleştirdiğinizde bu makinedeki her projeyi taşır: telefon bir cihazdır, bir proje değil.
 config:
   routes:
     label: Nereye taşınsın
     help: |-
-      Bunun nereye taşıyabileceği. Buradan yer yalnızca çıkarılabilir: işaretlediğiniz bir yerin de bir şey ulaşmadan önce var olması gerekir — iCloud klasörü, Amenbo Viewer'ı bir telefonda bir kez açtığınızda belirir (“Uygulamayı telefona kur” düğmesi uygulamanın App Store sayfasını bir koda koyar), Cloudflare'daki yeri ise setup ayağa kaldırır. Hiçbirini işaretlememek de bir cevaptır ve öylece kabul edilir: eklenti açık kalır ve hiçbir yere taşımaz.
+      Bunun Cloudflare Worker'ınıza taşıyıp taşıyamayacağı. Buradan yer yalnızca çıkarılabilir: işaretlemek yetmez, bir şey ulaşmadan önce Worker'ın var olması gerekir, onu da setup ayağa kaldırır. Hiçbir şey işaretlememek de bir cevaptır ve öylece kabul edilir: eklenti açık kalır ve hiçbir yere taşımaz.
     options:
-      icloud: Uygulamanın kendi iCloud klasörü
       cloudflare: Kendi Cloudflare Worker'ınız
   worker_url:
     label: Kendi Cloudflare Worker'ınızın URL'si

@@ -2,18 +2,17 @@ desc: Đọc danh sách việc của bạn trên điện thoại, từ nơi thu�
 about: |
   Danh sách việc đến điện thoại của bạn, và ứng dụng Amenbo Viewer đọc nó ở đó — các việc, trạng thái hiện tại của từng việc, và những quyết định đằng sau chúng — trong lúc bạn rời khỏi máy tính.
 
-  Không ai lưu trữ hộ bạn cả. Nơi lưu là của chính bạn: một thư mục iCloud riêng của ứng dụng trên máy Mac, hoặc một Cloudflare Worker cùng cơ sở dữ liệu mà `setup` dựng lên trong tài khoản Cloudflare của bạn. Bản ghi đi một chiều, và chỉ đi phần đã thay đổi.
+  Không ai lưu trữ hộ bạn cả. Nơi lưu là của chính bạn: một Cloudflare Worker cùng cơ sở dữ liệu mà `setup` dựng lên trong tài khoản Cloudflare của bạn. Bản ghi đi một chiều, và chỉ đi phần đã thay đổi.
 
-  Trên đường Cloudflare, chúng đi trong phong bì niêm kín. `qr` ghép đôi một điện thoại mà không qua mạng — máy ảnh đọc địa chỉ, token và khóa. `phones` cho biết những điện thoại nào được đọc, còn `revoke` cắt một chiếc trong số đó.
+  Chúng đi trong phong bì niêm kín. `qr` ghép đôi một điện thoại mà không qua mạng — máy ảnh đọc địa chỉ, token và khóa. `phones` cho biết những điện thoại nào được đọc, còn `revoke` cắt một chiếc trong số đó.
 
   Bật lên là mang theo mọi dự án trên máy này: điện thoại là một thiết bị, không phải một dự án.
 config:
   routes:
     label: Chuyển tới đâu
     help: |-
-      Những nơi cái này được phép chuyển tới. Ở đây chỉ có thể bớt nơi đi: nơi bạn tick vẫn phải tồn tại trước đã thì mới có gì đến được — thư mục iCloud xuất hiện khi bạn đã mở Amenbo Viewer trên điện thoại một lần (nút “Cài ứng dụng điện thoại” đặt trang App Store của nó lên một mã), còn nơi ở Cloudflare là do setup dựng lên. Không tick mục nào cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không chuyển đi đâu cả.
+      Cái này có được phép chuyển tới Cloudflare Worker của bạn hay không. Ở đây chỉ có thể bớt nơi đi: tick rồi thì Worker vẫn phải tồn tại trước đã thì mới có gì đến được, và dựng nó lên là việc của setup. Không tick cũng là một câu trả lời và được tôn trọng: plugin vẫn bật và không chuyển đi đâu cả.
     options:
-      icloud: Thư mục iCloud riêng của ứng dụng
       cloudflare: Cloudflare Worker của riêng bạn
   worker_url:
     label: URL Cloudflare Worker của chính bạn

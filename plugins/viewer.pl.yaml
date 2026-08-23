@@ -2,18 +2,17 @@ desc: Czytaj swoją listę zadań na telefonie, z miejsca, które należy do cie
 about: |
   Twoja lista zadań trafia na telefon, a aplikacja Amenbo Viewer czyta ją tam — zadania, stan każdego z nich i decyzje, które za nimi stoją — kiedy jesteś z dala od komputera.
 
-  Nikt niczego dla ciebie nie hostuje. Miejsce należy do ciebie: prywatny dla aplikacji folder iCloud na Macu albo Cloudflare Worker wraz z bazą danych, którego `setup` stawia na twoim własnym koncie Cloudflare. Wpisy jadą w jedną stronę i tylko w takiej ilości, w jakiej się zmieniły.
+  Nikt niczego dla ciebie nie hostuje. Miejsce należy do ciebie: Cloudflare Worker wraz z bazą danych, którego `setup` stawia na twoim własnym koncie Cloudflare. Wpisy jadą w jedną stronę i tylko w takiej ilości, w jakiej się zmieniły.
 
-  Trasą Cloudflare jadą zapieczętowane. `qr` paruje telefon bez wychodzenia do sieci — aparat odczytuje adres, token i klucz. `phones` mówi, które telefony mogą czytać, a `revoke` odcina jeden z nich.
+  Jadą zapieczętowane. `qr` paruje telefon bez wychodzenia do sieci — aparat odczytuje adres, token i klucz. `phones` mówi, które telefony mogą czytać, a `revoke` odcina jeden z nich.
 
   Po włączeniu niesie każdy projekt z tej maszyny: telefon to jedno urządzenie, a nie jeden projekt.
 config:
   routes:
     label: Dokąd przenosić
     help: |-
-      Dokąd to może przenosić. Miejsca da się tu tylko odjąć: zaznaczone miejsce i tak musi już istnieć, zanim cokolwiek do niego dotrze — folder iCloud pojawia się, gdy raz otworzysz Amenbo Viewer na telefonie (przycisk „Zainstaluj aplikację na telefonie” umieszcza jego stronę w App Store na kodzie), a ten w Cloudflare stawia setup. Niezaznaczenie niczego też jest odpowiedzią i jest respektowane: wtyczka pozostaje włączona i nigdzie nie przenosi.
+      Czy to może przenosić do twojego Cloudflare Workera. Miejsce da się tu tylko odjąć: zaznaczenie nie wystarczy — Worker i tak musi już istnieć, zanim cokolwiek do niego dotrze, a stawia go setup. Niezaznaczenie niczego też jest odpowiedzią i jest respektowane: wtyczka pozostaje włączona i nigdzie nie przenosi.
     options:
-      icloud: Własny folder iCloud aplikacji
       cloudflare: Twój własny Cloudflare Worker
   worker_url:
     label: Adres URL twojego własnego Cloudflare Workera

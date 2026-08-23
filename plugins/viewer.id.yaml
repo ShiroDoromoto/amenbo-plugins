@@ -2,18 +2,17 @@ desc: Baca daftar tugas Anda di ponsel, dari tempat milik Anda sendiri
 about: |
   Daftar tugas Anda sampai ke ponsel, dan aplikasi Amenbo Viewer membacanya di sana — tugasnya, keadaan tiap tugas saat ini, dan keputusan di baliknya — selagi Anda jauh dari PC.
 
-  Tidak ada yang dihosting untuk Anda. Tempatnya milik Anda sendiri: folder iCloud khusus aplikasi di Mac, atau Cloudflare Worker beserta basis datanya yang didirikan `setup` di akun Cloudflare Anda sendiri. Catatan berjalan satu arah, dan hanya sebanyak yang berubah.
+  Tidak ada yang dihosting untuk Anda. Tempatnya milik Anda sendiri: Cloudflare Worker beserta basis datanya yang didirikan `setup` di akun Cloudflare Anda sendiri. Catatan berjalan satu arah, dan hanya sebanyak yang berubah.
 
-  Lewat jalur Cloudflare catatan berjalan tersegel. `qr` memasangkan ponsel tanpa melalui jaringan — kamera membaca alamat, token, dan kuncinya. `phones` menyebut ponsel mana saja yang boleh membaca, dan `revoke` memutus salah satunya.
+  Catatan berjalan tersegel. `qr` memasangkan ponsel tanpa melalui jaringan — kamera membaca alamat, token, dan kuncinya. `phones` menyebut ponsel mana saja yang boleh membaca, dan `revoke` memutus salah satunya.
 
   Begitu diaktifkan, yang dibawa adalah seluruh proyek di mesin ini: ponsel adalah satu perangkat, bukan satu proyek.
 config:
   routes:
     label: Ke mana dibawa
     help: |-
-      Ke tempat mana ini boleh membawa. Dari sini tempat hanya bisa dikurangi: tempat yang Anda centang tetap harus sudah ada sebelum ada yang sampai ke sana — folder iCloud muncul setelah Anda sekali membuka Amenbo Viewer di ponsel (tombol “Pasang aplikasi di ponsel” menaruh halaman App Store-nya pada sebuah kode), dan yang di Cloudflare didirikan oleh setup. Tidak mencentang satu pun juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak membawa ke mana pun.
+      Apakah ini boleh membawa ke Cloudflare Worker Anda. Dari sini tempat hanya bisa dikurangi: dicentang pun Worker tetap harus sudah ada sebelum ada yang sampai ke sana, dan setup-lah yang mendirikannya. Tidak mencentang juga sebuah jawaban dan dihormati: plugin tetap aktif dan tidak membawa ke mana pun.
     options:
-      icloud: Folder iCloud khusus aplikasi
       cloudflare: Cloudflare Worker milik Anda
   worker_url:
     label: URL Cloudflare Worker Anda sendiri
