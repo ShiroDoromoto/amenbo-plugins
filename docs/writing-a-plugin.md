@@ -356,7 +356,7 @@ set`:
 
 ```yaml
 settings:
-  actions:                              # four at most
+  actions:                              # ten at most
     - cmd: config test
       label: Send a test message        # 40 bytes at most — a button is short
       ask:                              # handed to this one run, and kept nowhere

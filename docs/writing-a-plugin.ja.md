@@ -342,7 +342,7 @@ settings:
 
 ```yaml
 settings:
-  actions:                              # 4本まで
+  actions:                              # 10本まで
     - cmd: config test
       label: テスト送信                  # 40 バイトまで。ボタンは短いので
       ask:                              # その1回の実行にだけ渡り、どこにも残りません
