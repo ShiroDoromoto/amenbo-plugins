@@ -599,6 +599,7 @@ time the running platform's `<os>-<arch>` is tried first, then its `<os>`.
 
 | Field | Default | Meaning |
 | --- | --- | --- |
+| `title` | none | the display name the list shows instead of `name`, for a product name that `name`'s lowercase-ASCII grammar cannot spell. 60 characters at most, and it is not translated. Without one, the list shows `name` |
 | `about` | none | a long description for your plugin's detail view, as Markdown. Without one, that view falls back to the README in your `repo`. How to write it, and in how many languages, is below |
 | `official` | `false` | the official badge — decided by catalog curation, never self-declared |
 | `payload_v` | `1` | the payload contract version you read |
@@ -807,7 +808,7 @@ reorder the form.
 
 | Translatable | Not translatable |
 | --- | --- |
-| `desc`, `about` | `name`, `author`, `repo`, `category`, and the rest of the manifest |
+| `desc`, `about` | `name`, `title`, `author`, `repo`, `category`, and the rest of the manifest |
 | a config field's `label`, `help` and `placeholder` | a config field's `key`, `type`, `default`, `readonly` — and an option's `value`, which is what travels to your plugin |
 | a config option's `label` | `agent.when` and each `does` — an AI reads those, and they stay English |
 | an action's `label`, and the `label` on what it asks for | `settings.check` and an action's `cmd` — calls, not text anyone is shown, so there is no key to write them in another language |

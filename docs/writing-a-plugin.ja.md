@@ -572,6 +572,7 @@ amenbo task list --filter "done:false" --json
 
 | フィールド | 既定 | 意味 |
 | --- | --- | --- |
+| `title` | なし | 一覧で `name` の代わりに出る表示名。`name` の文法（小文字 ASCII と `-`）では書けない製品名のためのものです。60字まで。訳しません。書かなければ、一覧には `name` が出ます |
 | `about` | なし | プラグインの詳細画面に出る長い説明文。Markdown で書きます。書かなければ、その画面には `repo` の README が出ます。書き方と、いくつの言語で書けるかは後述 |
 | `official` | `false` | 公式バッジ。カタログのキュレーションが決めるもので、自己申告はできません |
 | `payload_v` | `1` | 読むペイロード規約のバージョン |
@@ -773,7 +774,7 @@ settings:
 
 | 訳せるもの | 訳せないもの |
 | --- | --- |
-| `desc`・`about` | `name`・`author`・`repo`・`category` など manifest の残り |
+| `desc`・`about` | `name`・`title`・`author`・`repo`・`category` など manifest の残り |
 | 設定欄の `label`・`help`・`placeholder` | 設定欄の `key`・`type`・`default`・`readonly`、および選択肢の `value`（プラグインに渡る値そのもの） |
 | 選択肢の `label` | `agent.when` と各 `does`（読むのは AI なので英語のまま） |
 | ボタンの `label` と、そこで訊く欄の `label` | `settings.check` と action の `cmd`（呼び出しであって読ませる文字列ではないので、訳を書く場所がありません） |

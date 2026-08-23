@@ -77,6 +77,7 @@ single-`url` form stays valid and is not deprecated.
 
 | Field | Type | Default | Meaning |
 |---|---|---|---|
+| `title` | string | none | The display name the list shows instead of `name` — for a product name that `name`'s grammar (lowercase ASCII and `-`) cannot spell. Capped at 60 characters, and no control characters. It is not translated: a product name reads the same in every language. Without one, the list shows `name`. |
 | `about` | string | none | The long description shown on the plugin's detail view, as Markdown — a YAML block scalar is what carries it. Capped at 2048 UTF-8 bytes per language, and every link and image in it must be an absolute `https://` URL. Without one, that view shows the README from `repo` instead. See [Writing a plugin](docs/writing-a-plugin.md#writing-it-in-other-languages). |
 | `official` | bool | `false` | The official badge (author is the Amenbo team). **Catalog-authoritative** — a PR self-declaring this on a third-party plugin will be asked to drop it. |
 | `payload_v` | integer | `1` | The event-payload contract version the plugin reads. Absent means the v1 baseline. |
@@ -190,10 +191,11 @@ What has a translation to pick from is what a **person** reads: `desc`, `about`,
 asks for. Those are keyed here rather than listed — each field by its `key`, each option by its `value`, each
 button by the `cmd` it raises — because a translation carries no order of its own, and lining the two up by
 position is what would break every language at once the day you reorder the form. A part drawn between your
-fields has no key of either sort, so it has no translation: it reads in the one language you wrote it. Everything else stays as
-you wrote it, `agent.when` and each `does` included: an AI reads those. The languages are the 19 Amenbo
-itself is read in (`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`,
-`vi`, `th`, `tr`, `pl`, `nl`, `uk`).
+fields has no key of either sort, so it has no translation: it reads in the one language you wrote it.
+Everything else stays as you wrote it: `title`, because a product name is the same in every language, and
+`agent.when` and each `does`, because an AI reads those. The languages are the 19 Amenbo itself is read in
+(`en`, `ja`, `zh-Hans`, `zh-Hant`, `ko`, `es`, `pt-BR`, `fr`, `de`, `it`, `ru`, `hi`, `id`, `vi`, `th`, `tr`,
+`pl`, `nl`, `uk`).
 
 Name the manifest and everything beside it is read with it, so one command checks both:
 
