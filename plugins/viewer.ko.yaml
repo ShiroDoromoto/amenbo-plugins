@@ -1,39 +1,45 @@
-desc: 할 일 목록을 내 저장소에서 휴대폰으로 읽는다
+desc: 할 일을 내 서버에서 휴대폰으로 읽는다
 about: |
-  PC를 떠나 있는 동안에도 할 일 목록이 휴대폰으로 도착하고, Amenbo Viewer로 읽는다——어떤 작업이 있고, 하나하나가 지금 어떤 상태이며, 무엇을 왜 그렇게 정했는지까지.
+  PC를 떠나 있는 동안에도 할 일이 휴대폰으로 도착하고, Amenbo Viewer로 읽는다——어떤 작업이 있고, 하나하나가 지금 어떤 상태이며, 무엇을 왜 그렇게 정했는지까지.
 
-  대신 호스팅해 주는 곳은 없다. 저장소는 사용자의 것으로, `setup`이 사용자 본인의 Cloudflare 계정에 세우는 Worker와 데이터베이스가 된다. 기록은 한 방향으로, 움직인 것만 실려 간다.
+  대신 호스팅해 주는 곳은 없다. 서버는 사용자의 것으로, 「3. Cloudflare에 서버 만들기」가 사용자 본인의 Cloudflare 계정에 만드는 서버와 데이터베이스가 된다. 작업은 한 방향으로, 움직인 것만 실려 간다.
 
-  기록은 봉해서 나른다. `qr`은 네트워크를 거치지 않고 휴대폰을 짝지어, 주소와 토큰과 키를 카메라로 건넨다. 읽을 수 있는 기기는 `phones`로 알 수 있고, `revoke`로 한 대만 끊는다.
+  작업은 봉해서 나른다. 「4. 휴대폰 연결」은 네트워크를 거치지 않고 휴대폰을 연결해, 서버의 URL과 읽기용 API 토큰과 암호 키를 카메라로 건넨다. 읽을 수 있는 기기는 「5. 연결된 휴대폰 보기」로 알 수 있고, 「6. 휴대폰 연결 해제」로 한 대만 끊는다.
 
   켜면 이 PC의 모든 프로젝트가 실려 간다——휴대폰은 기기 한 대이지, 프로젝트 하나가 아니다.
 config:
   routes:
-    label: 어디로 나를지
+    label: 어디로 보낼지
     help: |-
-      내 Cloudflare Worker로 날라도 되는지입니다. 여기서는 줄일 수만 있고, 골라도 무언가 닿기 전에 Worker가 실제로 있어야 합니다 — 세우는 것은 setup입니다. 고르지 않는 것도 답이며 그대로 지켜집니다. 플러그인은 켜진 채 아무 데도 나르지 않습니다.
+      Cloudflare에 있는 내 서버로 보내도 되는지입니다. 여기서는 줄일 수만 있고, 골라도 무언가 닿기 전에 서버가 실제로 있어야 합니다 — 만드는 것은 「3. Cloudflare에 서버 만들기」입니다. 고르지 않는 것도 답이며 그대로 지켜집니다. 플러그인은 켜진 채 아무 데도 보내지 않습니다.
     options:
-      cloudflare: 내 Cloudflare Worker
+      cloudflare: 내 Cloudflare 서버
   worker_url:
-    label: 내 Cloudflare Worker의 URL
-    help: "Worker를 세울 때 setup이 써 넣습니다. 입력할 것은 없습니다."
+    label: Cloudflare에 있는 내 서버의 URL
+    help: "서버를 만들 때 「3. Cloudflare에 서버 만들기」가 써 넣습니다. 입력할 것은 없습니다."
   auth_token:
-    label: Worker가 쓰기를 받아들이는 토큰
-    help: "setup이 만들어 냅니다. 입력할 것은 없습니다."
+    label: 서버가 쓰기를 받아들이는 API 토큰
+    help: "「3. Cloudflare에 서버 만들기」가 만들어 냅니다. 입력할 것은 없습니다."
   encryption_key:
-    label: 기록을 암호화하는 키
-    help: "setup이 만들어 냅니다. 입력할 것은 없습니다 — 휴대폰에는 QR로 건네지며, 네트워크로는 나가지 않습니다."
+    label: 할 일을 암호화하는 키
+    help: "「3. Cloudflare에 서버 만들기」가 만들어 냅니다. 입력할 것은 없습니다 — 휴대폰에는 QR로 건네지며, 네트워크로는 나가지 않습니다."
 settings:
   actions:
     app:
       label: 1. 휴대폰에 앱 설치
     token:
-      label: 2. API 토큰 받기
+      label: 2. Cloudflare API 토큰 받기
     setup:
-      label: 3. Cloudflare 경로 세우기
+      label: 3. Cloudflare에 서버 만들기
       ask:
         api_token: Cloudflare API 토큰
     qr:
       label: 4. 휴대폰 연결
       ask:
         label: 이 휴대폰의 이름
+    phones:
+      label: 5. 연결된 휴대폰 보기
+    revoke:
+      label: 6. 휴대폰 연결 해제
+      ask:
+        phone: 연결을 해제할 휴대폰의 이름

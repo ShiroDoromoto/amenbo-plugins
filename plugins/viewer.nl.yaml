@@ -1,28 +1,28 @@
-desc: Lees je takenlijst op je telefoon, vanaf een plek die van jou is
+desc: Lees je taken op je telefoon, vanaf een server die van jou is
 about: |
-  Je takenlijst komt op je telefoon aan, en de app Amenbo Viewer leest hem daar — de taken, de stand van elk ervan en de beslissingen erachter — terwijl je weg bent van de computer.
+  Je taken komen op je telefoon aan, en de app Amenbo Viewer leest ze daar — de taken, de stand van elk ervan en de beslissingen erachter — terwijl je weg bent van de computer.
 
-  Er wordt niets voor je gehost. De plek is van jou: een Cloudflare Worker met database die `setup` in je eigen Cloudflare-account neerzet. Records reizen één kant op, en alleen voor zover ze bewegen.
+  Er wordt niets voor je gehost. De server is van jou: een server met database die «3. Server op Cloudflare aanmaken» in je eigen Cloudflare-account aanmaakt. Taken reizen één kant op, en alleen voor zover ze bewegen.
 
-  Ze reizen verzegeld. `qr` koppelt een telefoon buiten het netwerk om — de camera leest het adres, het token en de sleutel. `phones` zegt welke telefoons mogen lezen, en `revoke` snijdt er één af.
+  Ze reizen verzegeld. «4. Telefoon koppelen» koppelt een telefoon buiten het netwerk om — de camera leest de URL van de server, het API-token om te lezen en de encryptiesleutel. «5. Gekoppelde telefoons bekijken» zegt welke telefoons mogen lezen, en «6. Telefoon ontkoppelen» snijdt er één af.
 
   Aanzetten draagt elk project op deze machine mee: een telefoon is één apparaat, niet één project.
 config:
   routes:
-    label: Waarheen dragen
+    label: Waar het heen gaat
     help: |-
-      Of dit naar je Cloudflare Worker mag dragen. De plek kan hier alleen weg: aanvinken is niet genoeg, de Worker moet bestaan voordat er iets aankomt, en setup is wat er een neerzet. Niets aanvinken is ook een antwoord en wordt gerespecteerd: de plug-in blijft aan en draagt nergens heen.
+      Of dit naar je eigen server op Cloudflare mag dragen. De plek kan hier alleen weg: aanvinken is niet genoeg, de server moet bestaan voordat er iets aankomt, en «3. Server op Cloudflare aanmaken» is wat er een aanmaakt. Niets aanvinken is ook een antwoord en wordt gerespecteerd: de plug-in blijft aan en draagt nergens heen.
     options:
-      cloudflare: Je eigen Cloudflare Worker
+      cloudflare: Je eigen server op Cloudflare
   worker_url:
-    label: URL van je eigen Cloudflare Worker
-    help: "setup vult dit in bij het opzetten van de Worker. Je hoeft niets te typen."
+    label: URL van je server op Cloudflare
+    help: "«3. Server op Cloudflare aanmaken» vult dit in bij het aanmaken van de server. Je hoeft niets te typen."
   auth_token:
-    label: Token waarmee de Worker schrijfacties toelaat
-    help: "setup genereert dit. Je hoeft niets te typen."
+    label: API-token waarmee de server schrijfacties aanneemt
+    help: "«3. Server op Cloudflare aanmaken» genereert dit. Je hoeft niets te typen."
   encryption_key:
-    label: Sleutel waarmee de records versleuteld worden
-    help: "setup genereert deze. Je hoeft niets te typen — de telefoon krijgt hem via de QR, nooit via het netwerk."
+    label: Sleutel waarmee je taken versleuteld worden
+    help: "«3. Server op Cloudflare aanmaken» genereert deze. Je hoeft niets te typen — de telefoon krijgt hem via de QR, nooit via het netwerk."
 settings:
   actions:
     app:
@@ -30,10 +30,16 @@ settings:
     token:
       label: 2. Cloudflare-API-token halen
     setup:
-      label: 3. Cloudflare-route opzetten
+      label: 3. Server op Cloudflare aanmaken
       ask:
         api_token: Cloudflare-API-token
     qr:
       label: 4. Telefoon koppelen
       ask:
         label: Naam voor deze telefoon
+    phones:
+      label: 5. Gekoppelde telefoons bekijken
+    revoke:
+      label: 6. Telefoon ontkoppelen
+      ask:
+        phone: Naam van de te ontkoppelen telefoon

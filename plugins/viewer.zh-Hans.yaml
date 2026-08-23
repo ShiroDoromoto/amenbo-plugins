@@ -1,39 +1,45 @@
-desc: 在手机上读你的待办，数据存在你自己的地方
+desc: 在手机上读你的任务，数据存在你自己的服务器上
 about: |
-  离开电脑时，待办也会送到手机上，用 Amenbo Viewer 就能读——有哪些任务、每一件现在处于什么状态，以及当初为什么这么定。
+  离开电脑时，任务也会送到手机上，用 Amenbo Viewer 就能读——有哪些任务、每一件现在处于什么状态，以及当初为什么这么定。
 
-  没有谁替你托管。地方是你自己的：`setup` 在你自己的 Cloudflare 账户里立起来的 Worker 和数据库。记录单向送出，只送动过的那些。
+  没有谁替你托管。服务器是你自己的：「3. 在 Cloudflare 上创建服务器」在你自己的 Cloudflare 账户里创建的服务器和数据库。任务单向送出，只送动过的那些。
 
-  记录是封好的。`qr` 不经过网络就能配对手机——摄像头读走地址、令牌和密钥。`phones` 列出哪些手机可读，`revoke` 单独切断其中一台。
+  任务是封好的。「4. 配对手机」不经过网络就能配对手机——摄像头读走服务器的 URL、读取用的 API 令牌和加密密钥。「5. 查看已配对的手机」列出哪些手机可读，「6. 解除手机配对」单独切断其中一台。
 
   一旦启用，送出的是这台电脑上的全部项目——手机是一台设备，不是一个项目。
 config:
   routes:
-    label: 送往哪里
+    label: 送到哪里
     help: |-
-      这个可不可以送到你自己的 Cloudflare Worker。这里只能把地方减去：勾上了，Worker 也得先真的存在才会有东西送到，而立起它的是 setup。一个都不勾也是一种回答，并会被照办：插件仍然启用，但哪儿都不送。
+      这个可不可以送到你自己在 Cloudflare 上的服务器。这里只能把地方减去：勾上了，服务器也得先真的存在才会有东西送到，而创建它的是「3. 在 Cloudflare 上创建服务器」。一个都不勾也是一种回答，并会被照办：插件仍然启用，但哪儿都不送。
     options:
-      cloudflare: 你自己的 Cloudflare Worker
+      cloudflare: 你自己在 Cloudflare 上的服务器
   worker_url:
-    label: 你自己的 Cloudflare Worker 的 URL
-    help: "立起 Worker 时由 setup 写入。这里没有要输入的东西。"
+    label: 你在 Cloudflare 上的服务器的 URL
+    help: "创建服务器时由「3. 在 Cloudflare 上创建服务器」写入。这里没有要输入的东西。"
   auth_token:
-    label: Worker 放行写入所用的令牌
-    help: "由 setup 生成。这里没有要输入的东西。"
+    label: 服务器接受写入所用的 API 令牌
+    help: "由「3. 在 Cloudflare 上创建服务器」生成。这里没有要输入的东西。"
   encryption_key:
-    label: 加密记录所用的密钥
-    help: "由 setup 生成。这里没有要输入的东西——手机通过二维码拿到，不经过网络。"
+    label: 加密你的任务所用的密钥
+    help: "由「3. 在 Cloudflare 上创建服务器」生成。这里没有要输入的东西——手机通过二维码拿到，不经过网络。"
 settings:
   actions:
     app:
       label: 1. 把 App 装到手机上
     token:
-      label: 2. 获取 API 令牌
+      label: 2. 获取 Cloudflare API 令牌
     setup:
-      label: 3. 搭建 Cloudflare 通道
+      label: 3. 在 Cloudflare 上创建服务器
       ask:
         api_token: Cloudflare API 令牌
     qr:
       label: 4. 配对手机
       ask:
         label: 这台手机的名称
+    phones:
+      label: 5. 查看已配对的手机
+    revoke:
+      label: 6. 解除手机配对
+      ask:
+        phone: 要解除配对的手机名称
