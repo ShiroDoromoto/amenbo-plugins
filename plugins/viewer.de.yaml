@@ -43,3 +43,5 @@ settings:
       label: 6. Telefon entkoppeln
       ask:
         phone: Name des zu entkoppelnden Telefons
+    repair:
+      label: "7. Telefonkopie reparieren"

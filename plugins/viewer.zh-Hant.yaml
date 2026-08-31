@@ -43,3 +43,5 @@ settings:
       label: 6. 解除手機配對
       ask:
         phone: 要解除配對的手機名稱
+    repair:
+      label: "7. 修復手機上的副本"

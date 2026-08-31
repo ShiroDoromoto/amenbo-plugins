@@ -43,3 +43,5 @@ settings:
       label: 6. Hủy ghép nối điện thoại
       ask:
         phone: Tên điện thoại cần hủy ghép nối
+    repair:
+      label: "7. Sửa bản sao"

@@ -43,3 +43,5 @@ settings:
       label: 6. เลิกจับคู่
       ask:
         phone: ชื่อมือถือที่จะเลิกจับคู่
+    repair:
+      label: "7. ซ่อมข้อมูล"

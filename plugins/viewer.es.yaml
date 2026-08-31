@@ -43,3 +43,5 @@ settings:
       label: 6. Desvincular un teléfono
       ask:
         phone: Nombre del teléfono a desvincular
+    repair:
+      label: "7. Reparar la copia del teléfono"

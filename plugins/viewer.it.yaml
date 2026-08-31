@@ -43,3 +43,5 @@ settings:
       label: 6. Scollega un telefono
       ask:
         phone: Nome del telefono da scollegare
+    repair:
+      label: "7. Riparare la copia del telefono"

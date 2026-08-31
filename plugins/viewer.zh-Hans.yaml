@@ -43,3 +43,5 @@ settings:
       label: 6. 解除手机配对
       ask:
         phone: 要解除配对的手机名称
+    repair:
+      label: "7. 修复手机上的副本"

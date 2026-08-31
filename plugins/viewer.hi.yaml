@@ -43,3 +43,5 @@ settings:
       label: 6. फ़ोन हटाएँ
       ask:
         phone: जिस फ़ोन को हटाना है उसका नाम
+    repair:
+      label: "7. कॉपी सुधारें"

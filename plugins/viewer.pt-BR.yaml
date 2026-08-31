@@ -43,3 +43,5 @@ settings:
       label: 6. Desparear um celular
       ask:
         phone: Nome do celular a desparear
+    repair:
+      label: "7. Reparar a cópia do telefone"
