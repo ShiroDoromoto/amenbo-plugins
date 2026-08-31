@@ -43,3 +43,5 @@ settings:
       label: 6. Lepaskan ponsel
       ask:
         phone: Nama ponsel yang akan dilepaskan
+    repair:
+      label: "7. Perbaiki salinan di ponsel"

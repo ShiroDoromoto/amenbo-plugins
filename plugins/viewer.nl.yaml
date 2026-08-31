@@ -43,3 +43,5 @@ settings:
       label: 6. Telefoon ontkoppelen
       ask:
         phone: Naam van de te ontkoppelen telefoon
+    repair:
+      label: "7. Kopie op de telefoon herstellen"

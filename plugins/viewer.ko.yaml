@@ -43,3 +43,5 @@ settings:
       label: 6. 휴대폰 연결 해제
       ask:
         phone: 연결을 해제할 휴대폰의 이름
+    repair:
+      label: "7. 휴대폰 사본 고치기"

@@ -43,3 +43,5 @@ settings:
       label: 6. Dissocier un téléphone
       ask:
         phone: Nom du téléphone à dissocier
+    repair:
+      label: "7. Réparer la copie du téléphone"

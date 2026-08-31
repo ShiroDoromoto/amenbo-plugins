@@ -43,3 +43,5 @@ settings:
       label: 6. Telefon eşleşmesini kaldır
       ask:
         phone: Eşleşmesi kaldırılacak telefonun adı
+    repair:
+      label: "7. Telefondaki kopyayı onar"

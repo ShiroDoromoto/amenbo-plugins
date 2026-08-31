@@ -43,3 +43,5 @@ settings:
       label: 6. Odłącz telefon
       ask:
         phone: Nazwa telefonu do odłączenia
+    repair:
+      label: "7. Napraw kopię w telefonie"

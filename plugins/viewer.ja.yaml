@@ -43,3 +43,5 @@ settings:
       label: 6. ペアリングを解除する
       ask:
         phone: 解除する端末の名前
+    repair:
+      label: "7. 端末とのずれを直す"
