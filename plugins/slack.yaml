@@ -9,23 +9,23 @@ os:
 category: notification
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v7/slack-v7-macos-arm64.tar.gz
-    checksum: sha256:af8b174b55895f1a5d1dd932c23ef76b702ef0d0556cb860d8762da6eebf2342
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v8/slack-v8-macos-arm64.tar.gz
+    checksum: sha256:e3f8fe6f335d940cd8c4a0aac5c0ca9d753082b11b018f52e4b8fa020c7c30d5
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v7/slack-v7-macos-x64.tar.gz
-    checksum: sha256:287a7d46a60eb5f7152ca134a6078757deb3cfe2a2012b591412ad70ab930bb8
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v8/slack-v8-macos-x64.tar.gz
+    checksum: sha256:6cbf7b5c3491f286517d0ff1992b6379ae7e0d82697bb3ede028afeca78e0524
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v7/slack-v7-linux-x64.tar.gz
-    checksum: sha256:430f00e016997710caccfae232876c2e8112050a470ae2d862b70b2da4ee5282
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v8/slack-v8-linux-x64.tar.gz
+    checksum: sha256:bc254ad1d3cfd9c4d308644e3d383be26a3bd83315781127d7da428b40f5cb7c
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v7/slack-v7-linux-arm64.tar.gz
-    checksum: sha256:2d4b0940660d06a47e1d6da944fe1347e6916842cbc51651cc41e7b1fcad0a31
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v8/slack-v8-linux-arm64.tar.gz
+    checksum: sha256:6042e856c59f87e37a23eb5c49de82ef93221c9a344341da524279105aa7a89e
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v7/slack-v7-windows-x64.tar.gz
-    checksum: sha256:fe0a37621df28c6520b492b39c61ffa45bc5532bf345316e22faf821d44e7cc1
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v8/slack-v8-windows-x64.tar.gz
+    checksum: sha256:ea46f4903ed4e25da09e5a54f3b4e4252e7ccd9b20fe6ecfce495fa84e53083b
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v7/slack-v7-windows-arm64.tar.gz
-    checksum: sha256:dd083c231a1c88c3642138b3a09a94c7b621f4334cce57d1e0cc036bb6398bb7
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-slack/releases/download/v8/slack-v8-windows-arm64.tar.gz
+    checksum: sha256:b02008f822b33f97e5e737cc4e5079d728f5e0a7835571b9adcd8dfc515c9460
 about: |
   Every task your AI finishes, every one it decides against, every decision it settles, every task whose day has come — the line arrives in a Slack channel. What happened while you were away from the project, in the room you already watch.
 
