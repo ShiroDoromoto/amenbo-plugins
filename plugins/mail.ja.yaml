@@ -45,13 +45,13 @@ config:
       Amenbo が出すイベントのうち、このプラグインが報告できるものすべてです。書き込みについては、どれを選んでも報告するのは AI のぶんだけで、自分で動かした変更はその場に居合わせたものなので送りません。末尾の2つは書き込みではありません。期日が来たタスクと、明日が期日のタスクを、Amenbo が1日に1回知らせます。誰の書き込みでもないので、絞り込みは掛かりません。1つも選ばないことも答えです。プラグインは有効なまま、何も報告しません。
     options:
       task.created: タスクが作成された
-      task.status_changed: タスクの状態が変わった
+      task.status_changed: タスクのステータスが変わった
       task.done: タスクが完了した
       task.rejected: タスクを見送ると決めた
       task.assigned: タスクの担当が決まった
       task.moved: タスクが別のプロジェクトへ移った
       task.deleted: タスクが削除された
-      decision.accepted: 決定が承認された
+      decision.accepted: 決定が採択された
       decision.rejected: 決定が却下された
       comment.added: コメントが追加された
       comment.removed: コメントが取り消された
