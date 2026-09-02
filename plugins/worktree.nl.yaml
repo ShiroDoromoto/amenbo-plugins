@@ -16,6 +16,6 @@ about: |
 
   `start` geeft precies die `cd`-regel terug, dus de shell waarin je staat is degene die de worktree binnengaat. `finish` draai je vanuit de hoofdrepository; hij weigert zolang de checkout vuil is of de branch nog wijzigingen draagt die de basis niet heeft — `--force` gaat daar overheen. Wat telt is de wijziging, niet de commit die haar draagt: een squash- of rebase-merge leest dus als samengevoegd, net als een gewone merge. Zonder `--base` antwoorden ze allebei met de branch waarop de repository staat, dus er valt vooraf niets in te vullen.
 
-  Een taak reserveren laat de plugin één suggestie naar stderr schrijven, meer niet: of *deze* taak een eigen checkout wil is een afweging, en die blijft bij wie de suggestie leest. De backlog blijft eveneens bij Amenbo — deze plugin leest een taak om te zien waar die bewerkt wordt, en schrijft niets dan git.
+  Een taak reserveren laat de plugin één suggestie naar stderr schrijven, meer niet: of *deze* taak een eigen checkout wil is een afweging, en die blijft bij wie de suggestie leest. De taken blijven eveneens bij Amenbo — deze plugin leest een taak om te zien waar die bewerkt wordt, en schrijft niets dan git.
 
   Vereist git 2.31 of nieuwer.
