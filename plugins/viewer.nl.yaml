@@ -4,7 +4,7 @@ about: |
 
   Er wordt niets voor je gehost. De server is van jou: een server met database die «3. Server op Cloudflare aanmaken» in je eigen Cloudflare-account aanmaakt. Taken reizen één kant op, en alleen voor zover ze bewegen.
 
-  Ze reizen verzegeld. «4. Telefoon koppelen» koppelt een telefoon buiten het netwerk om — de camera leest de URL van de server, het API-token om te lezen en de encryptiesleutel. «5. Gekoppelde telefoons bekijken» zegt welke telefoons mogen lezen, en «6. Telefoon ontkoppelen» snijdt er één af.
+  Ze reizen verzegeld. «4. Telefoon koppelen» koppelt een telefoon buiten het netwerk om — de camera leest de URL van de server, het API-token om te lezen en de encryptiesleutel. Er is één koppeling: «5. Kijken of er een telefoon is» zegt of die er is, «6. Koppeling ongedaan maken» haalt hem weg, en opnieuw koppelen vervangt de vorige.
 
   Aanzetten draagt elk project op deze machine mee: een telefoon is één apparaat, niet één project.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Cloudflare-API-token
     qr:
       label: 4. Telefoon koppelen
-      ask:
-        label: Naam voor deze telefoon
     phones:
-      label: 5. Gekoppelde telefoons bekijken
+      label: 5. Kijken of er een telefoon is
     revoke:
-      label: 6. Telefoon ontkoppelen
-      ask:
-        phone: Naam van de te ontkoppelen telefoon
+      label: 6. Koppeling ongedaan maken
     repair:
       label: "7. Kopie op de telefoon herstellen"
