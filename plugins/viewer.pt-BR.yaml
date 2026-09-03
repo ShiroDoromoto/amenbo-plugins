@@ -4,7 +4,7 @@ about: |
 
   Ninguém hospeda nada para você. O servidor é seu: um servidor com seu banco de dados que «3. Criar o servidor no Cloudflare» cria na sua própria conta Cloudflare. As tarefas viajam em uma só direção, e só conforme se movem.
 
-  Elas viajam lacradas. «4. Parear um telefone» pareia um celular fora da rede — a câmera lê a URL do servidor, o token de API de leitura e a chave de criptografia. «5. Ver os celulares pareados» diz quais celulares podem ler, e «6. Desparear um celular» corta um deles.
+  Elas viajam lacradas. «4. Parear um telefone» pareia um celular fora da rede — a câmera lê a URL do servidor, o código de leitura e a chave de criptografia. «5. Ver se há um celular pareado» diz se algum pode ler, e «6. Desfazer o pareamento» retira esse código.
 
   Ao ativar, ele leva todo projeto desta máquina: um celular é um aparelho, não um projeto.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Token de API do Cloudflare
     qr:
       label: 4. Parear um telefone
-      ask:
-        label: Como chamar este telefone
     phones:
-      label: 5. Ver os celulares pareados
+      label: 5. Ver se há um celular pareado
     revoke:
-      label: 6. Desparear um celular
-      ask:
-        phone: Nome do celular a desparear
+      label: 6. Desfazer o pareamento
     repair:
       label: "7. Reparar a cópia do telefone"

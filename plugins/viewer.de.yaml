@@ -4,7 +4,7 @@ about: |
 
   Nichts wird für Sie gehostet. Der Server gehört Ihnen: ein Server samt Datenbank, den „3. Server bei Cloudflare einrichten“ in Ihrem eigenen Cloudflare-Konto anlegt. Aufgaben reisen in eine Richtung, und nur so, wie sie sich bewegen.
 
-  Sie reisen versiegelt. „4. Telefon koppeln“ koppelt ein Handy ohne Netz — die Kamera liest die URL des Servers, den API-Token zum Lesen und den Verschlüsselungsschlüssel. „5. Gekoppelte Telefone ansehen“ sagt, welche Handys lesen dürfen, und „6. Telefon entkoppeln“ trennt eines davon ab.
+  Sie reisen versiegelt. „4. Telefon koppeln“ koppelt ein Handy ohne Netz — die Kamera liest die URL des Servers, den Lesecode und den Verschlüsselungsschlüssel. „5. Sehen, ob ein Telefon gekoppelt ist“ sagt, ob eines lesen darf, und „6. Kopplung aufheben“ nimmt diesen Code wieder weg.
 
   Eingeschaltet trägt es jedes Projekt dieses Rechners: ein Handy ist ein Gerät, kein Projekt.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Cloudflare-API-Token
     qr:
       label: 4. Telefon koppeln
-      ask:
-        label: Name für dieses Telefon
     phones:
-      label: 5. Gekoppelte Telefone ansehen
+      label: 5. Sehen, ob ein Telefon gekoppelt ist
     revoke:
-      label: 6. Telefon entkoppeln
-      ask:
-        phone: Name des zu entkoppelnden Telefons
+      label: 6. Kopplung aufheben
     repair:
       label: "7. Telefonkopie reparieren"

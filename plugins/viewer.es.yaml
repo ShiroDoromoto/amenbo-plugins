@@ -4,7 +4,7 @@ about: |
 
   Nadie te aloja nada. El servidor es tuyo: un servidor con su base de datos que «3. Crear el servidor en Cloudflare» crea en tu propia cuenta de Cloudflare. Las tareas viajan en un solo sentido, y solo según se mueven.
 
-  Viajan selladas. «4. Vincular un teléfono» vincula un móvil sin pasar por la red — la cámara lee la URL del servidor, el token de API de lectura y la clave de cifrado. «5. Ver los teléfonos vinculados» dice qué móviles pueden leer, y «6. Desvincular un teléfono» corta uno de ellos.
+  Viajan selladas. «4. Vincular un teléfono» vincula un móvil sin pasar por la red — la cámara lee la URL del servidor, el código de lectura y la clave de cifrado. «5. Ver si hay un teléfono vinculado» dice si alguno puede leer, y «6. Deshacer la vinculación» retira ese código.
 
   Al activarlo se lleva todo proyecto de este ordenador: un móvil es un dispositivo, no un proyecto.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Token de API de Cloudflare
     qr:
       label: 4. Vincular un teléfono
-      ask:
-        label: Cómo llamar a este teléfono
     phones:
-      label: 5. Ver los teléfonos vinculados
+      label: 5. Ver si hay un teléfono vinculado
     revoke:
-      label: 6. Desvincular un teléfono
-      ask:
-        phone: Nombre del teléfono a desvincular
+      label: 6. Deshacer la vinculación
     repair:
       label: "7. Reparar la copia del teléfono"

@@ -4,7 +4,7 @@ about: |
 
   Tidak ada yang dihosting untuk Anda. Servernya milik Anda sendiri: server beserta basis datanya yang dibuat «3. Buat server di Cloudflare» di akun Cloudflare Anda sendiri. Tugas berjalan satu arah, dan hanya sebanyak yang berubah.
 
-  Tugas berjalan tersegel. «4. Pasangkan ponsel» memasangkan ponsel tanpa melalui jaringan — kamera membaca URL server, token API untuk membaca, dan kunci enkripsinya. «5. Lihat ponsel yang dipasangkan» menyebut ponsel mana saja yang boleh membaca, dan «6. Lepaskan ponsel» memutus salah satunya.
+  Tugas berjalan tersegel. «4. Pasangkan ponsel» memasangkan ponsel tanpa melalui jaringan — kamera membaca URL server, kode baca, dan kunci enkripsinya. «5. Lihat status pemasangan» menyebut apakah ada ponsel yang boleh membaca, dan «6. Batalkan pemasangan» menarik kembali kode itu.
 
   Begitu diaktifkan, yang dibawa adalah seluruh proyek di mesin ini: ponsel adalah satu perangkat, bukan satu proyek.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Token API Cloudflare
     qr:
       label: 4. Pasangkan ponsel
-      ask:
-        label: Nama untuk ponsel ini
     phones:
-      label: 5. Lihat ponsel yang dipasangkan
+      label: 5. Lihat status pemasangan
     revoke:
-      label: 6. Lepaskan ponsel
-      ask:
-        phone: Nama ponsel yang akan dilepaskan
+      label: 6. Batalkan pemasangan
     repair:
       label: "7. Perbaiki salinan di ponsel"
