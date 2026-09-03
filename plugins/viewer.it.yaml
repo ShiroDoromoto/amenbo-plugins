@@ -4,7 +4,7 @@ about: |
 
   Nulla viene ospitato per te. Il server è tuo: un server con il suo database che «3. Crea il server su Cloudflare» crea nel tuo account Cloudflare. Le attività viaggiano in un solo senso, e solo man mano che si muovono.
 
-  Viaggiano sigillate. «4. Abbina un telefono» abbina un telefono fuori dalla rete — la fotocamera legge l'URL del server, il token API di lettura e la chiave di cifratura. «5. Vedi i telefoni abbinati» dice quali telefoni possono leggere, e «6. Scollega un telefono» ne stacca uno.
+  Viaggiano sigillate. «4. Abbina un telefono» abbina un telefono fuori dalla rete — la fotocamera legge l'URL del server, il codice di lettura e la chiave di cifratura. «5. Vedi se un telefono è abbinato» dice se uno può leggere, e «6. Annulla l'abbinamento» ritira quel codice.
 
   Attivarlo porta ogni progetto di questa macchina: un telefono è un dispositivo, non un progetto.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Token API di Cloudflare
     qr:
       label: 4. Abbina un telefono
-      ask:
-        label: Come chiamare questo telefono
     phones:
-      label: 5. Vedi i telefoni abbinati
+      label: 5. Vedi se un telefono è abbinato
     revoke:
-      label: 6. Scollega un telefono
-      ask:
-        phone: Nome del telefono da scollegare
+      label: 6. Annulla l'abbinamento
     repair:
       label: "7. Riparare la copia del telefono"

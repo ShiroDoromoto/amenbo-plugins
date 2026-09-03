@@ -4,7 +4,7 @@ about: |
 
   Rien n'est hébergé pour vous. Le serveur est le vôtre : un serveur et sa base de données que « 3. Créer le serveur sur Cloudflare » crée dans votre propre compte Cloudflare. Les tâches circulent dans un seul sens, et seulement à mesure qu'elles bougent.
 
-  Elles circulent scellées. « 4. Associer un téléphone » associe un téléphone hors réseau — l'appareil photo lit l'URL du serveur, le jeton d'API de lecture et la clé de chiffrement. « 5. Voir les téléphones associés » dit quels téléphones peuvent lire, et « 6. Dissocier un téléphone » en coupe un.
+  Elles circulent scellées. « 4. Associer un téléphone » associe un téléphone hors réseau — l'appareil photo lit l'URL du serveur, le code de lecture et la clé de chiffrement. « 5. Voir si un téléphone est associé » dit si l'un d'eux peut lire, et « 6. Annuler l'association » retire ce code.
 
   L'activer emporte tous les projets de cette machine : un téléphone est un appareil, pas un projet.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Jeton d'API Cloudflare
     qr:
       label: 4. Associer un téléphone
-      ask:
-        label: Nom de ce téléphone
     phones:
-      label: 5. Voir les téléphones associés
+      label: 5. Voir si un téléphone est associé
     revoke:
-      label: 6. Dissocier un téléphone
-      ask:
-        phone: Nom du téléphone à dissocier
+      label: 6. Annuler l'association
     repair:
       label: "7. Réparer la copie du téléphone"

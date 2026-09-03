@@ -4,7 +4,7 @@ about: |
 
   Sizin için hiçbir şey barındırılmaz. Sunucu sizindir: «3. Cloudflare'de sunucu oluştur»un kendi Cloudflare hesabınızda oluşturduğu bir sunucu ve veritabanı. Görevler tek yöne, yalnızca değiştikleri kadar gider.
 
-  Mühürlü giderler. «4. Telefon eşle» bir telefonu ağa çıkmadan eşleştirir — kamera sunucunun URL'sini, okuma için API belirtecini ve şifreleme anahtarını okur. «5. Eşleşen telefonları gör» hangi telefonların okuyabildiğini söyler, «6. Telefon eşleşmesini kaldır» ise birini keser.
+  Mühürlü giderler. «4. Telefon eşle» bir telefonu ağa çıkmadan eşleştirir — kamera sunucunun URL'sini, okuma kodunu ve şifreleme anahtarını okur. «5. Bir telefon eşleşmiş mi gör» bir telefonun okuyup okuyamadığını söyler, «6. Eşleşmeyi kaldır» ise o kodu geri alır.
 
   Etkinleştirdiğinizde bu makinedeki her projeyi taşır: telefon bir cihazdır, bir proje değil.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Cloudflare API belirteci
     qr:
       label: 4. Telefon eşle
-      ask:
-        label: Bu telefonun adı
     phones:
-      label: 5. Eşleşen telefonları gör
+      label: 5. Bir telefon eşleşmiş mi gör
     revoke:
-      label: 6. Telefon eşleşmesini kaldır
-      ask:
-        phone: Eşleşmesi kaldırılacak telefonun adı
+      label: 6. Eşleşmeyi kaldır
     repair:
       label: "7. Telefondaki kopyayı onar"

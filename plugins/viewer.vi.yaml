@@ -4,7 +4,7 @@ about: |
 
   Không ai lưu trữ hộ bạn cả. Máy chủ là của chính bạn: một máy chủ cùng cơ sở dữ liệu mà «3. Tạo máy chủ trên Cloudflare» tạo trong tài khoản Cloudflare của bạn. Việc đi một chiều, và chỉ đi phần đã thay đổi.
 
-  Chúng đi trong phong bì niêm kín. «4. Ghép nối điện thoại» ghép nối một điện thoại mà không qua mạng — máy ảnh đọc URL của máy chủ, token API để đọc và khóa mã hóa. «5. Xem điện thoại đã ghép nối» cho biết những điện thoại nào được đọc, còn «6. Hủy ghép nối điện thoại» cắt một chiếc trong số đó.
+  Chúng đi trong phong bì niêm kín. «4. Ghép nối điện thoại» ghép nối một điện thoại mà không qua mạng — máy ảnh đọc URL của máy chủ, mã đọc và khóa mã hóa. «5. Xem đã ghép nối chưa» cho biết có điện thoại nào được đọc hay không, còn «6. Hủy ghép nối» thu lại mã đó.
 
   Bật lên là mang theo mọi dự án trên máy này: điện thoại là một thiết bị, không phải một dự án.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Token API Cloudflare
     qr:
       label: 4. Ghép nối điện thoại
-      ask:
-        label: Tên của điện thoại này
     phones:
-      label: 5. Xem điện thoại đã ghép nối
+      label: 5. Xem đã ghép nối chưa
     revoke:
-      label: 6. Hủy ghép nối điện thoại
-      ask:
-        phone: Tên điện thoại cần hủy ghép nối
+      label: 6. Hủy ghép nối
     repair:
       label: "7. Sửa bản sao"

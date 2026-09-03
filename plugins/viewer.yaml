@@ -11,23 +11,23 @@ category: integration
 scope: machine
 assets:
   macos-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v7/viewer-v7-macos-arm64.tar.gz
-    checksum: sha256:5f0a4ac2a711c9ae0de4166e324fd0572a3ceb4f19906ffd9422b67da243a347
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v8/viewer-v8-macos-arm64.tar.gz
+    checksum: sha256:8158e45f01923b4128c476b25ae7d8b5a0daf7aebad7ec2e590d7741945e18d0
   macos-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v7/viewer-v7-macos-x64.tar.gz
-    checksum: sha256:dc25f16a28007ff59b0e5075057cbb6c169c2f5bf1aff89ed5eacecf9ea19216
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v8/viewer-v8-macos-x64.tar.gz
+    checksum: sha256:acf80b1d94ce242ff86579fe70d6fe384bc2a558cf1a0aaf8735b9433a343104
   linux-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v7/viewer-v7-linux-x64.tar.gz
-    checksum: sha256:1389b383964574e5475386cdd649dae9b2e1a2c4fbffa2e839fbc8259afff888
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v8/viewer-v8-linux-x64.tar.gz
+    checksum: sha256:9ea0118bb98ef764e4d0f15753b31787d3f0cd8a5a2e6a285cb8dc75ccadc7f2
   linux-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v7/viewer-v7-linux-arm64.tar.gz
-    checksum: sha256:94d74849895e5b16d955670ea8aed5e405540558efd854746d6b06edaff76013
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v8/viewer-v8-linux-arm64.tar.gz
+    checksum: sha256:ecee55ae6105f8973c7ad6715b8cd9e85360794334c15c8d74b91030dd077e04
   windows-x64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v7/viewer-v7-windows-x64.tar.gz
-    checksum: sha256:ac90421af6aae5659d4121459d61674a87de4dec20e5e118e1066a939c1922aa
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v8/viewer-v8-windows-x64.tar.gz
+    checksum: sha256:9120c26d14f75b9db4436953ffcd51faa876f05ec9289f5420697f2485be6c26
   windows-arm64:
-    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v7/viewer-v7-windows-arm64.tar.gz
-    checksum: sha256:3d9ca7ccbf7774c3b6cf3eaa6cbd83a60edf082f878d266bcb1fd60ec0d66bc7
+    url: https://github.com/ShiroDoromoto/amenbo-plugin-viewer/releases/download/v8/viewer-v8-windows-arm64.tar.gz
+    checksum: sha256:290875733ef8ab1e0ae50cd7d4833a2670e6020515e6ea1c8d3c2721b20d2294
 official: true
 payload_v: 1
 min_amenbo: 15.1.0
@@ -36,7 +36,7 @@ about: |
 
   Nothing is hosted for you. The server is one you own: a server and a database that "3. Set up the server on Cloudflare" makes in your own Cloudflare account. Tasks travel one way, and only as they move.
 
-  They travel sealed. "4. Pair a phone" pairs a phone off the network — the camera reads the server's URL, the read API token and the encryption key. "5. See the phones that are paired" says which phones may read, and "6. Unpair a phone" cuts one of them off.
+  They travel sealed. "4. Pair a phone" pairs a phone off the network — the camera reads the server's URL, the read code and the encryption key. "5. See whether a phone is paired" says whether one may read, and "6. Undo the pairing" takes that code away.
 
   Enabling it carries every project on this machine: a phone is one device, not one project.
 config:
@@ -85,16 +85,10 @@ settings:
           secret: true
     - cmd: qr
       label: 4. Pair a phone
-      ask:
-        - key: label
-          label: What to call this phone
     - cmd: phones
-      label: 5. See the phones that are paired
+      label: 5. See whether a phone is paired
     - cmd: revoke
-      label: 6. Unpair a phone
-      ask:
-        - key: phone
-          label: The name of the phone to unpair
+      label: 6. Undo the pairing
     - cmd: repair
       label: 7. Fix the phone's copy
 events:
@@ -122,11 +116,11 @@ agent:
     - cmd: push
       does: Carries by hand what has not reached the phone yet, encrypting a record at a time, over every route that is configured. The hook does this per write, so this is for what was left behind
     - cmd: phones
-      does: Lists the phones that may read and when each was paired. Reads nothing over the network — the store compares hashes and does not answer what it holds
+      does: Says whether a phone may read, and since when, by asking the store. There is one read code, so the answer is present or absent rather than a list
     - cmd: revoke
-      does: Cuts one phone off by the name it was paired under, at the store first and here after. The other phones carry on reading. Takes that name as its only argument, or out of the settings screen's box
+      does: "Undoes the pairing: takes the read code away, so whatever was holding it stops reading. Takes nothing — there is one code, so there is nothing to name"
     - cmd: qr
-      does: "Pairs one phone: issues a read token, registers its hash, puts endpoint/token/key/name on a QR the camera reads, off the network. --label or the settings screen box names it; --terminal draws it here"
+      does: "Pairs a phone: issues the read code, registers its hash, puts endpoint/code/key on a QR the camera reads, off the network. Issuing again replaces it; --terminal draws the code here"
     - cmd: repair
       does: Compares what the phone's server holds with what this PC holds and carries the difference, without emptying anything. Counts on the first run and sends on the second — or on the first with --send
     - cmd: check

@@ -4,7 +4,7 @@ about: |
 
   Nikt niczego dla ciebie nie hostuje. Serwer należy do ciebie: serwer wraz z bazą danych, który «3. Utwórz serwer w Cloudflare» tworzy na twoim własnym koncie Cloudflare. Zadania jadą w jedną stronę i tylko w takiej ilości, w jakiej się zmieniły.
 
-  Jadą zapieczętowane. «4. Sparuj telefon» paruje telefon bez wychodzenia do sieci — aparat odczytuje adres URL serwera, token API do odczytu i klucz szyfrujący. «5. Zobacz sparowane telefony» mówi, które telefony mogą czytać, a «6. Odłącz telefon» odcina jeden z nich.
+  Jadą zapieczętowane. «4. Sparuj telefon» paruje telefon bez wychodzenia do sieci — aparat odczytuje adres URL serwera, kod do odczytu i klucz szyfrujący. «5. Zobacz, czy telefon jest sparowany» mówi, czy któryś może czytać, a «6. Cofnij parowanie» zabiera ten kod.
 
   Po włączeniu niesie każdy projekt z tej maszyny: telefon to jedno urządzenie, a nie jeden projekt.
 config:
@@ -35,13 +35,9 @@ settings:
         api_token: Token API Cloudflare
     qr:
       label: 4. Sparuj telefon
-      ask:
-        label: Nazwa tego telefonu
     phones:
-      label: 5. Zobacz sparowane telefony
+      label: 5. Zobacz, czy telefon jest sparowany
     revoke:
-      label: 6. Odłącz telefon
-      ask:
-        phone: Nazwa telefonu do odłączenia
+      label: 6. Cofnij parowanie
     repair:
       label: "7. Napraw kopię w telefonie"
