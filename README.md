@@ -1,6 +1,8 @@
 # amenbo-plugins
 
 The public plugin catalog for [**Amenbo**](https://github.com/ShiroDoromoto/amenbo) — a local-first
+
+[![Amenbo on StartupScores](https://startupscores.com/badge/amenbo.svg?style=shield&v=combo&theme=dark)](https://startupscores.com/open-source/amenbo)
 task & project manager where an AI and a human collaborate on one machine.
 
 **Documentation** — the contracts an author is held to, in English and Japanese:
